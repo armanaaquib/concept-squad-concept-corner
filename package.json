@@ -1,0 +1,32 @@
+{
+  "name": "concept-squad-stack-over-flow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "nyc mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armanaaquib/concept-squad-stack-over-flow.git"
+  },
+  "author": "Concept-Squad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/armanaaquib/concept-squad-stack-over-flow/issues"
+  },
+  "homepage": "https://github.com/armanaaquib/concept-squad-stack-over-flow#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "pug": "^3.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^7.4.0",
+    "mocha": "^8.0.1",
+    "nyc": "^15.1.0",
+    "supertest": "^4.0.2"
+  }
+}
