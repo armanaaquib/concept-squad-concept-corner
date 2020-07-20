@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+  </head>
+  <body>
+    <pre><code>
+        var quill = new Quill('#editor-container', {
+          modules: {
+            syntax: true,
+            toolbar: [
+              [{ size: ['small', false, 'large', 'huge'] }],
+              ['bold', 'italic', 'underline'],
+              ['image', 'code-block']
+            ]
+          },
+          placeholder: 'Post Your Question...',
+          theme: 'snow'
+        });
+      </code></pre>
+  </body>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
