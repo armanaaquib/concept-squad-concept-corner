@@ -1,6 +1,6 @@
 echo "running tests..."
 
-nyc mocha --recursive
+npm test
 testStatus=$?
 npm run lint
 lintStatus=$?
