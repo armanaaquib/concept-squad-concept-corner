@@ -1,5 +1,5 @@
 const sqlite = require('sqlite3').verbose();
-const { getDB } = require('../config');
+const { getDBFileName } = require('../config');
 
 const schema = {
   users: `
@@ -18,8 +18,8 @@ const throwError = (err) => {
 };
 
 const createTables = () => {
-  const dbFile = `./database/${getDB()}`;
-  const db = new sqlite.Database(dbFile, throwError);
+  const dbFileName = `./database/${getDBFileName()}`;
+  const db = new sqlite.Database(dbFileName, throwError);
 
   db.run(schema.users, [], throwError);
   db.close(throwError);
