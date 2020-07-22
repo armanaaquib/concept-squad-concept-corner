@@ -12,9 +12,14 @@ describe('DataStore', function () {
       const dataStore = new DataStore(db);
 
       const status = await dataStore.addUser({
-        username: 'michel',
-        name: 'Michel Shawn',
-        email: 'michel@gmail.com',
+        username: 'ram',
+        name: 'Ram Lal',
+        email: 'ram@gmail.com',
+        location: 'India',
+        title: 'Developer',
+        aboutMe: 'Good person',
+        company: null,
+        profilePic: null,
       });
 
       assert.ok(status);
@@ -24,12 +29,17 @@ describe('DataStore', function () {
   context('getUser', function () {
     it('should resolve user details if user is available', async function () {
       const dataStore = new DataStore(db);
-      const user = await dataStore.getUser('michel');
+      const user = await dataStore.getUser('jake');
 
       assert.deepStrictEqual(user, {
-        username: 'michel',
-        name: 'Michel Shawn',
-        email: 'michel@gmail.com',
+        username: 'jake',
+        name: 'jake shawn',
+        email: 'jake@gmail.com',
+        location: 'london',
+        title: 'project manager',
+        aboutMe: null,
+        company: null,
+        profilePic: null,
       });
     });
 

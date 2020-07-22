@@ -1,14 +1,14 @@
 -- -- SQLite
 insert into
   users(
-    user_name,
+    username,
     name,
     email,
     location,
     title,
-    about_me,
+    aboutMe,
     company,
-    profile_pic
+    profilePic
   )
 VALUES
   (
@@ -19,7 +19,7 @@ VALUES
     'developer',
     'java developer worked for 20 years across different companies',
     'apple',
-    'blob'
+    null
   ),
   (
     'bryce',
@@ -29,7 +29,7 @@ VALUES
     'consultant',
     '.Net developer worked for 10 years',
     'microsoft',
-    'blob'
+    null
   ),
   (
     'jake',
@@ -39,7 +39,7 @@ VALUES
     'project manager',
     null,
     null,
-    'blob'
+    null
   ),
   (
     'carlo',
@@ -49,13 +49,13 @@ VALUES
     null,
     null,
     'amd',
-    'blob'
+    null
   );
 
 --insert question
 insert into
   questions(
-    user_name,
+    username,
     title,
     description,
     view_count,
@@ -181,7 +181,7 @@ VALUES
 
 --insert prefered_tags
 insert into
-  prefered_tags(user_name, tag_id)
+  preferred_tags(username, tag_id)
 VALUES
   ('michel', 1),
 ('michel', 3),
@@ -196,7 +196,7 @@ VALUES
 --insert answer
 insert into
   answers(
-    user_name,
+    username,
     question_id,
     answer,
     upvote,
@@ -269,7 +269,7 @@ VALUES
 
 --insert answer_comments
 insert into
-  answer_comments(user_name, answer_id, comment, time)
+  answer_comments(username, answer_id, comment, time)
 VALUES
   (
     'bryce',
@@ -298,7 +298,7 @@ VALUES
 
 --insert question_comments
 insert into
-  question_comments(user_name, question_id, comment, time)
+  question_comments(username, question_id, comment, time)
 VALUES
   (
     'bryce',

@@ -1,25 +1,25 @@
 -- SQLite
 CREATE TABLE users (
-	user_name varchar PRIMARY KEY,
+	username varchar PRIMARY KEY,
 	name varchar,
 	email varchar,
 	location varchar,
 	title varchar,
-	about_me varchar,
+	aboutMe varchar,
 	company varchar,
-	profile_pic blob
+	profilePic blob
 );
 
 CREATE TABLE questions (
 	question_id integer PRIMARY KEY AUTOINCREMENT,
-	user_name varchar,
+	username varchar,
 	title text,
 	time datetime,
 	view_count integer,
 	description blob,
 	upvote integer,
 	downvote integer,
-	FOREIGN KEY(user_name) REFERENCES user_tbl(user_name)
+	FOREIGN KEY(username) REFERENCES user_tbl(username)
 );
 
 CREATE TABLE tags (
@@ -29,7 +29,7 @@ CREATE TABLE tags (
 
 CREATE TABLE answers (
 	answer_id integer PRIMARY KEY AUTOINCREMENT,
-	user_name varchar,
+	username varchar,
 	question_id integer,
 	answer blob,
 	upvote integer,
@@ -37,26 +37,26 @@ CREATE TABLE answers (
 	accepted boolean,
 	thanks_count integer,
 	time datetime,
-	FOREIGN KEY(user_name) REFERENCES user_tbl(user_name),
+	FOREIGN KEY(username) REFERENCES user_tbl(username),
 	FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
 );
 
 CREATE TABLE answer_comments (
 	comment_id integer PRIMARY KEY AUTOINCREMENT,
-	user_name varchar,
+	username varchar,
 	answer_id integer,
 	comment text,
 	time datetime,
-	FOREIGN KEY(user_name) REFERENCES user_tbl(user_name) FOREIGN KEY(answer_id) REFERENCES answer_tbl(answer_id)
+	FOREIGN KEY(username) REFERENCES user_tbl(username) FOREIGN KEY(answer_id) REFERENCES answer_tbl(answer_id)
 );
 
 CREATE TABLE question_comments (
 	comment_id integer PRIMARY KEY AUTOINCREMENT,
-	user_name varchar,
+	username varchar,
 	question_id integer,
 	comment text,
 	time datetime,
-	FOREIGN KEY(user_name) REFERENCES user_tbl(user_name),
+	FOREIGN KEY(username) REFERENCES user_tbl(username),
 	FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
 );
 
@@ -68,8 +68,8 @@ CREATE TABLE question_tags (
 );
 
 CREATE TABLE preferred_tags (
-	user_name varchar,
+	username varchar,
 	tag_id integer,
-	FOREIGN KEY(user_name) REFERENCES user_tbl(user_name),
+	FOREIGN KEY(username) REFERENCES user_tbl(username),
 	FOREIGN KEY(tag_id) REFERENCES tags(tag_id)
 );

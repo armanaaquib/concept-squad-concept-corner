@@ -4,21 +4,50 @@ class DataStore {
   }
 
   addUser(user) {
-    const sql = `INSERT INTO users(username, name, email)
-    values(?, ?, ?)`;
+    const sql = `
+    INSERT INTO 
+      users(username, name, email, location, title, aboutMe, company)
+      values(?, ?, ?, ?, ?, ?, ?)
+    `;
 
     return new Promise((resolve, reject) => {
-      this.db.run(sql, [user.username, user.name, user.email], (err) => {
-        if (err) {
-          reject(err);
+      this.db.run(
+        sql,
+        [
+          user.username,
+          user.name,
+          user.email,
+          user.location,
+          user.title,
+          user.aboutMe,
+          user.company,
+        ],
+        (err) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(true);
         }
-        resolve(true);
-      });
+      );
     });
   }
 
   getUser(username) {
-    const sql = 'SELECT username, name, email FROM users WHERE username = ?';
+    const sql = `
+    SELECT
+      username,
+      name,
+      email,
+      location,
+      title,
+      aboutMe,
+      company,
+      profilePic 
+    FROM 
+      users 
+    WHERE 
+      username = ?
+    `;
 
     return new Promise((resolve, reject) => {
       this.db.get(sql, [username], (err, row) => {
