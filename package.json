@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "select-test-db": "exports CONCEPT_CORNER_DB='test-concept-corner.db'",
+    "select-test-db": "export CONCEPT_CORNER_DB='test-concept-corner.db'",
     "test": "npm run select-test-db; nyc mocha",
     "lint": "eslint"
   },
