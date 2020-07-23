@@ -12,7 +12,7 @@ app.use(express.static('public'));
 app.get('/', handlers.loadHomePage);
 app.get('/postQuestion', handlers.servePostQuestionPage);
 const getAccessToken = function (code) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     request.post(
       {
         url: 'https://github.com/login/oauth/access_token',
@@ -21,26 +21,26 @@ const getAccessToken = function (code) {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          client_id: env.clientId,
-          client_secret: env.clientSecret,
+          clientId: env.clientId,
+          clientSecret: env.clientSecret,
           code,
         }),
       },
       (error, response, body) => {
-        const { access_token } = JSON.parse(body);
-        resolve(access_token);
+        const { accessToken } = JSON.parse(body);
+        resolve(accessToken);
       }
     );
   });
 };
 
-const getUserDetail = function (access_token) {
-  return new Promise((resolve, reject) => {
+const getUserDetail = function (accessToken) {
+  return new Promise((resolve) => {
     request.get(
       {
         url: 'https://api.github.com/user',
         headers: {
-          Authorization: `token ${access_token}`,
+          Authorization: `token ${accessToken}`,
           'User-Agent': 'node.js',
         },
       },
@@ -57,10 +57,9 @@ app.get('/authorize', (req, res) => {
   if (!code) {
     res.send('No code found');
   }
-  getAccessToken(code).then((access_token) =>
-    getUserDetail(access_token).then((userDetail) => {
+  getAccessToken(code).then((accessToken) =>
+    getUserDetail(accessToken).then((userDetail) => {
       dataStore.isRegisteredUser(userDetail.id).then((result) => {
-        console.log(result);
         !result && res.render('confirm', {});
         res.render('home', {});
       });

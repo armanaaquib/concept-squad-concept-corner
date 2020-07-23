@@ -1,6 +1,6 @@
 const env = require('../env.json');
 
-const loadHomePage = function (req, res, next) {
+const loadHomePage = function (req, res) {
   res.render('home', { authHref: `${env.authLink}${env.clientId}` });
   res.end();
 };
