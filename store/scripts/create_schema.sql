@@ -10,6 +10,12 @@ CREATE TABLE users (
 	profilePic blob
 );
 
+CREATE TABLE githubUsers (
+	authId INTEGER PRIMARY KEY,
+		username varchar,
+	FOREIGN KEY (username) REFERENCES users(username)
+);
+
 CREATE TABLE questions (
 	question_id integer PRIMARY KEY AUTOINCREMENT,
 	username varchar,

@@ -1,9 +1,9 @@
-mixin navigationBar()
+mixin navigationBar(authHref)
 	div.nav
 		div.logo
 			img(src="", alt="Concept Corner", srcset="")
 		div.list
 			div
-				a(href="http://") Log in
+				a(href=authHref) Log in
 			div
-				a(href="http://") Sign up
+				a(href=authHref) Sign up

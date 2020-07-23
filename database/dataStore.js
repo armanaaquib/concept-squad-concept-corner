@@ -1,3 +1,5 @@
+const e = require('express');
+
 class DataStore {
   constructor(db) {
     this.db = db;
@@ -55,6 +57,21 @@ class DataStore {
           reject(err);
         }
         resolve(row);
+      });
+    });
+  }
+
+  isRegisteredUser(id) {
+    const sql = `SELECT authId, username FROM githubUsers WHERE authId=?`;
+    return new Promise((resolve, reject) => {
+      this.db.get(sql, [id], (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        if (!row) {
+          resolve(false);
+        }
+        resolve(true);
       });
     });
   }
