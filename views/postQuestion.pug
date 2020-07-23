@@ -13,8 +13,12 @@ html(lang='en')
   body
     +navigationBar()
     h2 Post your question
-    input(type="text")
+    input#title(type="text")
+    br
+    span.errorMsg#errorTitle
+    br
     #editor-container(style="height:375px")
     script(src="js/editor.js")
-    button(type='button') Submit
-    button(type='button') Cancel
+    button(type='button' , onclick="postQuestion()") Submit
+    a(href='/' + cancelUrl)
+      button(type='button') Cancel
