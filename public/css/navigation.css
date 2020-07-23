@@ -8,7 +8,7 @@
 
 .logo {
     height: 6rem;
-    width: 85rem;
+    width: 85%;
 }
 
 .logo > img{
@@ -20,7 +20,7 @@
 	flex-flow: row;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	width: 15rem;
+	width: 15%;
 	justify-content: space-evenly;
 }
 .list >div>a{

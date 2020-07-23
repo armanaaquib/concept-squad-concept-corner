@@ -1,5 +1,5 @@
-const sqlite = require('sqlite3');
-const { getDbFilePath } = require('../config');
+const sqlite = require('sqlite3').verbose();
+const { getDBFilePath } = require('../config');
 
 const schema = require('./schema');
 
@@ -10,7 +10,7 @@ const throwError = err => {
 };
 
 const createTables = () => {
-  const db = new sqlite.Database(getDbFilePath, throwError);
+  const db = new sqlite.Database(getDBFilePath(), throwError);
   db.run(schema.users, [], throwError);
   db.run(schema.questions, [], throwError);
   db.close(throwError);

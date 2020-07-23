@@ -5,7 +5,6 @@ const config = require('../config');
 const env = require('../env.json');
 const DataStore = require('../database/dataStore');
 const handlers = require('./handlers');
-
 const Questions = require('../models/questions');
 
 const app = express();
@@ -20,7 +19,6 @@ app.set('view engine', 'pug');
 
 app.use(express.static('public'));
 app.use(express.json());
-
 app.get('/', handlers.loadHomePage);
 app.get('/postQuestion', handlers.servePostQuestionPage);
 const getAccessToken = function (code) {

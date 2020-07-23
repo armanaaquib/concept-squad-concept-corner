@@ -62,7 +62,7 @@ class DataStore {
   }
 
   isRegisteredUser(id) {
-    const sql = `SELECT authId, username FROM githubUsers WHERE authId=?`;
+    const sql = 'SELECT authId, username FROM githubUsers WHERE authId=?';
     return new Promise((resolve, reject) => {
       this.db.get(sql, [id], (err, row) => {
         if (err) {
