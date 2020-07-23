@@ -1,5 +1,11 @@
-const loadHomePage = function(req, res, next){
+const loadHomePage = function (req, res) {
   res.render('home', {});
   res.end();
 };
-module.exports = {loadHomePage};
+
+const servePostQuestionPage = (req, res) => {
+  res.render('postQuestion');
+  res.end();
+};
+
+module.exports = { loadHomePage, servePostQuestionPage };
