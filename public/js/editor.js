@@ -36,9 +36,9 @@ const postQuestion = () => {
     headers: {
       'Content-Type': 'application/json'
     }
-  }).then(response => {
-    console.log('inserted');
-  });
+  })
+    .then(res => res.json())
+    .then(console.log);
 };
 
 window.onload = createEditor;

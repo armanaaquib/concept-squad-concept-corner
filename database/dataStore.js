@@ -81,11 +81,11 @@ class DataStore {
       this.db.run(
         queries.addQuestion,
         [question.username, question.title, question.description],
-        err => {
+        function(err) {
           if (err) {
             reject(err);
           }
-          resolve({ status: true, lastId: this.lastId });
+          resolve(this.lastID);
         }
       );
     });
