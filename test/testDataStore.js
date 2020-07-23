@@ -4,7 +4,7 @@ const { getDBFileName } = require('../config');
 
 const dbFileName = `./store/${getDBFileName()}`;
 const db = new sqlite.Database(dbFileName);
-const DataStore = require('../database/dataStore');
+const DataStore = require('../database/dataStore.js');
 
 describe('DataStore', function () {
   context('addUser', function () {
