@@ -1,3 +1,5 @@
+![travise status](https://api.travis-ci.org/armanaaquib/concept-squad-concept-corner.svg?branch=master)
+
 # Concept Corner
 
 <h4 id="setupForDevelopment"> Setup for development </h4>
