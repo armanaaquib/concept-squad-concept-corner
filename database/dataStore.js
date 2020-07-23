@@ -1,4 +1,4 @@
-const e = require('express');
+const queries = require('./queries');
 
 class DataStore {
   constructor(db) {
@@ -22,9 +22,9 @@ class DataStore {
           user.location,
           user.title,
           user.aboutMe,
-          user.company,
+          user.company
         ],
-        (err) => {
+        err => {
           if (err) {
             reject(err);
           }
@@ -73,6 +73,21 @@ class DataStore {
         }
         resolve(true);
       });
+    });
+  }
+
+  addQuestion(question) {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        queries.addQuestion,
+        [question.username, question.title, question.description],
+        err => {
+          if (err) {
+            reject(err);
+          }
+          resolve({ status: true, lastId: this.lastId });
+        }
+      );
     });
   }
 }

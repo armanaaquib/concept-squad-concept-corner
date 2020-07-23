@@ -1,7 +1,8 @@
 const { env } = process;
 
-const getDBFileName = () => {
-  return env.CONCEPT_CORNER_DB || 'concept-corner.db';
+const getDBFilePath = () => {
+  const fileName = env.CONCEPT_CORNER_DB || 'concept-corner.db';
+  return `./store/${fileName}`;
 };
 
-module.exports = { getDBFileName };
+module.exports = { getDBFilePath };

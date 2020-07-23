@@ -30,8 +30,15 @@ const postQuestion = () => {
   }
   const title = getElement('title').value;
   const description = JSON.stringify(JSON.stringify(quill.getContents()));
-  console.log(title);
-  console.log(description);
+  fetch('/postQuestion', {
+    method: 'POST',
+    body: JSON.stringify({ title, description }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(response => {
+    console.log('inserted');
+  });
 };
 
 window.onload = createEditor;

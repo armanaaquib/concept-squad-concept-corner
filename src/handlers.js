@@ -9,4 +9,12 @@ const servePostQuestionPage = (req, res) => {
   res.end();
 };
 
-module.exports = { loadHomePage, servePostQuestionPage };
+const postQuestion = (req, res) => {
+  const { title, description } = req.body;
+  const { user, questions } = req.app.locals;
+  questions
+    .add({ username: user.username, title, description })
+    .then(console.log);
+};
+
+module.exports = { loadHomePage, servePostQuestionPage, postQuestion };

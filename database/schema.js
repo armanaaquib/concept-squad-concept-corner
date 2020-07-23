@@ -14,4 +14,13 @@ module.exports = {
 		username varchar,
 	FOREIGN KEY (username) REFERENCES users(username)
 )`,
+  questions: `CREATE TABLE questions (
+	question_id integer PRIMARY KEY AUTOINCREMENT,
+	username varchar,
+	title text,
+	time datetime,
+	view_count integer DEFAULT 0,
+	description blob,
+	FOREIGN KEY(username) REFERENCES users(username)
+)`
 };
