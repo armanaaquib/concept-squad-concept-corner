@@ -1,0 +1,65 @@
+.container {
+  margin: 0 6em;
+  font-family: sans-serif;
+}
+.header-text {
+  font-weight: 500;
+}
+
+.errorMsg {
+  color: #b70f0a;
+  font-size: small;
+  padding-left: 1em;
+}
+
+.required {
+  color: #b70f0a;
+  padding-left: 0.2em;
+}
+
+.title {
+  border: 0.1px solid #c2c2c4;
+  height: 3.5em;
+  width: 100%;
+  margin: 3em 0 0.5em 0;
+  padding: 0;
+}
+
+.placeholder {
+  font-size: 0.7em;
+  color: #c0c0c0;
+  margin-left: 0.4em;
+}
+
+#title {
+  height: 60%;
+  width: 97%;
+  font-size: large;
+  padding-left: 0.4em;
+  font-weight: 200;
+  border: none;
+  outline: none;
+}
+
+#editor-container {
+  height: 23em;
+}
+
+.btn {
+  margin-top: 2em;
+}
+.primary-btn {
+  background-color: #3d8af7;
+  height: 3em;
+  width: 10em;
+  border: none;
+  color: white;
+}
+.cancel-btn {
+  background-color: white;
+  color: #b70f0a;
+  border: 1px solid #b70f0a;
+  margin-left: 3em;
+  height: 3em;
+  width: 7em;
+}

@@ -1,12 +1,23 @@
 extends home.pug
+block common_vars
+	- var authLink= authHref
+	- var pageName="Post Question"
 block container
-	h2 Post your question
-	input#title(type="text")
-	br
-	span.errorMsg#errorTitle
-	br
-	#editor-container(style="height:375px")
-	script(src="js/editor.js")
-	button(type='button' , onclick="postQuestion()") Submit
-	a(href=cancelUrl)
-		button(type='button') Cancel
+	.container
+		.header
+			h2.header-text Post your question
+			hr
+		.question
+			.title
+				span.placeholder Heading
+				span.required *
+				input#title(type="text")
+				br
+			p.errorMsg#errorTitle
+			br
+			#editor-container
+			script(src="js/editor.js")
+			.btn
+				button.primary-btn(type='button' , onclick="postQuestion()") Post Question
+				a(href=cancelUrl)
+					button.cancel-btn(type='button') Cancel

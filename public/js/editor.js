@@ -12,7 +12,7 @@ const createEditor = () => {
         []
       ]
     },
-    placeholder: 'Post Your Question...',
+    placeholder: 'description...',
     theme: 'snow'
   });
 };
@@ -25,7 +25,7 @@ const validateForm = () => {
 const postQuestion = () => {
   if (!validateForm()) {
     const errorTitle = getElement('errorTitle');
-    errorTitle.innerText = 'Please type question title';
+    errorTitle.innerText = 'Please type question heading';
     return;
   }
   const title = getElement('title').value;
