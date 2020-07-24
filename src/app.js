@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const sqlite = require('sqlite3').verbose();
 const config = require('../config');
 const DataStore = require('../database/dataStore');
@@ -16,6 +17,14 @@ app.set('view engine', 'pug');
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use(
+  session({
+    secret: config.getSessionSecretKey(),
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
 app.get('/', handlers.loadHomePage);
 app.get('/postQuestion', handlers.servePostQuestionPage);
 app.get('/question/:questionId', handlers.serveQuestionPage);

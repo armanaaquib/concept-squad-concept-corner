@@ -7,8 +7,8 @@ const loadHomePage = function(req, res) {
 };
 
 const servePostQuestionPage = (req, res) => {
-  
-  res.render('postQuestion');
+  const cancelUrl = req.session.redirectURL || '/';
+  res.render('postQuestion', { cancelUrl });
   res.end();
 };
 

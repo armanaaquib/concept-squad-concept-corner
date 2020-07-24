@@ -21,4 +21,14 @@ const getAuthLink = () => {
   return authLink;
 };
 
-module.exports = { getDBFilePath, getClientId, getClientSecret, getAuthLink };
+const getSessionSecretKey = () => {
+  return env.CONCEPT_SECRET_KEY;
+};
+
+module.exports = {
+  getDBFilePath,
+  getClientId,
+  getClientSecret,
+  getAuthLink,
+  getSessionSecretKey
+};
