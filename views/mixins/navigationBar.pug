@@ -3,11 +3,12 @@ mixin navigationBar(authHref,user)
 		div.logo
 			img(src="/images/logo_transparent.png", alt="Concept Corner", srcset="")
 		div.list
-			if !user
-				div
-					a(href=authHref) Log in
-				div
-					a(href=authHref) Sign up
-			else
-				div
-					a(href='/profile') #{user}
+			if pageName !='Confirm Details'
+				if user== 'undefined'
+					div
+						a(href=authHref) Log in
+					div
+						a(href=authHref) Sign up
+				else
+					div
+						a(href='/profile') #{user}

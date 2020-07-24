@@ -32,7 +32,7 @@ app.get('/postQuestion', handlers.servePostQuestionPage);
 app.get('/question/:questionId', handlers.serveQuestionPage);
 //-- [TODO] need to change name
 app.post('/ConfirmAndSignUp', handlers.confirmDetails);
-app.get('/authorize', handlers.authorize);
+app.get('/confirmUser', handlers.confirmUser);
 app.post('/postQuestion', handlers.postQuestion);
 
 module.exports = app;

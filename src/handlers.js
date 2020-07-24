@@ -2,7 +2,7 @@ const request = require('request');
 const { getAuthLink, getClientId, getClientSecret } = require('../config');
 
 const loadHomePage = function(req, res) {
-  const user = req.cookies.user;
+  const {user} = req.cookies;
   res.render('home', { authLink: getAuthLink(), user});
   res.end();
 };
@@ -86,7 +86,7 @@ const getGithubUserDetails = async function(code, users) {
   return { user, userDetails };
 };
 
-const authorize = (req, res) => {
+const confirmUser = (req, res) => {
   const { code } = req.query;
   const { users } = req.app.locals;
   if (!code) {
@@ -94,6 +94,7 @@ const authorize = (req, res) => {
   }
   getGithubUserDetails(code, users).then(({user, userDetails}) => {
     if(!user){
+      res.cookie('isLoggedIn', 'No');
       userDetails.authSource = 'github';
       res.render('confirm', {userDetails, authHref: getAuthLink()});
       res.end();
@@ -110,6 +111,6 @@ module.exports = {
   servePostQuestionPage,
   serveQuestionPage,
   postQuestion,
-  authorize,
+  confirmUser,
   confirmDetails
 };
