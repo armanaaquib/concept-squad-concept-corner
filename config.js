@@ -1,10 +1,13 @@
 const { env } = process;
 const dotenv = require('dotenv');
+
 dotenv.config();
+
 const getDBFilePath = () => {
   const fileName = env.CONCEPT_CORNER_DB || 'concept-corner.db';
   return `./store/${fileName}`;
 };
+
 const getClientId = () => {
   const clientId = env.CLIENT_ID;
   return clientId;
