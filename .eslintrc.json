@@ -59,7 +59,7 @@
     "array-callback-return": "error",
     "default-param-last": "error",
     "no-constructor-return": "error",
-    "no-invalid-this": "error",
+    "no-invalid-this": "warn",
     "no-lone-blocks": "error",
     "no-loop-func": "error",
     "no-proto": "error",

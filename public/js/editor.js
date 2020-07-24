@@ -37,8 +37,7 @@ const postQuestion = () => {
       'Content-Type': 'application/json'
     }
   })
-    .then(res => res.json())
-    .then(console.log);
+    .then(res => res.json());
 };
 
 window.onload = createEditor;

@@ -1,6 +1,5 @@
 const request = require('request');
 const { getAuthLink, getClientId, getClientSecret } = require('../config');
-const { use } = require('chai');
 
 const loadHomePage = function(req, res) {
   res.render('home', { authHref: getAuthLink()});
@@ -23,7 +22,6 @@ const postQuestion = (req, res) => {
 };
 const getAccessToken = function (code) {
   return new Promise((resolve) => {
-    console.log(getClientId(), 'secret', getClientSecret());
     request.post(
       {
         url: 'https://github.com/login/oauth/access_token',
@@ -38,8 +36,9 @@ const getAccessToken = function (code) {
         }),
       },
       (error, response, body) => {
-        const { access_token } = JSON.parse(body);
-        resolve(access_token);
+        const parsedBody = JSON.parse(body);
+        const accessToken = parsedBody['access_token'];
+        resolve(accessToken);
       }
     );
   });
