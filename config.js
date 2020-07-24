@@ -5,13 +5,12 @@ const getDBFilePath = () => {
   return `./store/${fileName}`;
 };
 const getClientId = () => {
-  const clientId = env.CLIENT_ID || '***REMOVED***';
+  const clientId = env.CLIENT_ID;
   return clientId;
 };
 
 const getClientSecret = () => {
-  let clientSecret = '***REMOVED***';
-  clientSecret = env.CLIENT_SECRET || clientSecret;
+  clientSecret = env.CLIENT_SECRET;
   return clientSecret;
 };
 
@@ -21,4 +20,4 @@ const getAuthLink = () => {
   return authLink;
 };
 
-module.exports = { getDBFilePath, getClientId, getClientSecret, getAuthLink};
+module.exports = { getDBFilePath, getClientId, getClientSecret, getAuthLink };

@@ -37,7 +37,10 @@ const postQuestion = () => {
       'Content-Type': 'application/json'
     }
   })
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(questionId => {
+      window.location = `/question/${questionId}`;
+    });
 };
 
 window.onload = createEditor;

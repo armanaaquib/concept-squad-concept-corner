@@ -18,6 +18,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.get('/', handlers.loadHomePage);
 app.get('/postQuestion', handlers.servePostQuestionPage);
+app.get('/question/:questionId', handlers.serveQuestionPage);
 app.get('/authorize', handlers.authorize);
 app.post('/postQuestion', handlers.postQuestion);
 
