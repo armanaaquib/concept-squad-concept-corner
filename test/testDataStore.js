@@ -4,7 +4,6 @@ const sqlite = require('sqlite3');
 const { getDBFilePath } = require('../config');
 
 const DataStore = require('../database/dataStore.js');
-const { stdout, stderr } = require('process');
 
 describe('DataStore', function () {
   let dataStore;

@@ -5,10 +5,13 @@ class Questions {
 
   add(question) {
     return new Promise((resolve, reject) => {
-      this.dataStore
-        .addQuestion(question)
-        .then(resolve)
-        .catch(reject);
+      this.dataStore.addQuestion(question).then(resolve).catch(reject);
+    });
+  }
+
+  all() {
+    return new Promise((resolve, reject) => {
+      this.dataStore.getQuestions().then(resolve).catch(reject);
     });
   }
 }
