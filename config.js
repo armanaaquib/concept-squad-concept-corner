@@ -10,7 +10,7 @@ const getClientId = () => {
 };
 
 const getClientSecret = () => {
-  clientSecret = env.CLIENT_SECRET;
+  const clientSecret = env.CLIENT_SECRET;
   return clientSecret;
 };
 

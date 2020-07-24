@@ -18,7 +18,7 @@
     "quotes": ["error", "single"],
     "linebreak-style": ["error", "unix"],
     "semi": ["error", "always"],
-    "camelcase": "error",
+    "camelcase": "warn",
     "class-methods-use-this": "warn",
     "array-bracket-spacing": ["error"],
     "comma-spacing": "error",
