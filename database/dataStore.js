@@ -6,27 +6,24 @@ class DataStore {
   }
 
   addUser(user) {
-    const sql = `
-    INSERT INTO 
-      users(username, name, email, location, title, aboutMe, company)
-      values(?, ?, ?, ?, ?, ?, ?)
-    `;
-
     return new Promise((resolve, reject) => {
       this.db.run(
-        sql,
+        queries.addUser,
         [
           user.username,
-          user.name,
-          user.email,
+          user.authLogin,
+          user.authSource, 
+          user.name, 
+          user.emailId, 
           user.location,
           user.title,
           user.aboutMe,
-          user.company
+          user.company,
+          user.profilePic
         ],
         err => {
           if (err) {
-            reject(err);
+            reject(err.message);
           }
           resolve(true);
         }

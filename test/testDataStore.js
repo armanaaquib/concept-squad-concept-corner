@@ -12,6 +12,8 @@ describe('DataStore', function() {
 
       const status = await dataStore.addUser({
         username: 'ram',
+        authLogin: 'ram',
+        authSource: 'github',
         name: 'Ram Lal',
         email: 'ram@gmail.com',
         location: 'India',

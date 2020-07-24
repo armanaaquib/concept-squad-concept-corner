@@ -1,6 +1,8 @@
 -- SQLite
 CREATE TABLE users (
 	username varchar PRIMARY KEY,
+	authLogin varchar,
+	authSource varchar,
 	name varchar,
 	email varchar,
 	location varchar,

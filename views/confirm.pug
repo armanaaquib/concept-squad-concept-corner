@@ -1,10 +1,13 @@
 extends home.pug 
 block common_vars
 	- var authLink= authHref
+	- var pageName="Confirm Details"
+	- var details=userDetails
 block container
+	p #{details}
 	.profile
 		img(src="", alt="", srcset="")
-	.details
+	.details#details
 		.inputBox
 			label(for="username") Username:
 			input(type="text", name="username",value="")
@@ -34,4 +37,4 @@ block container
 			textarea(name="aboutMe", cols="30", rows="10", value=userDetails.bio)
 			br
 		.inputBox
-		button(type="submit") Confirm
+		button(type="submit" onclick='confirmAndSignUp(' + JSON.stringify(userDetails) + ')') Confirm

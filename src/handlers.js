@@ -27,7 +27,12 @@ const postQuestion = (req, res) => {
       res.end();
     });
 };
-
+const confirmDetails = (req, res) => {
+  const {userDetails} = req.body;
+  const {users} = req.app.locals;
+  users.add(userDetails);
+  res.end();
+};
 const getAccessToken = function(code) {
   return new Promise(resolve => {
     request.post(
@@ -69,21 +74,22 @@ const getUserDetail = function(accessToken) {
   });
 };
 
-const getGithubUserDetails = async function(code, dataStore) {
+const getGithubUserDetails = async function(code, users) {
   const accessToken = await getAccessToken(code);
   const userDetails = await getUserDetail(accessToken);
-  const user = await dataStore.getRegisteredUser(userDetails.id);
+  const user = await users.getUserDetail(userDetails.login, 'github');
   return { user, userDetails };
 };
 
 const authorize = (req, res) => {
   const { code } = req.query;
-  const { dataStore } = req.app.locals;
+  const { users } = req.app.locals;
   if (!code) {
     res.send('No code found');
   }
-  getGithubUserDetails(code, dataStore).then(({user, userDetails}) => {
+  getGithubUserDetails(code, users).then(({user, userDetails}) => {
     if(!user){
+      userDetails.authSource = 'github';
       res.render('confirm', {userDetails, authHref: getAuthLink()});
       res.end();
     } else {
@@ -98,5 +104,6 @@ module.exports = {
   servePostQuestionPage,
   serveQuestionPage,
   postQuestion,
-  authorize
+  authorize,
+  confirmDetails
 };
