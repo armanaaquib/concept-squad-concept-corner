@@ -7,7 +7,7 @@
     "start": "node server.js",
     "create-tables": "rm -f ./store/concept-corner.db; node database/dbInit.js",
     "populate_test_data": "rm -f store/test-concept-corner.db; sqlite3 store/test-concept-corner.db '.read store/scripts/create_schema.sql'; sqlite3 store/test-concept-corner.db '.read store/scripts/populate_raw_data.sql';",
-    "test": "npm run populate_test_data; export CONCEPT_CORNER_DB='test-concept-corner.db'; nyc mocha --recursive",
+    "test": "export CONCEPT_SECRET_KEY='secretkey'; npm run populate_test_data; export CONCEPT_CORNER_DB='test-concept-corner.db'; nyc mocha --recursive",
     "lint": "eslint ./"
   },
   "repository": {
