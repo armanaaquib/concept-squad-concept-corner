@@ -12,3 +12,58 @@ body {
 .requiredFieldError {
   border: 1px solid red;
 }
+.inputBox>label{
+  position: absolute;
+  font-size: 12px;
+  z-index: 1;
+  color: gray;
+}
+.inputBox>input{
+  position: relative;
+  padding-top: 1rem;
+}
+.container{
+  display: flex;
+  flex-flow: row;
+  width: 70%;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+.details {
+  width: 46%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-evenly;
+  height: 40rem;
+}
+.inputBox{
+  position: relative;
+}
+.inputBox.content_active label{
+  font-size: 12px;
+  top: 0;
+}
+.inputBox label {
+  position: absolute;
+  font-size: 1rem;
+  z-index: 1;
+  color: gray;
+  padding: 0.2rem;
+  top: 0.5rem;
+  left: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.inputBox>input{
+  position: relative;
+    padding: 0.5rem;
+    padding-top: 1rem;
+    width: 100%;
+}
+.primary-btn {
+  background-color: #3d8af7;
+  height: 3em;
+  width: 10em;
+  border: none;
+  color: white;
+}
