@@ -1,6 +1,8 @@
 module.exports = {
   users: `CREATE TABLE users (
 	username varchar PRIMARY KEY,
+	authLogin varchar,
+	authSource varchar,
 	name varchar,
 	email varchar,
 	location varchar,
@@ -8,12 +10,7 @@ module.exports = {
 	aboutMe varchar,
 	company varchar,
 	profilePic blob
-)`,
-  githubUsers: `CREATE TABLE githubUsers (
-	authId INTEGER PRIMARY KEY,
-		username varchar,
-	FOREIGN KEY (username) REFERENCES users(username)
-)`,
+);`,
   questions: `CREATE TABLE questions (
 	question_id integer PRIMARY KEY AUTOINCREMENT,
 	username varchar,
@@ -22,5 +19,5 @@ module.exports = {
 	view_count integer DEFAULT 0,
 	description blob,
 	FOREIGN KEY(username) REFERENCES users(username)
-)`
+);`
 };

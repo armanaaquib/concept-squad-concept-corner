@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-include mixins/navigationBar
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Confirm Details
-  body
-  + navigationBar()
-  h1 Confirm Details
+extends home.pug 
+block container
+	.profile
+		img(src="", alt="", srcset="")
+	.details
+		.inputBox
+			label(for="username") Username:
+			input(type="text", name="username",value="")
+			br
+		.inputBox
+			label(for="name") Name:
+			input(type="text",name="name",value=userDetails.name)
+			br
+		.inputBox
+			label(for="emailId") Email ID:
+			input(type="text",name="emailId",value=userDetails.email)
+			br
+		.inputBox
+			label(for="title") Title:
+			input(type="text", name="title",value="")
+			br
+		.inputBox
+			label(for="company") Company:
+			input(type="text",name="company",value=userDetails.company)
+			br
+		.inputBox
+			label(for="location") Location:
+			input(type="text",name="location", value= userDetails.location)
+			br
+		.inputBox
+			label(for="aboutMe") About me:
+			textarea(name="aboutMe", cols="30", rows="10", value=userDetails.bio)
+			br
+		.inputBox
+		button(type="submit") Confirm

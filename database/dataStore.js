@@ -61,17 +61,15 @@ class DataStore {
     });
   }
 
-  isRegisteredUser(id) {
-    const sql = 'SELECT authId, username FROM githubUsers WHERE authId=?';
+  getRegisteredUser(authLogin, authSource) {
+    const sql = `SELECT authLogin, authSource, username 
+                 FROM users WHERE authLogin=? and authSource=?`;
     return new Promise((resolve, reject) => {
-      this.db.get(sql, [id], (err, row) => {
+      this.db.get(sql, [authLogin, authSource], (err, row) => {
         if (err) {
           reject(err);
         }
-        if (!row) {
-          resolve(false);
-        }
-        resolve(true);
+        resolve(row);
       });
     });
   }
