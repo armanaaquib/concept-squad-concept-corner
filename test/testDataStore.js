@@ -49,4 +49,18 @@ describe('DataStore', function() {
       assert.isUndefined(user);
     });
   });
+
+  context('addQuestion', function() {
+    it('should add a question', async function() {
+      const dataStore = new DataStore(db);
+
+      const questionId = await dataStore.addQuestion({
+        username: 'michel',
+        title: 'question title',
+        description: 'question description'
+      });
+
+      assert.strictEqual(questionId, 10);
+    });
+  });
 });
