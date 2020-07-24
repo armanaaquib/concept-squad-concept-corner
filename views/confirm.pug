@@ -1,4 +1,6 @@
 extends home.pug 
+block common_vars
+	- var authLink= authHref
 block container
 	.profile
 		img(src="", alt="", srcset="")

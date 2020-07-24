@@ -5,6 +5,7 @@ const { getDBFilePath } = require('./config');
 const DataStore = require('./database/dataStore');
 
 const main = () => {
+  
   const PORT = env.PORT || 8000;
   const db = new sqlite.Database(getDBFilePath());
   const dataStore = new DataStore(db);

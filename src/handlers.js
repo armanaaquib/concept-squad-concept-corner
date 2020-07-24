@@ -2,7 +2,7 @@ const request = require('request');
 const { getAuthLink, getClientId, getClientSecret } = require('../config');
 
 const loadHomePage = function(req, res) {
-  res.render('home', { authHref: getAuthLink() });
+  res.render('home', { authLink: getAuthLink()});
   res.end();
 };
 
@@ -38,8 +38,8 @@ const getAccessToken = function(code) {
           Accept: 'application/json'
         },
         body: JSON.stringify({
-          client_id: getClientId(),
-          client_secret: getClientSecret(),
+          'client_id': getClientId(),
+          'client_secret': getClientSecret(),
           code
         })
       },
@@ -82,9 +82,9 @@ const authorize = (req, res) => {
   if (!code) {
     res.send('No code found');
   }
-  getGithubUserDetails(code, dataStore).then(({ user, userDetails }) => {
-    if (!user) {
-      res.render('confirm', { userDetails });
+  getGithubUserDetails(code, dataStore).then(({user, userDetails}) => {
+    if(!user){
+      res.render('confirm', {userDetails, authHref: getAuthLink()});
       res.end();
     } else {
       res.render('home', { user });

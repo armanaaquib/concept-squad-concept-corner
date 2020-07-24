@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 include mixins/navigationBar
+block common_vars
 html(lang="en")
 	head
 		meta(charset="UTF-8")
@@ -12,5 +13,5 @@ html(lang="en")
 		link(href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css", rel="stylesheet")
 		link(rel="stylesheet", href="/css/navigation.css")
 	body
-		+ navigationBar(authHref)
+		+navigationBar(authLink)
 		block container
