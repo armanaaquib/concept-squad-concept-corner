@@ -19,9 +19,9 @@ class DataStore {
           user.title,
           user.aboutMe,
           user.company,
-          user.profilePic
+          user.profilePic,
         ],
-        err => {
+        (err) => {
           if (err) {
             reject(err.message);
           }
@@ -76,13 +76,46 @@ class DataStore {
       this.db.run(
         queries.addQuestion,
         [question.username, question.title, question.description],
-        function(err) {
+        function (err) {
           if (err) {
             reject(err);
           }
           resolve(this.lastID);
         }
       );
+    });
+  }
+
+  getQuestions() {
+    return new Promise((resolve, reject) => {
+      this.db.all(queries.getQuestions, (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+
+        const questions = [];
+        for (const row of rows) {
+          const {
+            question_id,
+            username,
+            title,
+            description,
+            time,
+            view_count,
+          } = row;
+
+          questions.push({
+            questionId: question_id,
+            username,
+            title,
+            description,
+            time: new Date(time),
+            views: view_count,
+          });
+        }
+
+        resolve(questions);
+      });
     });
   }
 }

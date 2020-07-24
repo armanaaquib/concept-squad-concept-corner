@@ -1,19 +1,19 @@
 const request = require('request');
 const { getAuthLink, getClientId, getClientSecret } = require('../config');
 
-const loadHomePage = function(req, res) {
+const loadHomePage = function (req, res) {
   const { user } = req.session;
   const { users } = req.app.locals;
-  users.hasUser(user).then(userName => {
+  users.hasUser(user).then((userName) => {
     res.render('home', { authLink: getAuthLink(), user: userName });
     res.end();
   });
 };
 
-const hasUser = function(req, res) {
+const hasUser = function (req, res) {
   const { username } = req.params;
   const { users } = req.app.locals;
-  users.hasUser(username).then(userName => {
+  users.hasUser(username).then((userName) => {
     res.json({ available: !userName });
   });
 };
@@ -34,7 +34,7 @@ const postQuestion = (req, res) => {
   const { user, questions } = req.app.locals;
   questions
     .add({ username: user.username, title, description })
-    .then(questionId => {
+    .then((questionId) => {
       res.json(JSON.stringify(questionId));
       res.end();
     });
@@ -48,20 +48,20 @@ const confirmDetails = (req, res) => {
   res.end();
 };
 
-const getAccessToken = function(code) {
-  return new Promise(resolve => {
+const getAccessToken = function (code) {
+  return new Promise((resolve) => {
     request.post(
       {
         url: 'https://github.com/login/oauth/access_token',
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json'
+          Accept: 'application/json',
         },
         body: JSON.stringify({
           client_id: getClientId(),
           client_secret: getClientSecret(),
-          code
-        })
+          code,
+        }),
       },
       (error, response, body) => {
         const parsedBody = JSON.parse(body);
@@ -72,15 +72,15 @@ const getAccessToken = function(code) {
   });
 };
 
-const getUserDetail = function(accessToken) {
-  return new Promise(resolve => {
+const getUserDetail = function (accessToken) {
+  return new Promise((resolve) => {
     request.get(
       {
         url: 'https://api.github.com/user',
         headers: {
           Authorization: `token ${accessToken}`,
-          'User-Agent': 'node.js'
-        }
+          'User-Agent': 'node.js',
+        },
       },
       (error, response, body) => {
         resolve(JSON.parse(body));
@@ -89,7 +89,7 @@ const getUserDetail = function(accessToken) {
   });
 };
 
-const getGithubUserDetails = async function(code, users) {
+const getGithubUserDetails = async function (code, users) {
   const accessToken = await getAccessToken(code);
   const userDetails = await getUserDetail(accessToken);
   const user = await users.getUserDetail(userDetails.login, 'github');
@@ -121,5 +121,5 @@ module.exports = {
   postQuestion,
   confirmUser,
   confirmDetails,
-  hasUser
+  hasUser,
 };
