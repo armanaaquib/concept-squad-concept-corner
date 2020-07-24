@@ -12,9 +12,9 @@ class DataStore {
         [
           user.username,
           user.authLogin,
-          user.authSource, 
-          user.name, 
-          user.emailId, 
+          user.authSource,
+          user.name,
+          user.emailId,
           user.location,
           user.title,
           user.aboutMe,

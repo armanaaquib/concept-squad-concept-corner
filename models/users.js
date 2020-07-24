@@ -1,11 +1,21 @@
 class Users {
-  constructor(dataStore){
+  constructor(dataStore) {
     this.dataStore = dataStore;
   }
-  add(details){
+
+  add(details) {
     this.dataStore.addUser(details);
   }
-  getUserDetail(login, source){
+
+  hasUser(username) {
+    return new Promise(resolve => {
+      this.dataStore.getUser(username).then(userDetails => {
+        resolve(userDetails && userDetails.username);
+      });
+    });
+  }
+
+  getUserDetail(login, source) {
     return this.dataStore.getRegisteredUser(login, source);
   }
 }

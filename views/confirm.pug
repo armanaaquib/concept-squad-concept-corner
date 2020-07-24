@@ -9,11 +9,12 @@ block container
 	.details#details
 		.inputBox
 			label(for="username") Username:
-			input(type="text", name="username",value="")
+			input(type="text",id="username", name="username",value="",onkeyup='checkUserName(this)')
+			p#userNameMessage
 			br
 		.inputBox
 			label(for="name") Name:
-			input(type="text",name="name",value=userDetails.name)
+			input(type="text",name="name",id="name",value=userDetails.name)
 			br
 		.inputBox
 			label(for="emailId") Email ID:

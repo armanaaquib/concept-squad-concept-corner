@@ -2,9 +2,20 @@ const request = require('request');
 const { getAuthLink, getClientId, getClientSecret } = require('../config');
 
 const loadHomePage = function(req, res) {
-  const {user} = req.cookies;
-  res.render('home', { authLink: getAuthLink(), user});
-  res.end();
+  const { user } = req.session;
+  const { users } = req.app.locals;
+  users.hasUser(user).then(userName => {
+    res.render('home', { authLink: getAuthLink(), user: userName });
+    res.end();
+  });
+};
+
+const hasUser = function(req, res) {
+  const { username } = req.params;
+  const { users } = req.app.locals;
+  users.hasUser(username).then(userName => {
+    res.json({ available: !userName });
+  });
 };
 
 const servePostQuestionPage = (req, res) => {
@@ -30,11 +41,10 @@ const postQuestion = (req, res) => {
 };
 
 const confirmDetails = (req, res) => {
-  const {userDetails} = req.body;
-  const {users} = req.app.locals;
+  const { userDetails } = req.body;
+  const { users } = req.app.locals;
   users.add(userDetails);
-  res.cookie('isLoggedIn', 'yes');
-  res.cookie('user', userDetails.username);
+  req.session.user = userDetails.username;
   res.end();
 };
 
@@ -48,8 +58,8 @@ const getAccessToken = function(code) {
           Accept: 'application/json'
         },
         body: JSON.stringify({
-          'client_id': getClientId(),
-          'client_secret': getClientSecret(),
+          client_id: getClientId(),
+          client_secret: getClientSecret(),
           code
         })
       },
@@ -92,15 +102,13 @@ const confirmUser = (req, res) => {
   if (!code) {
     res.send('No code found');
   }
-  getGithubUserDetails(code, users).then(({user, userDetails}) => {
-    if(!user){
-      res.cookie('isLoggedIn', 'No');
+  getGithubUserDetails(code, users).then(({ user, userDetails }) => {
+    if (!user) {
       userDetails.authSource = 'github';
-      res.render('confirm', {userDetails, authHref: getAuthLink()});
+      res.render('confirm', { userDetails, authHref: getAuthLink() });
       res.end();
     } else {
-      res.cookie('isLoggedIn', 'yes');
-      res.cookie('user', userDetails.username);
+      req.session.user = user.username;
       res.redirect(302, '/');
     }
   });
@@ -112,5 +120,6 @@ module.exports = {
   serveQuestionPage,
   postQuestion,
   confirmUser,
-  confirmDetails
+  confirmDetails,
+  hasUser
 };
