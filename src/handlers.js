@@ -2,7 +2,8 @@ const request = require('request');
 const { getAuthLink, getClientId, getClientSecret } = require('../config');
 
 const loadHomePage = function(req, res) {
-  res.render('home', { authLink: getAuthLink()});
+  const user = req.cookies.user;
+  res.render('home', { authLink: getAuthLink(), user});
   res.end();
 };
 
@@ -27,12 +28,16 @@ const postQuestion = (req, res) => {
       res.end();
     });
 };
+
 const confirmDetails = (req, res) => {
   const {userDetails} = req.body;
   const {users} = req.app.locals;
   users.add(userDetails);
+  res.cookie('isLoggedIn', 'yes');
+  res.cookie('user', userDetails.username);
   res.end();
 };
+
 const getAccessToken = function(code) {
   return new Promise(resolve => {
     request.post(
@@ -93,8 +98,9 @@ const authorize = (req, res) => {
       res.render('confirm', {userDetails, authHref: getAuthLink()});
       res.end();
     } else {
-      res.render('home', { user });
-      res.end();
+      res.cookie('isLoggedIn', 'yes');
+      res.cookie('user', userDetails.username);
+      res.redirect(302, '/');
     }
   });
 };

@@ -1,4 +1,4 @@
-const confirmAndSignUp = function(userDetails){
+const confirmAndSignUp = function(userDetails, authHref){
   const details = document.getElementById('details');
   const inputs = details.querySelectorAll('.inputBox input');
   const {login, authSource} = userDetails;
@@ -15,6 +15,6 @@ const confirmAndSignUp = function(userDetails){
       'Content-Type': 'application/json'
     }
   }).then(() => {
-    window.location.href = '/';
+    window.location = '/';
   });
 };

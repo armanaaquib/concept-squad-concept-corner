@@ -1,4 +1,5 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const sqlite = require('sqlite3').verbose();
 const config = require('../config');
@@ -25,7 +26,7 @@ app.use(
     saveUninitialized: true
   })
 );
-
+app.use(cookieParser());
 app.get('/', handlers.loadHomePage);
 app.get('/postQuestion', handlers.servePostQuestionPage);
 app.get('/question/:questionId', handlers.serveQuestionPage);
