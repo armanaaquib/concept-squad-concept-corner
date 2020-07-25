@@ -6,9 +6,9 @@ insert into
     email,
     location,
     title,
-    aboutMe,
+    about_me,
     company,
-    profilePic
+    profile_pic
   )
 VALUES
   (

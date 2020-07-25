@@ -4,7 +4,7 @@ class Users {
   }
 
   add(details) {
-    this.dataStore.addUser(details);
+    return this.dataStore.addUser(details);
   }
 
   hasUser(username) {

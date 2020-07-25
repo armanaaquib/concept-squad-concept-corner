@@ -1,21 +1,15 @@
 -- SQLite
 CREATE TABLE users (
 	username varchar PRIMARY KEY,
-	authLogin varchar,
-	authSource varchar,
+	auth_login varchar,
+	auth_source varchar,
 	name varchar,
 	email varchar,
 	location varchar,
 	title varchar,
-	aboutMe varchar,
+	about_me varchar,
 	company varchar,
-	profilePic blob
-);
-
-CREATE TABLE githubUsers (
-	authId INTEGER PRIMARY KEY,
-		username varchar,
-	FOREIGN KEY (username) REFERENCES users(username)
+	profile_pic blob
 );
 
 CREATE TABLE questions (

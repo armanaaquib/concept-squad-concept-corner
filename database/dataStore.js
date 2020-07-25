@@ -19,9 +19,9 @@ class DataStore {
           user.title,
           user.aboutMe,
           user.company,
-          user.profilePic,
+          user.profilePic
         ],
-        (err) => {
+        err => {
           if (err) {
             reject(err.message);
           }
@@ -32,42 +32,44 @@ class DataStore {
   }
 
   getUser(username) {
-    const sql = `
-    SELECT
-      username,
-      name,
-      email,
-      location,
-      title,
-      aboutMe,
-      company,
-      profilePic 
-    FROM 
-      users 
-    WHERE 
-      username = ?
-    `;
-
     return new Promise((resolve, reject) => {
-      this.db.get(sql, [username], (err, row) => {
+      this.db.get(queries.getUser, [username], (err, row) => {
         if (err) {
           reject(err);
         }
-        resolve(row);
+
+        const user = row && {
+          username: row.username,
+          name: row.name,
+          email: row.email,
+          location: row.location,
+          title: row.title,
+          aboutMe: row.about_me,
+          company: row.company,
+          profilePic: row.profile_pic
+        };
+        resolve(user);
       });
     });
   }
 
   getRegisteredUser(authLogin, authSource) {
-    const sql = `SELECT authLogin, authSource, username 
-                 FROM users WHERE authLogin=? and authSource=?`;
     return new Promise((resolve, reject) => {
-      this.db.get(sql, [authLogin, authSource], (err, row) => {
-        if (err) {
-          reject(err);
+      this.db.get(
+        queries.getRegisteredUser,
+        [authLogin, authSource],
+        (err, row) => {
+          if (err) {
+            reject(err);
+          }
+          const registeredUser = {
+            authLogin: row.auth_login,
+            authSource: row.auth_source,
+            username: row.username
+          };
+          resolve(registeredUser);
         }
-        resolve(row);
-      });
+      );
     });
   }
 
@@ -76,7 +78,7 @@ class DataStore {
       this.db.run(
         queries.addQuestion,
         [question.username, question.title, question.description],
-        function (err) {
+        function(err) {
           if (err) {
             reject(err);
           }
@@ -101,7 +103,7 @@ class DataStore {
             title,
             description,
             time,
-            view_count,
+            view_count
           } = row;
 
           questions.push({
@@ -110,7 +112,7 @@ class DataStore {
             title,
             description,
             time: new Date(time),
-            views: view_count,
+            views: view_count
           });
         }
 

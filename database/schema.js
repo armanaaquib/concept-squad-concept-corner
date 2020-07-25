@@ -1,15 +1,15 @@
 module.exports = {
   users: `CREATE TABLE users (
 	username varchar PRIMARY KEY,
-	authLogin varchar,
-	authSource varchar,
+	auth_login varchar,
+	auth_source varchar,
 	name varchar,
 	email varchar,
 	location varchar,
 	title varchar,
-	aboutMe varchar,
+	about_me varchar,
 	company varchar,
-	profilePic blob
+	profile_pic blob
 );`,
   questions: `CREATE TABLE questions (
 	question_id integer PRIMARY KEY AUTOINCREMENT,
