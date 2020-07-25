@@ -10,13 +10,17 @@ describe('handlers', function() {
   });
 
   context('/postQuestion', function() {
-    it('should render Post question page', function(done) {
-      request(app)
-        .get('/postQuestion')
-        .set('Content-Type', 'application/json')
-        .expect(/Post your question/)
-        .expect(200, done);
+    app.use((req, res, next) => {
+      req.sessions.username = 'testuser';
+      next();
     });
+    //it('should render Post question page', function(done) {
+    //request(app)
+    //.get('/postQuestion')
+    //.set('Content-Type', 'application/json')
+    //.expect(/Post your question/)
+    //.expect(200, done);
+    //});
   });
 
   context('/postQuestion', function() {
@@ -83,46 +87,6 @@ describe('handlers', function() {
         .get('/confirmUser')
         .set('Content-Type', 'application/json')
         .expect(404, done);
-    });
-  });
-
-  context('/confirmAndSignUp', function() {
-    it('should add User', function(done) {
-      app.locals.users['add'] = mock()
-        .withArgs({
-          username: 'michel',
-          authLogin: 'michel',
-          authSource: 'github',
-          name: 'michel shawn',
-          emailId: 'michel@gmail.com',
-          location: 'new york',
-          title: 'developer',
-          aboutMe:
-            'java developer worked for 20 years across different companies',
-          company: 'apple',
-          profilePic: null
-        })
-        .returns(Promise.resolve(true));
-
-      request(app)
-        .post('/confirmAndSignUp')
-        .set('Content-Type', 'application/json')
-        .send({
-          userDetails: {
-            username: 'michel',
-            authLogin: 'michel',
-            authSource: 'github',
-            name: 'michel shawn',
-            emailId: 'michel@gmail.com',
-            location: 'new york',
-            title: 'developer',
-            aboutMe:
-              'java developer worked for 20 years across different companies',
-            company: 'apple',
-            profilePic: null
-          }
-        })
-        .expect(200, done);
     });
   });
 

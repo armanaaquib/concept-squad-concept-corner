@@ -9,7 +9,7 @@ module.exports = {
 	title varchar,
 	about_me varchar,
 	company varchar,
-	profile_pic blob
+	profile_pic varchar
 );`,
 
   questions: `CREATE TABLE questions (

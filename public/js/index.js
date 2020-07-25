@@ -11,3 +11,15 @@ const checkContent = function(){
     box.classList.add('content_active');
   }
 };
+
+const readUrl = function (event) {
+  const reader = new FileReader();
+  reader.onload = function(e){
+    $('.uploaded-image').attr('src', e.target.result);
+  };
+  reader.readAsDataURL(event.target.files[0]);
+};
+
+const callEvent = function () {
+  $('.upload-image').trigger('click');
+};

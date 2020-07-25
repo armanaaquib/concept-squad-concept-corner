@@ -62,10 +62,11 @@ class DataStore {
           if (err) {
             reject(err);
           }
+          const details = row || {};
           const registeredUser = {
-            authLogin: row.auth_login,
-            authSource: row.auth_source,
-            username: row.username,
+            authLogin: details.auth_login,
+            authSource: details.auth_source,
+            username: details.username,
           };
           resolve(registeredUser);
         }

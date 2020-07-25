@@ -15,7 +15,6 @@ body {
 .inputBox > label {
   position: absolute;
   font-size: 12px;
-  z-index: 1;
   color: gray;
 }
 .inputBox > input {
@@ -50,15 +49,21 @@ body {
   color: gray;
   padding: 0.2rem;
   top: 0.5rem;
+  z-index: 0;
   left: 0.5rem;
   transition: all 0.3s ease;
 }
-
-.inputBox > input {
+.inputBox>input{
   position: relative;
   padding: 0.5rem;
   padding-top: 1rem;
   width: 100%;
+  box-shadow: none;
+  box-sizing: border-box;
+  border: 1px solid lightgray;
+  box-shadow: 0;
+  z-index: 1;
+  background: transparent;
 }
 .primary-btn {
   background-color: #3d8af7;
@@ -66,4 +71,10 @@ body {
   width: 10em;
   border: none;
   color: white;
+}
+.upload-image{
+  display: none;
+}
+.uploaded-image{
+  height: 100px;
 }

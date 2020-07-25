@@ -49,25 +49,26 @@ describe('Users', function() {
     it('should give username if user exists', async function() {
       dataStore['getUser'] = mock()
         .withArgs('michel')
-        .returns(Promise.resolve({ username: 'michel' }));
+        .returns(Promise.resolve({ username: 'michel', profilePic: null}));
 
       const users = new Users(dataStore);
 
-      const username = await users.hasUser('michel');
+      const userDetails = await users.hasUser('michel');
 
-      assert.strictEqual(username, 'michel');
+      assert.deepStrictEqual(userDetails, { username: 'michel', profilePic: null});
     });
 
-    it('should give undefined if user not exists', async function() {
+    it('should not give details if user not exists', async function() {
       dataStore['getUser'] = mock()
         .withArgs('ram')
-        .returns(Promise.resolve(undefined));
+        .returns(Promise.resolve({}));
 
       const users = new Users(dataStore);
 
-      const username = await users.hasUser('ram');
+      const {username, profilePic} = await users.hasUser('ram');
 
       assert.isUndefined(username);
+      assert.isUndefined(profilePic);
     });
   });
 

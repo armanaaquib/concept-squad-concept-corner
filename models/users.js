@@ -10,7 +10,8 @@ class Users {
   hasUser(username) {
     return new Promise(resolve => {
       this.dataStore.getUser(username).then(userDetails => {
-        resolve(userDetails && userDetails.username);
+        const details = userDetails || {};
+        resolve( {username: details.username, profilePic: details.profilePic});
       });
     });
   }

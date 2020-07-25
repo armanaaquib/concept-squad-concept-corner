@@ -1,16 +1,20 @@
+const formidable = require('formidable');
 const { getAuthLink } = require('../config');
 const authUtils = require('./authUtils');
 
 const loadHomePage = function (req, res) {
   const { user } = req.session;
   const { users, questions } = req.app.locals;
-
-  users.hasUser(user).then((userName) => {
+  users.hasUser(user).then((userDetails) => {
+    const {username, profilePic} = userDetails;
+    req.session.username = username;
+    req.session.profilePic = profilePic;
     questions.all().then((questions) => {
       res.render('index', {
         authLink: getAuthLink(),
-        user: userName,
+        user: username,
         questions,
+        profilePic
       });
       res.end();
     });
@@ -26,8 +30,13 @@ const hasUser = function (req, res) {
 };
 
 const servePostQuestionPage = (req, res) => {
+  const {username, profilePic} = req.session;
+  if(!username){
+    res.redirect('/');
+    return;
+  }
   const cancelUrl = req.session.redirectURL || '/';
-  res.render('postQuestion', { cancelUrl });
+  res.render('postQuestion', { cancelUrl, user: username, profilePic});
   res.end();
 };
 
@@ -52,11 +61,18 @@ const postQuestion = (req, res) => {
 };
 
 const confirmDetails = (req, res) => {
-  const { userDetails } = req.body;
   const { users } = req.app.locals;
-  users.add(userDetails);
-  req.session.user = userDetails.username;
-  res.end();
+  const form = new formidable.IncomingForm();
+  form.parse(req, function(err, userInfo) {
+    if (err) {
+      console.error(err.message);
+      res.end();
+    }
+    users.add(userInfo);
+    req.session.user = userInfo.username; 
+    res.end();
+  });
+  //res.end(); 
 };
 
 const confirmUser = (req, res) => {
@@ -67,7 +83,7 @@ const confirmUser = (req, res) => {
     return;
   }
   authUtils.getGithubUserDetails(code, users).then(({ user, userDetails }) => {
-    if (!user) {
+    if (!user || !user.username) {
       userDetails.authSource = 'github';
       res.render('confirm', { userDetails, authHref: getAuthLink() });
       res.end();

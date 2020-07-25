@@ -1,14 +1,17 @@
-mixin navigationBar(authHref,user)
+mixin navigationBar(authHref,user,profilePic)
 	div.nav
 		div.logo
 			img(src="/images/logo_transparent.png", alt="Concept Corner", srcset="")
 		div.list
-			if pageName !='Confirm Details'
-				if !user || user == 'undefined'
-					div
-						a(href=authHref) Log in
-					div
-						a(href=authHref) Sign up
-				else
-					div
-						a(href='/profile') #{user}
+			.navInfo
+				if pageName !='Confirm Details'
+					if !user || user == 'undefined'
+						.navLink
+							a(href=authHref) Log in
+						.navLink
+							a(href=authHref) Sign up
+					else
+						.userImage
+							img(src=profilePic, href='/profile' alt="", srcset="")
+						.navLink
+							a(href='/profile') #{user}

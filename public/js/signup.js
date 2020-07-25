@@ -13,28 +13,20 @@ const validateFields = function() {
   return isValid;
 };
 
-const fetchPostRequest = function(userDetails) {
-  return {
+const confirmAndSignUp = async function(event, userDetails) {
+  event.preventDefault();
+  const image = $('.uploaded-image')[0].src;
+  const detailsToAdd = new FormData($('.confirm-page-form')[0]);
+  detailsToAdd.append('authLogin', userDetails.login);
+  detailsToAdd.append('authSource', userDetails.authSource);
+  detailsToAdd.append('profilePic', image );
+  const response = await fetch('/confirmAndSignUp', {
     method: 'POST',
-    body: JSON.stringify({ userDetails }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-};
-
-const confirmAndSignUp = function(userDetails, authHref) {
-  const details = document.getElementById('details');
-  const inputs = details.querySelectorAll('.inputBox input');
-  const { login, authSource } = userDetails;
-  const detailsToAdd = { authSource, authLogin: login };
-  for (const input of inputs) {
-    detailsToAdd[input.name] = input.value;
-  }
-  detailsToAdd.aboutMe = details.querySelector('textArea').value;
-  fetch('/confirmAndSignUp', fetchPostRequest(detailsToAdd)).then(() => {
-    window.location = '/';
+    body: detailsToAdd
   });
+  if(response.status === 200){
+    window.location = '/';
+  }
 };
 
 const checkUserName = function(userNameField) {
