@@ -19,5 +19,5 @@ module.exports = {
   getQuestions: `
   SELECT 
   question_id, username, title, description, time, view_count
-  FROM questions ORDER BY time DESC `,
+  FROM questions ORDER BY time DESC `
 };

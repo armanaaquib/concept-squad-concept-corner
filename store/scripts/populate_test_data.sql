@@ -3,6 +3,8 @@ insert into
   users(
     username,
     name,
+    auth_login,
+    auth_source,
     email,
     location,
     title,
@@ -14,6 +16,8 @@ VALUES
   (
     'michel',
     'michel shawn',
+    'michel',
+    'github',
     'michel@gmail.com',
     'new york',
     'developer',
@@ -24,6 +28,8 @@ VALUES
   (
     'bryce',
     'bryce shawn',
+    'bryce',
+    'github',
     'bryce@gmail.com',
     'new delhi',
     'consultant',
@@ -34,6 +40,8 @@ VALUES
   (
     'jake',
     'jake shawn',
+    'jake',
+    'github',
     'jake@gmail.com',
     'london',
     'project manager',
@@ -44,6 +52,8 @@ VALUES
   (
     'carlo',
     'carlo shawn',
+    'carlo',
+    'github',
     'carlo@gmail.com',
     'california',
     null,

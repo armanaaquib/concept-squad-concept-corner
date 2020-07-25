@@ -70,4 +70,26 @@ describe('Users', function() {
       assert.isUndefined(username);
     });
   });
+
+  context('getUserDetail', function() {
+    it('should give username,authLogin and authSource if user exists', async function() {
+      dataStore['getRegisteredUser'] = mock()
+        .withArgs('michel', 'github')
+        .returns(
+          Promise.resolve({
+            username: 'michel',
+            authLogin: 'michel',
+            authSource: 'github'
+          })
+        );
+
+      const users = new Users(dataStore);
+      const userDetail = await users.getUserDetail('michel', 'github');
+      assert.deepStrictEqual(userDetail, {
+        username: 'michel',
+        authLogin: 'michel',
+        authSource: 'github'
+      });
+    });
+  });
 });

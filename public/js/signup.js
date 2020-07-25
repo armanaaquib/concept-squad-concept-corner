@@ -32,7 +32,7 @@ const confirmAndSignUp = function(userDetails, authHref) {
     detailsToAdd[input.name] = input.value;
   }
   detailsToAdd.aboutMe = details.querySelector('textArea').value;
-  fetch('/ConfirmAndSignUp', fetchPostRequest(detailsToAdd)).then(() => {
+  fetch('/confirmAndSignUp', fetchPostRequest(detailsToAdd)).then(() => {
     window.location = '/';
   });
 };

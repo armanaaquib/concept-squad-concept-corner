@@ -121,4 +121,21 @@ describe('DataStore', function() {
       });
     });
   });
+
+  context('getRegisteredUser', function() {
+    it('should resolve user details if user is available', async function() {
+      const user = await dataStore.getRegisteredUser('jake', 'github');
+
+      assert.deepStrictEqual(user, {
+        username: 'jake',
+        authLogin: 'jake',
+        authSource: 'github'
+      });
+    });
+
+    it('should resolve undefined if user is not available', async function() {
+      const user = await dataStore.getUser('Bold');
+      assert.isUndefined(user);
+    });
+  });
 });

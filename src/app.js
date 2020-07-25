@@ -30,7 +30,7 @@ app.get('/postQuestion', handlers.servePostQuestionPage);
 app.get('/question/:questionId', handlers.serveQuestionPage);
 app.get('/hasUser/:username', handlers.hasUser);
 //-- [TODO] need to change name
-app.post('/ConfirmAndSignUp', handlers.confirmDetails);
+app.post('/confirmAndSignUp', handlers.confirmDetails);
 app.get('/confirmUser', handlers.confirmUser);
 app.post('/postQuestion', handlers.postQuestion);
 
