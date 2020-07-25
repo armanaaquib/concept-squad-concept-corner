@@ -6,9 +6,9 @@ insert into
     email,
     location,
     title,
-    aboutMe,
+    about_me,
     company,
-    profilePic
+    profile_pic
   )
 VALUES
   (
@@ -59,8 +59,8 @@ insert into
     title,
     description,
     view_count,
-    upvote,
-    downvote,
+    up_vote,
+    down_vote,
     time
   )
 VALUES
@@ -71,7 +71,7 @@ VALUES
     10,
     4,
     5,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'michel',
@@ -80,7 +80,7 @@ VALUES
     9,
     3,
     5,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'jake',
@@ -89,7 +89,7 @@ VALUES
     12,
     4,
     5,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'jake',
@@ -98,7 +98,7 @@ VALUES
     13,
     4,
     7,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'carlo',
@@ -107,7 +107,7 @@ VALUES
     9,
     2,
     5,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'jake',
@@ -116,7 +116,7 @@ VALUES
     15,
     3,
     6,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'carlo',
@@ -125,7 +125,7 @@ VALUES
     23,
     7,
     12,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'bryce',
@@ -134,7 +134,7 @@ VALUES
     16,
     4,
     5,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'bryce',
@@ -143,7 +143,7 @@ VALUES
     23,
     4,
     5,
-    strftime('%s', 'now')
+    datetime('now')
   );
 
 --insert tags
@@ -199,10 +199,9 @@ insert into
     username,
     question_id,
     answer,
-    upvote,
-    downvote,
+    up_vote,
+    down_vote,
     accepted,
-    thanks_count,
     time
   )
 VALUES
@@ -213,8 +212,7 @@ VALUES
     10,
     3,
     1,
-    3,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'bryce',
@@ -223,8 +221,7 @@ VALUES
     10,
     3,
     1,
-    3,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'jake',
@@ -233,8 +230,7 @@ VALUES
     10,
     3,
     1,
-    3,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'michel',
@@ -243,8 +239,7 @@ VALUES
     10,
     3,
     0,
-    3,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'carlo',
@@ -253,8 +248,7 @@ VALUES
     10,
     3,
     1,
-    3,
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'michel',
@@ -263,8 +257,7 @@ VALUES
     10,
     3,
     0,
-    3,
-    strftime('%s', 'now')
+    datetime('now')
   );
 
 --insert answer_comments
@@ -275,25 +268,25 @@ VALUES
     'bryce',
     1,
     'this is exactly what I was searching for thanks a lot',
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'jake',
     2,
     'Out of curiosity, could someone explain why the initialisation expression in the 3rd line can''t be used by itself (e.g. passed into a method) or be assigned to a var variable?',
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'carlo',
     3,
     'Interesting question. It would make sense that var x = {} does not work if the array initializer could yield anything else than arrays, but I would not know what that is. So I guess the array initializer is a language feature. If you use it with new List<string> {"A", "B"}it yields something different, too',
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'michel',
     6,
     ' You have two horses. You wish to know which is faster. Do you (1) race the horses, or (2) ask a stranger on the internet who has never seen the horses which one he thinks is faster? Race your horses. You want to know which one is more "efficient"? First create a measurable standard for efficiency; remember, efficiency is value produced per unit cost, so define your value and cost carefully. Then write the code both ways and measure its efficiency. Use science to answer scientific questions, not asking random strangers for guesses',
-    strftime('%s', 'now')
+    datetime('now')
   );
 
 --insert question_comments
@@ -304,41 +297,41 @@ VALUES
     'bryce',
     10,
     'provide sample data with your desired output',
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'michel',
     11,
     'provide sample data with your desired output',
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'carlo',
     12,
     'the link that you have provided has nothing to do with my question ',
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'bryce',
     11,
     'Well 300 users (aggregated) disagree with you',
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'michel',
     11,
     'Without seeing your COBOL code, I don''t see where the FFFFF comes from. A move from a PIC S(9)V99 COMP-3 fields to a PIC 9(5) field should display 00020. Stack Overflow is a question and answer site, not a place where I can tutor you in the finer points of COBOL PICTURE coding. There are plenty of COBOL tutorials on the Internet.',
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'jake',
     11,
     'I agree with you. but the date in the field has been store as binary like I mentionned before as X''000000002000'' which is not matching with the definition S9(9)v99 COMP-3. I am trying to find the proper way to extract this. So gymnastic needs to be done to achieve this',
-    strftime('%s', 'now')
+    datetime('now')
   ),
   (
     'bryce',
     11,
     'To determine how many days an order was placed on that day, all you have to do is add a sum via SQL for the same day',
-    strftime('%s', 'now')
+    datetime('now')
   );

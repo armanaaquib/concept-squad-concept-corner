@@ -19,8 +19,8 @@ CREATE TABLE questions (
 	time datetime,
 	view_count integer,
 	description blob,
-	upvote integer,
-	downvote integer,
+	up_vote integer,
+	down_vote integer,
 	FOREIGN KEY(username) REFERENCES user_tbl(username)
 );
 

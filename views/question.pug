@@ -5,3 +5,12 @@ block container
     input#desc-hide(type="text" ,style="display:none", value= question.description )
     #q-desc
       script(src="/js/show.js")
+    div.tags(style="margin-top: 0.5rem")
+          div.tag tag1
+          div.tag tag2
+          div.tag tag3
+    .q-detail
+      .views #{question.views} Views
+      .user
+        .username #{question.username}
+        .date #{question.time.toLocaleString()}

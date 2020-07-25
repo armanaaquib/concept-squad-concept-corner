@@ -17,7 +17,7 @@ app.locals.user = { username: 'michel' };
 app.set('view engine', 'pug');
 
 app.use(express.static('public'));
-app.use(express.json({limit: '12mb'}));
+app.use(express.json({ limit: '12mb' }));
 app.use(
   session({
     secret: config.getSessionSecretKey(),

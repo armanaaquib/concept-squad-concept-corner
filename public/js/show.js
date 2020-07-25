@@ -3,7 +3,7 @@ const showDescription = () => {
   const quill = new Quill('#q-desc', {
     modules: {
       syntax: true,
-      toolbar: [],
+      toolbar: false,
     },
     readOnly: true,
     theme: 'snow',

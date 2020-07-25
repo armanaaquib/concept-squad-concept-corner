@@ -6,7 +6,7 @@ const loadHomePage = function (req, res) {
   const { user } = req.session;
   const { users, questions } = req.app.locals;
   users.hasUser(user).then((userDetails) => {
-    const {username, profilePic} = userDetails;
+    const { username, profilePic } = userDetails;
     req.session.username = username;
     req.session.profilePic = profilePic;
     questions.all().then((questions) => {
@@ -14,7 +14,7 @@ const loadHomePage = function (req, res) {
         authLink: getAuthLink(),
         user: username,
         questions,
-        profilePic
+        profilePic,
       });
       res.end();
     });
@@ -30,21 +30,22 @@ const hasUser = function (req, res) {
 };
 
 const servePostQuestionPage = (req, res) => {
-  const {username, profilePic} = req.session;
-  if(!username){
+  const { username, profilePic } = req.session;
+  if (!username) {
     res.redirect('/');
     return;
   }
   const cancelUrl = req.session.redirectURL || '/';
-  res.render('postQuestion', { cancelUrl, user: username, profilePic});
+  res.render('postQuestion', { cancelUrl, user: username, profilePic });
   res.end();
 };
 
 const serveQuestionPage = (req, res) => {
   const { questionId } = req.params;
   const { questions } = req.app.locals;
+  const { username, profilePic } = req.session;
   questions.get(questionId).then((question) => {
-    res.render('question', { question });
+    res.render('question', { question, user: username, profilePic });
     res.end();
   });
 };
@@ -63,15 +64,15 @@ const postQuestion = (req, res) => {
 const confirmDetails = (req, res) => {
   const { users } = req.app.locals;
   const form = new formidable.IncomingForm();
-  form.parse(req, function(err, userInfo) {
+  form.parse(req, function (err, userInfo) {
     if (err) {
       res.end();
     }
     users.add(userInfo);
-    req.session.user = userInfo.username; 
+    req.session.user = userInfo.username;
     res.end();
   });
-  //res.end(); 
+  //res.end();
 };
 
 const confirmUser = (req, res) => {

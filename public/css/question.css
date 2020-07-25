@@ -1,0 +1,29 @@
+.question {
+  margin: 5rem 7rem;
+  padding: 1rem 2rem;
+  border: 0.1px solid #c2c2c4;
+}
+
+.q-title {
+  height: 2em;
+  border-bottom: 0.1px solid #c2c2c4;
+  font-size: large;
+  font-weight: 400;
+}
+
+#q-desc {
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.q-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  color: #797979;
+}
+
+.date {
+  margin-top: 0.2rem;
+  color: #c2c2c2;
+}
