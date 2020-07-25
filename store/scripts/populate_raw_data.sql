@@ -194,6 +194,8 @@ VALUES
 ('carlo', 3);
 
 --insert answer
+BEGIN TRANSACTION;
+
 insert into
   answers(
     username,
@@ -207,7 +209,7 @@ insert into
 VALUES
   (
     'michel',
-    10,
+    5,
     '"{\"ops\":[{\"insert\":\"In order to execute your request in background you need to implement background session.\\nyou can use URLSession with background configuration i.e URLSessionConfiguration.\"},{\"attributes\":{\"list\":\"ordered\"},\"insert\":\"\\n\"},{\"insert\":\"with in your createAndFireRequest :\\nlet url = NSURL(string: finalUrl)!\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"let request = NSMutableURLRequest(url:url as URL)\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"request.httpMethod = type\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"//create your gZippedData\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"request.httpBody = gZippedData\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"request.setValue(\\\"gzip\\\", forHTTPHeaderField: \\\"Content-Encoding\\\")\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"JSonManager.startActivity(withRequest: request)\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"where\\n   class JSonManager: NSObject {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"    static var audioDownloadManager: AudioDownloadManager? = AudioDownloadManager()\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"    lazy var urlSession: URLSession = {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            let bundleIdentifier = Bundle.main.bundleURL.lastPathComponent.lowercased().replacingOccurrences(of: \\\" \\\", with: \\\".\\\")\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            let sessionIdnetifier = \\\"com.ios.app.\\\\(bundleIdentifier)\\\"\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            let config = URLSessionConfiguration.background(withIdentifier: sessionIdnetifier)\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            config.isDiscretionary = false\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            config.sessionSendsLaunchEvents = true\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            config.sharedContainerIdentifier = \\\"com.ios.app\\\"\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            return URLSession(configuration: config, delegate: self, delegateQueue: nil)\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"        }()\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"    func startActivity(withRequest: URLRequest) {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"        urlSession.downloadTask(with: withRequest).resume()\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"    }\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\\n\"},{\"insert\":\"}\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"extension JSonManager: URLSessionTaskDelegate {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"        if let error = error {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            // handle error here\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            print(\\\"\\\\(error.localizedDescription)\\\")\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"        }\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"    }\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"}\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"extension JSonManager: URLSessionDownloadDelegate {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"        do {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            let data = try Data(contentsOf: location)\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            let json = try JSONSerialization.jsonObject(with: data)\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            //Handle your JSON File here\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            print(\\\"\\\\(json)\\\")\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"        } catch {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"            print(\\\"\\\\(error.localizedDescription)\\\")\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"        }\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"    }\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"}\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"\\n\"}]}"',
     10,
     3,
@@ -216,7 +218,7 @@ VALUES
   ),
   (
     'bryce',
-    11,
+    5,
     '"{\"ops\":[{\"insert\":\"These are the current declaration and initialization methods for a simple array.\\nstring[] array = new string[2]; // creates array of length 2, default values\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"string[] array = new string[] { \\\"A\\\", \\\"B\\\" }; // creates populated array of length 2\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"string[] array = { \\\"A\\\" , \\\"B\\\" }; // creates populated array of length 2\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"string[] array = new[] { \\\"A\\\", \\\"B\\\" }; // created populated array of length 2\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"Note that other techniques of obtaining arrays exist, such as the Linq ToArray() extensions on IEnumerable<T>.\\n\\nAlso note that in the declarations above, the first two could replace the string[] on the left with var (C# 3+), as the information on the right is enough to infer the proper type. The third line must be written as displayed, as array initialization syntax alone is not enough to satisfy the compiler''s demands. The fourth could also use inference. So if you''re into the whole brevity thing, the above could be written as\\n\\nvar array = new string[2]; // creates array of length 2, default values\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"var array = new string[] { \\\"A\\\", \\\"B\\\" }; // creates populated array of length 2\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"string[] array = { \\\"A\\\" , \\\"B\\\" }; // creates populated array of length 2\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"var array = new[] { \\\"A\\\", \\\"B\\\" }; // created populated array of length 2 \"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"\\n\"}]}"',
     10,
     3,
@@ -225,7 +227,7 @@ VALUES
   ),
   (
     'jake',
-    11,
+    5,
     '"{\"ops\":[{\"insert\":\"The array creation syntaxes in C# that are expressions are:\\nnew int[3]\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"new int[3] { 10, 20, 30 }\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"new int[] { 10, 20, 30 }\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"new[] { 10, 20, 30 }\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"In the first one, the size may be any non-negative integral value and the array elements are initialized to the default values.\\n\\nIn the second one, the size must be a constant and the number of elements given must match. There must be an implicit conversion from the given elements to the given array element type.\\n\\nIn the third one, the elements must be implicitly convertible to the element type, and the size is determined from the number of elements given.\\n\\nIn the fourth one the type of the array element is inferred by computing the best type, if there is one, of all the given elements that have types. All the elements must be implicitly convertible to that type. The size is determined from the number of elements given. This syntax was introduced in C# 3.0.\\n\\nThere is also a syntax which may only be used in a declaration:\\nint[] x = { 10, 20, 30 };\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"The elements must be implicitly convertible to the element type. The size is determined from the number of elements given.\\n\"}]}"',
     10,
     3,
@@ -234,7 +236,7 @@ VALUES
   ),
   (
     'michel',
-    12,
+    6,
     '"{\"ops\":[{\"insert\":\"mov to a segment register loads the internal segment base/limit / permissions stuff from the GDT (Global Descriptor Table). (The base and limit are treated as 0 / -1 respectively in 64-bit mode, but mov to a segment register still has a real effect and still checks stuff. You can''t just expect arbitrary values to not cause problems.)\\n\\nAccording to Intel''s manual for mov, mov Sreg, r/m faults with #GP(selector) if the \\\"segment selector index\\\" (index into the GDT or LDT) \\\"is outside the descriptor table limits\\\".\\n\\nLinux delivers SIGSEGV if user-space causes an invalid page fault, or any kind of #GP exception.\\n\\nSince bit 2 is set (1<<2), this is indexing into the LDT (Local Descriptor Table), not GDT. There probably isn''t an LDT at all for your process if you didn''t ask your OS (Linux?) to create one, e.g. with a modify_ldt() system call.\\n\\nIf you cleared that bit (mov eax, 0xfffb), it still faults on my Linux desktop. From that we can infer that Linux didn''t configure a GDT that large. There''s no reason to expect it would; it only needs a handful of segment descriptors for normal operation. e.g. if you use info reg, you can see the segment register values are:\\ncs             0x33                51\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"ss             0x2b                43\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"ds             0x0                 0\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"es             0x0                 0\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"fs             0x0                 0\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"gs             0x0                 0\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"\\n(\"},{\"attributes\":{\"background\":\"var(--black-075)\",\"code\":true},\"insert\":\"0\"},{\"insert\":\" works as a \\\"null selector\\\" that has a special meaning of keeping x86-64''s minimal remnants of segmentation happy; it''s not actually descriptor privilege level 0 (a kernel-only data segment) even though the low 2 bits are \"},{\"attributes\":{\"background\":\"var(--black-075)\",\"code\":true},\"insert\":\"00\"},{\"insert\":\". The low bits of \"},{\"attributes\":{\"background\":\"var(--black-075)\",\"code\":true},\"insert\":\"cs\"},{\"insert\":\" are the expected \"},{\"attributes\":{\"background\":\"var(--black-075)\",\"code\":true},\"insert\":\"11\"},{\"insert\":\" (ring 3 = user-space).)\\nOther possible reasons for exceptions include: \\\"\"},{\"attributes\":{\"italic\":true},\"insert\":\"If the DS, ES, FS, or GS register is being loaded and the segment pointed to is not a data or readable code segment.\"},{\"insert\":\"\\\"\\nI''m assuming you don''t actually know much about segmentation, and I''m not trying to explain how to actually use segment registers. The point I''m trying to make is that \"},{\"attributes\":{\"bold\":true},\"insert\":\"you can''t just use \"},{\"attributes\":{\"bold\":true,\"background\":\"var(--black-075)\",\"code\":true},\"insert\":\"ds\"},{\"attributes\":{\"bold\":true},\"insert\":\" as 16 bits of scratch space for arbitrary integer data.\"},{\"insert\":\"\\nIf you want to know in more detail exactly what you can and can''t put in \"},{\"attributes\":{\"background\":\"var(--black-075)\",\"code\":true},\"insert\":\"ds\"},{\"insert\":\", read Intel''s manuals. And the kernel source to see how it configures its GDT and LDT, or make a \"},{\"attributes\":{\"background\":\"var(--black-075)\",\"code\":true},\"insert\":\"modify_ldt()\"},{\"insert\":\" system call.\\n\"}]}"',
     10,
     3,
@@ -243,7 +245,7 @@ VALUES
   ),
   (
     'carlo',
-    17,
+    6,
     '"{\"ops\":[{\"insert\":\"This can be done using Dictionary Comprehension, and the pop() method. Here''s an example:\\nreturn {item.pop(''id''):item for item in data}\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"You would replace id with whatever property you would like to set as the key.\\ndicts = [\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"   {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"id\\\":\\\"asdf1234\\\",\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"firstname\\\":\\\"john\\\",\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"lastname\\\":\\\"smith\\\",\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"age\\\":30\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"   },\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"   {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"id\\\":\\\"sdfg2345\\\",\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"firstname\\\":\\\"jane\\\",\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"lastname\\\":\\\"doe\\\",\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"age\\\":25\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"   },\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"   {\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"id\\\":\\\"dfgh3456\\\",\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"firstname\\\":\\\"billy\\\",\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"lastname\\\":\\\"ericson\\\",\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"      \\\"age\\\":35\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"   }\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"]    \"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\\n\"},{\"insert\":\"new_dicts = {d.pop(''id''): d for d in dicts}\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"\\n\"}]}"',
     10,
     3,
@@ -252,13 +254,29 @@ VALUES
   ),
   (
     'michel',
-    18,
+    6,
     '"{\"ops\":[{\"insert\":\"You are sooo clooossee! (so close) You simply need to suppress the normal printing of output from sed and print only if a substitution is made, e.g.\\nd=($(asterisk -r -x \\\"sip show peer $US\\\" | sed -n \\\"s/.*:remote&\\\\(.*\\\\):voip.*/\\\\1/p\\\"))\"},{\"attributes\":{\"code-block\":true},\"insert\":\"\\n\"},{\"insert\":\"Where -n suppresses the normal printing of pattern space (you dont need -e with a single expression) and the /p at the end provides the print only on substitution.\\n\\nnote: unless you want d as an indexed array with a single-string as its only element, just use d=$(...)\\n\"}]}"',
     10,
     3,
     0,
     datetime('now')
   );
+
+  UPDATE
+    questions
+  SET 
+    no_of_answers = 3
+  WHERE
+    question_id = 5;
+
+  UPDATE
+    questions
+  SET 
+    no_of_answers = 3
+  WHERE
+    question_id = 6;
+
+COMMIT;
 
 --insert answer_comments
 insert into

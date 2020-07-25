@@ -19,6 +19,7 @@ module.exports = {
 	time datetime,
 	view_count integer DEFAULT 0,
 	description blob,
+	no_of_answers integer DEFAULT 0,
 	FOREIGN KEY(username) REFERENCES users(username)
 );`,
 

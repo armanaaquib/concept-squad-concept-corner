@@ -165,3 +165,17 @@ VALUES
     0,
      '2020-07-22 11:30:35'
   );
+
+ UPDATE
+    questions
+  SET 
+    no_of_answers = 3
+  WHERE
+    question_id = 5;
+
+  UPDATE
+    questions
+  SET 
+    no_of_answers = 2
+  WHERE
+    question_id = 2;

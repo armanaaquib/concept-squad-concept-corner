@@ -79,6 +79,7 @@ describe('DataStore', function () {
             description: 'Description 5',
             time: new Date('2020-07-21 11:24:35'),
             views: 9,
+            noOfAnswers: 3,
           },
           {
             questionId: 4,
@@ -87,6 +88,7 @@ describe('DataStore', function () {
             description: 'Description 4',
             time: new Date('2020-07-21 11:20:35'),
             views: 7,
+            noOfAnswers: 0,
           },
           {
             questionId: 3,
@@ -95,6 +97,7 @@ describe('DataStore', function () {
             description: null,
             time: new Date('2020-07-21 11:15:35'),
             views: 5,
+            noOfAnswers: 0,
           },
           {
             questionId: 2,
@@ -103,6 +106,7 @@ describe('DataStore', function () {
             description: 'Description 2',
             time: new Date('2020-07-20 11:24:35'),
             views: 9,
+            noOfAnswers: 2,
           },
           {
             questionId: 1,
@@ -111,6 +115,7 @@ describe('DataStore', function () {
             description: 'Description 1',
             time: new Date('2020-07-20 11:20:35'),
             views: 10,
+            noOfAnswers: 0,
           },
         ];
 

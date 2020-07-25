@@ -17,10 +17,11 @@ CREATE TABLE questions (
 	username varchar,
 	title text,
 	time datetime,
-	view_count integer,
+	view_count integer DEFAULT 0,
 	description blob,
 	up_vote integer,
 	down_vote integer,
+	no_of_answers integer DEFAULT 0,
 	FOREIGN KEY(username) REFERENCES user_tbl(username)
 );
 

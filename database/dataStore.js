@@ -105,6 +105,7 @@ class DataStore {
             description: row.description,
             time: new Date(row.time),
             views: row.view_count,
+            noOfAnswers: row.no_of_answers,
           });
         }
 

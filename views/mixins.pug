@@ -11,7 +11,7 @@ mixin questionCard(question)
           div.tag tag3
         div.info
           div.view #{question.views} Views
-          div.response 2 Answer(s)
+          div.response #{question.noOfAnswers} Answer(s)
           div.date #{question.time.toLocaleString()}
       div.askedBy 
         img(src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80", height=100, width=100, alt="alt")
