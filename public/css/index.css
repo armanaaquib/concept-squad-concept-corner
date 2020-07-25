@@ -48,7 +48,7 @@ body {
   z-index: 1;
   color: gray;
   padding: 0.2rem;
-  top: 0.5rem;
+  top: 0.7rem;
   z-index: 0;
   left: 0.5rem;
   transition: all 0.3s ease;
@@ -58,6 +58,7 @@ body {
   padding: 0.5rem;
   padding-top: 1rem;
   width: 100%;
+  padding-left: 1rem;
   box-shadow: none;
   box-sizing: border-box;
   border: 1px solid lightgray;

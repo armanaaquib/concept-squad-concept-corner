@@ -1,0 +1,65 @@
+.container {
+	display: flex;
+	flex-flow: column;
+	width: 70%;
+	justify-content: space-evenly;
+	margin: 0 auto;
+}
+.confirm-page-form{
+	display: flex;
+	width: 95%;
+	flex-flow: row;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+.header{
+	align-self: flex-end;
+	width: 90%;
+}
+.header-text {
+	font-weight: 500;
+	width: 90%;
+	justify-content: center;
+}
+.profile {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 auto;
+	flex-flow: column;
+	overflow: hidden;
+	border: 1px solid lightgray;
+	height: 15rem;
+	width: 17%;
+	margin-top: 7rem;
+	top: 1rem;
+	justify-content: flex-end;
+}
+.details {
+	width: 46%;
+	display: flex;
+	flex-flow: column;
+	justify-content: space-evenly;
+	min-height: 50rem;
+}
+.details textarea{
+	margin: 0px;
+	height: 13rem;
+	width: 94%;
+	border: 1px solid lightgray;
+	resize: none;
+	font-size: 15px;
+	font-family: sans-serif;
+	padding: 1rem;
+}
+.uploaded-image {
+	margin: 0 auto;
+	min-height: 12rem;
+	width: 100%;
+	padding-bottom: unset;
+}
+.btn-uploadPic {
+	border: none;
+	width: 100%;
+	padding: non;
+	height: 3rem;
+}

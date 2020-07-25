@@ -5,11 +5,14 @@ block common_vars
 	- var details=userDetails
 block container
 	.container
+		.header
+			h2.header-text Confirm your details
+			hr
 		form.confirm-page-form(action="javascript:void(0)" method="POST", onsubmit='confirmAndSignUp(event, ' + JSON.stringify(userDetails) + ')')
 			.profile
 				input.upload-image(type="file", accept='image/*' name="uploadImage", onchange='readUrl(event)')
 				img.uploaded-image(src="/images/avatar.png", alt="",data-url='' srcset="")
-				button.btn-primary(type='button', onclick='callEvent()') Submit
+				button.btn-uploadPic(type='button', onclick='callEvent()') Upload picture
 			.details#details
 				.inputBox
 					input(type="text", name="username",value="", onfocus='addContentActive(event)',onblur='checkContent()')
