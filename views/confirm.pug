@@ -16,15 +16,18 @@ block container
 			.details#details
 				.inputBox
 					input(type="text", name="username",value="", onfocus='addContentActive(event)',onblur='checkContent()')
-					label(for="username") Username
+					label(for="username") Username 
+						span.required *
 					br
 				.inputBox.content_active
 					input(type="text",name="name",value=userDetails.name,onchange='addContentActive(event)', onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="name") Name
+						span.required *
 					br
 				.inputBox.content_active
 					input(type="text",name="emailId",value=userDetails.email, onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="emailId") Email ID
+
 					br
 				.inputBox
 					input(type="text", name="title",value="", onfocus='addContentActive(event)',onblur='checkContent()')
