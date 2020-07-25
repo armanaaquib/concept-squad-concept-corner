@@ -1,6 +1,6 @@
 let quill;
 
-const getElement = id => document.getElementById(id);
+const getElement = (id) => document.getElementById(id);
 
 const createEditor = () => {
   quill = new Quill('#editor-container', {
@@ -9,11 +9,11 @@ const createEditor = () => {
       toolbar: [
         [{ size: ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
-        []
-      ]
+        [],
+      ],
     },
     placeholder: 'description...',
-    theme: 'snow'
+    theme: 'snow',
   });
 };
 
@@ -25,7 +25,7 @@ const validateForm = () => {
 const postQuestion = () => {
   if (!validateForm()) {
     const errorTitle = getElement('errorTitle');
-    errorTitle.innerText = 'Please type question heading';
+    errorTitle.innerText = 'Please type question title';
     return;
   }
   const title = getElement('title').value;
@@ -34,11 +34,11 @@ const postQuestion = () => {
     method: 'POST',
     body: JSON.stringify({ title, description }),
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   })
-    .then(res => res.json())
-    .then(questionId => {
+    .then((res) => res.json())
+    .then((questionId) => {
       window.location = `/question/${questionId}`;
     });
 };
