@@ -7,14 +7,16 @@
 }
 .confirm-page-form{
 	display: flex;
-	width: 95%;
+	width: 80%;
 	flex-flow: row;
+	margin: 0 auto;
 	flex-wrap: wrap;
 	justify-content: space-evenly;
 }
 .header{
-	align-self: flex-end;
 	width: 90%;
+	margin: 0 auto;
+	margin-bottom: 3rem;
 }
 .header-text {
 	font-weight: 500;
@@ -28,7 +30,7 @@
 	flex-flow: column;
 	overflow: hidden;
 	border: 1px solid lightgray;
-	height: 15rem;
+	height: 11rem;
 	width: 17%;
 	margin-top: 7rem;
 	top: 1rem;
@@ -44,7 +46,7 @@
 .details textarea{
 	margin: 0px;
 	height: 13rem;
-	width: 94%;
+	width: 92%;
 	border: 1px solid lightgray;
 	resize: none;
 	font-size: 15px;
@@ -53,7 +55,7 @@
 }
 .uploaded-image {
 	margin: 0 auto;
-	min-height: 12rem;
+	min-height: 9rem;
 	width: 100%;
 	padding-bottom: unset;
 }
