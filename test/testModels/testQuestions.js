@@ -29,29 +29,6 @@ describe('Questions', function () {
   });
 
   it('all', async function () {
-    dataStore['getQuestions'] = mock().returns(
-      Promise.resolve([
-        {
-          questionId: 5,
-          username: 'carlo',
-          title: 'Question 5',
-          description: 'Description 5',
-          time: new Date('2020-07-21 11:24:35'),
-          views: 9,
-        },
-        {
-          questionId: 4,
-          username: 'jake',
-          title: 'Question 4',
-          description: 'Description 4',
-          time: new Date('2020-07-21 11:20:35'),
-          views: 7,
-        },
-      ])
-    );
-
-    const questions = new Questions(dataStore);
-    const allQuestions = await questions.all();
     const expectedQuestions = [
       {
         questionId: 5,
@@ -70,6 +47,13 @@ describe('Questions', function () {
         views: 7,
       },
     ];
+
+    dataStore['getQuestions'] = mock().returns(
+      Promise.resolve(expectedQuestions)
+    );
+
+    const questions = new Questions(dataStore);
+    const allQuestions = await questions.all();
     assert.deepStrictEqual(allQuestions, expectedQuestions);
   });
 });
