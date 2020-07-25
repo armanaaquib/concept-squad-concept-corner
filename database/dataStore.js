@@ -19,9 +19,9 @@ class DataStore {
           user.title,
           user.aboutMe,
           user.company,
-          user.profilePic
+          user.profilePic,
         ],
-        err => {
+        (err) => {
           if (err) {
             reject(err.message);
           }
@@ -46,7 +46,7 @@ class DataStore {
           title: row.title,
           aboutMe: row.about_me,
           company: row.company,
-          profilePic: row.profile_pic
+          profilePic: row.profile_pic,
         };
         resolve(user);
       });
@@ -65,7 +65,7 @@ class DataStore {
           const registeredUser = {
             authLogin: row.auth_login,
             authSource: row.auth_source,
-            username: row.username
+            username: row.username,
           };
           resolve(registeredUser);
         }
@@ -78,7 +78,7 @@ class DataStore {
       this.db.run(
         queries.addQuestion,
         [question.username, question.title, question.description],
-        function(err) {
+        function (err) {
           if (err) {
             reject(err);
           }
@@ -97,26 +97,42 @@ class DataStore {
 
         const questions = [];
         for (const row of rows) {
-          const {
-            question_id,
-            username,
-            title,
-            description,
-            time,
-            view_count
-          } = row;
-
           questions.push({
-            questionId: question_id,
-            username,
-            title,
-            description,
-            time: new Date(time),
-            views: view_count
+            questionId: row.question_id,
+            username: row.username,
+            title: row.title,
+            description: row.description,
+            time: new Date(row.time),
+            views: row.view_count,
           });
         }
 
         resolve(questions);
+      });
+    });
+  }
+
+  getAnswers(questionId) {
+    return new Promise((resolve, reject) => {
+      this.db.all(queries.getAnswers, [questionId], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+
+        const answers = [];
+        for (const row of rows) {
+          answers.push({
+            username: row.username,
+            answerId: row.answer_id,
+            answer: row.answer,
+            upVote: row.up_vote,
+            downVote: row.down_vote,
+            accepted: row.accepted === 1 ? true : false,
+            time: new Date(row.time),
+          });
+        }
+
+        resolve(answers);
       });
     });
   }

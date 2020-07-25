@@ -1,7 +1,7 @@
 mixin questionCard(question)
   div.question-card
     div.question-title
-      a(href='/')
+      a(href=`/question/${question.questionId}`)
         h3 #{question.title}
     div.question-details
       div.question-addones

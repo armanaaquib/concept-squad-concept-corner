@@ -107,3 +107,61 @@ VALUES
     9,
     '2020-07-21 11:24:35'
   );
+
+--insert answers
+  insert into
+  answers(
+    username,
+    question_id,
+    answer,
+    up_vote,
+    down_vote,
+    accepted,
+    time
+  )
+VALUES
+  (
+    'michel',
+    5,
+    'Answer 1',
+    10,
+    3,
+    true,
+     '2020-07-20 11:20:35'
+  ),
+  (
+    'bryce',
+    5,
+    'Answer 2',
+    10,
+    3,
+    false,
+    '2020-07-21 11:20:35'
+  ),
+  (
+    'jake',
+    5,
+    'Answer 3',
+    10,
+    3,
+    false,
+     '2020-07-21 12:20:35'
+  ),
+  (
+    'michel',
+    2,
+    'Answer 4',
+    10,
+    3,
+    false,
+    '2020-07-22 11:20:35'
+  ),
+  (
+    'carlo',
+    2,
+    'Answer 5',
+    10,
+    3,
+    false,
+     '2020-07-22 11:30:35'
+  );

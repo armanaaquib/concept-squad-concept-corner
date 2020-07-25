@@ -34,10 +34,9 @@ CREATE TABLE answers (
 	username varchar,
 	question_id integer,
 	answer blob,
-	upvote integer,
-	downvote integer,
+	up_vote integer,
+	down_vote integer,
 	accepted boolean,
-	thanks_count integer,
 	time datetime,
 	FOREIGN KEY(username) REFERENCES user_tbl(username),
 	FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)

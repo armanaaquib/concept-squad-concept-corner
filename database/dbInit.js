@@ -3,7 +3,7 @@ const { getDBFilePath } = require('../config');
 
 const schema = require('./schema');
 
-const throwError = err => {
+const throwError = (err) => {
   if (err) {
     throw err;
   }
@@ -11,8 +11,9 @@ const throwError = err => {
 
 const createTables = () => {
   const db = new sqlite.Database(getDBFilePath(), throwError);
-  db.run(schema.users, [], throwError);
-  db.run(schema.questions, [], throwError);
+  db.run(schema.users, throwError);
+  db.run(schema.questions, throwError);
+  db.run(schema.answers, throwError);
   db.close(throwError);
 };
 
