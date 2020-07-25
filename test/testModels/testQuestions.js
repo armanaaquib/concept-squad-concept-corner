@@ -56,4 +56,23 @@ describe('Questions', function () {
     const allQuestions = await questions.all();
     assert.deepStrictEqual(allQuestions, expectedQuestions);
   });
+
+  it('get', async function () {
+    const expectedQuestion = {
+      questionId: 5,
+      username: 'carlo',
+      title: 'Question 5',
+      description: 'Description 5',
+      time: new Date('2020-07-21 11:24:35'),
+      views: 9,
+    };
+
+    dataStore['getQuestion'] = mock().returns(
+      Promise.resolve(expectedQuestion)
+    );
+
+    const questions = new Questions(dataStore);
+    const question = await questions.get(5);
+    assert.deepStrictEqual(question, expectedQuestion);
+  });
 });

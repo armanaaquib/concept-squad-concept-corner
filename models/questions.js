@@ -14,6 +14,12 @@ class Questions {
       this.dataStore.getQuestions().then(resolve).catch(reject);
     });
   }
+
+  get(questionId) {
+    return new Promise((resolve, reject) => {
+      this.dataStore.getQuestion(questionId).then(resolve).catch(reject);
+    });
+  }
 }
 
 module.exports = Questions;
