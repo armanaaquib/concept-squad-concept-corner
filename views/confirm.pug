@@ -8,7 +8,8 @@ block container
 		.header
 			h2.header-text Confirm your details
 			hr
-		form.confirm-page-form(action="javascript:void(0)" method="POST", onsubmit='confirmAndSignUp(event, ' + JSON.stringify(userDetails) + ')')
+		form.confirm-page-form(action="javascript:void(0)" method="POST" onsubmit='confirmAndSignUp(event, ' + JSON.stringify(userDetails) + ')')
+			
 			.profile
 				input.upload-image(type="file", accept='image/*' name="uploadImage", onchange='readUrl(event)')
 				img.uploaded-image(src="/images/avatar.png", alt="",data-url='' srcset="")
@@ -19,7 +20,7 @@ block container
 					label(for="username") Username 
 						span.required *
 					br
-				.inputBox.content_active
+				.inputBox
 					input(type="text",name="name",value=userDetails.name,onchange='addContentActive(event)', onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="name") Name
 						span.required *
@@ -45,5 +46,6 @@ block container
 					textarea(name="aboutMe", cols="30", rows="10", value=userDetails.bio, onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="aboutMe") About me
 					br
-				.inputBox
+				script.
+					addContentActiveToAll()
 				button.primary-btn(type="submit") Confirm

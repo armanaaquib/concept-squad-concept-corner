@@ -26,7 +26,6 @@
 .profile {
 	display: flex;
 	flex-wrap: wrap;
-	margin: 0 auto;
 	flex-flow: column;
 	overflow: hidden;
 	border: 1px solid lightgray;

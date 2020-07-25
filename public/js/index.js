@@ -12,6 +12,11 @@ const checkContent = function(){
   }
 };
 
+const addContentActiveToAll = function(){
+  $('.inputBox input').trigger('focus');
+ 
+};
+
 const readUrl = function (event) {
   const reader = new FileReader();
   reader.onload = function(img){
