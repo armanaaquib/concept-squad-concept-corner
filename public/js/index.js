@@ -14,8 +14,8 @@ const checkContent = function(){
 
 const readUrl = function (event) {
   const reader = new FileReader();
-  reader.onload = function(e){
-    $('.uploaded-image').attr('src', e.target.result);
+  reader.onload = function(img){
+    $('.uploaded-image').attr('src', img.target.result);
   };
   reader.readAsDataURL(event.target.files[0]);
 };

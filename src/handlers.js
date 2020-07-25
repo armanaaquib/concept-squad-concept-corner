@@ -65,7 +65,6 @@ const confirmDetails = (req, res) => {
   const form = new formidable.IncomingForm();
   form.parse(req, function(err, userInfo) {
     if (err) {
-      console.error(err.message);
       res.end();
     }
     users.add(userInfo);

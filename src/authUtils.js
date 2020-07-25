@@ -46,7 +46,6 @@ const getGithubUserDetails = async function(code, users) {
   const accessToken = await getAccessToken(code);
   const userDetails = await getUserDetail(accessToken);
   const user = await users.getUserDetail(userDetails.login, 'github');
-  console.log(user);
   return { user, userDetails };
 };
 
