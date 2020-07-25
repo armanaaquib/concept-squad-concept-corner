@@ -33,11 +33,11 @@ block container
 					input(type="text", name="title",value="", onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="title") Title
 					br
-				.inputBox
+				.inputBox.content_active
 					input(type="text",name="company",value=userDetails.company, onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="company") Company
 					br
-				.inputBox
+				.inputBox.content_active
 					input(type="text",name="location", value= userDetails.location, onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="location") Location
 					br
