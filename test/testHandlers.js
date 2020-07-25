@@ -46,6 +46,30 @@ describe('handlers', function() {
     });
   });
 
+  context('/confirmAndSignUp', function() {
+    it('should add User', function(done) {
+      this.timeout(4000);
+      app.locals.users['add'] = mock().returns(Promise.resolve(true));
+      request(app)
+        .post('/confirmAndSignUp')
+        .set('Content-Type', 'multipart/form-data')
+        .send(JSON.stringify({
+          username: 'michel',
+          authLogin: 'michel',
+          authSource: 'github',
+          name: 'michel shawn',
+          emailId: 'michel@gmail.com',
+          location: 'new york',
+          title: 'developer',
+          aboutMe:
+            'java developer worked for 20 years across different companies',
+          company: 'apple',
+          profilePic: ''
+        }))
+        .expect(200, done);
+    });
+  });
+
   context('/confirmUser', function() {
     afterEach(() => {
       restore();
