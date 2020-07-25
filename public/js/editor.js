@@ -43,4 +43,4 @@ const postQuestion = () => {
     });
 };
 
-window.onload = createEditor;
+window.onload = createEditor();

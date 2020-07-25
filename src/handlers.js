@@ -1,7 +1,7 @@
 const { getAuthLink } = require('../config');
 const authUtils = require('./authUtils');
 
-const loadHomePage = function(req, res) {
+const loadHomePage = function (req, res) {
   const { user } = req.session;
   const { users, questions } = req.app.locals;
 
@@ -17,10 +17,10 @@ const loadHomePage = function(req, res) {
   });
 };
 
-const hasUser = function(req, res) {
+const hasUser = function (req, res) {
   const { username } = req.params;
   const { users } = req.app.locals;
-  users.hasUser(username).then(userName => {
+  users.hasUser(username).then((userName) => {
     res.json({ available: !userName });
   });
 };
@@ -32,8 +32,12 @@ const servePostQuestionPage = (req, res) => {
 };
 
 const serveQuestionPage = (req, res) => {
-  res.render('question');
-  res.end();
+  const { questionId } = req.params;
+  const { questions } = req.app.locals;
+  questions.get(questionId).then((question) => {
+    res.render('question', { question });
+    res.end();
+  });
 };
 
 const postQuestion = (req, res) => {
@@ -41,7 +45,7 @@ const postQuestion = (req, res) => {
   const { user, questions } = req.app.locals;
   questions
     .add({ username: user.username, title, description })
-    .then(questionId => {
+    .then((questionId) => {
       res.json(JSON.stringify(questionId));
       res.end();
     });
@@ -81,5 +85,5 @@ module.exports = {
   postQuestion,
   confirmUser,
   confirmDetails,
-  hasUser
+  hasUser,
 };
