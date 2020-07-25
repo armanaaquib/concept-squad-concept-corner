@@ -136,6 +136,24 @@ class DataStore {
       });
     });
   }
+
+  getQuestion(questionId) {
+    return new Promise((resolve, reject) => {
+      this.db.get(queries.getQuestion, [questionId], (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        resolve({
+          questionId: row.question_id,
+          username: row.username,
+          title: row.title,
+          description: row.description,
+          time: new Date(row.time),
+          views: row.view_count,
+        });
+      });
+    });
+  }
 }
 
 module.exports = DataStore;

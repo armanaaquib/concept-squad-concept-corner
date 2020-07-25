@@ -182,4 +182,27 @@ describe('DataStore', function () {
       });
     });
   });
+
+  context('getQuestion', function () {
+    it('should gives question according to the question id', function (done) {
+      exec('npm run populate_test_data', () => {
+        const db = new sqlite.Database(getDBFilePath());
+        dataStore = new DataStore(db);
+
+        const expectedQuestion = {
+          questionId: 5,
+          username: 'carlo',
+          title: 'Question 5',
+          description: 'Description 5',
+          time: new Date('2020-07-21 11:24:35'),
+          views: 9,
+        };
+
+        dataStore.getQuestion(5).then((question) => {
+          assert.deepStrictEqual(question, expectedQuestion);
+          done();
+        });
+      });
+    });
+  });
 });

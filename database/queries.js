@@ -49,4 +49,12 @@ module.exports = {
     ORDER BY
       time ASC;
   `,
+
+  getQuestion: `
+  SELECT 
+    question_id, username, title, description, time, view_count
+  FROM 
+    questions
+  WHERE question_id = ?;
+`,
 };
