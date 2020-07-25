@@ -3,10 +3,17 @@ const { getAuthLink, getClientId, getClientSecret } = require('../config');
 
 const loadHomePage = function (req, res) {
   const { user } = req.session;
-  const { users } = req.app.locals;
+  const { users, questions } = req.app.locals;
+
   users.hasUser(user).then((userName) => {
-    res.render('home', { authLink: getAuthLink(), user: userName });
-    res.end();
+    questions.all().then((questions) => {
+      res.render('index', {
+        authLink: getAuthLink(),
+        user: userName,
+        questions,
+      });
+      res.end();
+    });
   });
 };
 

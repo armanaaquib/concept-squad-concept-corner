@@ -11,6 +11,7 @@ module.exports = {
 	company varchar,
 	profile_pic blob
 );`,
+
   questions: `CREATE TABLE questions (
 	question_id integer PRIMARY KEY AUTOINCREMENT,
 	username varchar,
@@ -19,5 +20,5 @@ module.exports = {
 	view_count integer DEFAULT 0,
 	description blob,
 	FOREIGN KEY(username) REFERENCES users(username)
-);`
+);`,
 };

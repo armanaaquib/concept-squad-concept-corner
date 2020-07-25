@@ -1,0 +1,8 @@
+extends home
+include mixins.pug
+block common_vars
+  - var pageName="Concept Corner"
+block container
+  div.h-container
+    each question in questions
+      +questionCard(question)

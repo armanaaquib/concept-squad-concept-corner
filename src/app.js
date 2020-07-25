@@ -22,7 +22,7 @@ app.use(
   session({
     secret: config.getSessionSecretKey(),
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
   })
 );
 app.get('/', handlers.loadHomePage);
