@@ -45,12 +45,13 @@
 .details textarea{
 	margin: 0px;
 	height: 13rem;
-	width: 92%;
+	width: 100%;
 	border: 1px solid lightgray;
 	resize: none;
 	font-size: 15px;
 	font-family: sans-serif;
-	padding: 1rem;
+	padding: 1.4rem;
+	box-sizing: border-box;
 }
 .uploaded-image {
 	margin: 0 auto;

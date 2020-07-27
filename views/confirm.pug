@@ -17,7 +17,7 @@ block container
 			.details#details
 				.inputBox
 					input(type="text", name="username",value="" id='username'  onchange='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
-					label(for="username") Username 
+					label(for="username") Username
 						span.required *
 					span#userNameMessage
 					br
@@ -51,7 +51,7 @@ block container
 				script.
 					addContentActiveToAll()
 				.buttons
-					button.primary-btn(type="submit") Confirm
+					button#confirmBtn.primary-btn(type="submit") Confirm
 					a(href='/')
 						button.cancel-btn(type="submit") Cancel
 

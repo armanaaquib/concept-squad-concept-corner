@@ -34,6 +34,7 @@ const confirmAndSignUp = async function(event, userDetails) {
 const checkUserName = function(userNameField) {
   const username = userNameField.value;
   const userNameMessage = document.querySelector('#userNameMessage');
+  const confirmBtn = $('#confirmBtn');
   if (username.length < 2) {
     userNameMessage.innerText = '';
     return;
@@ -42,11 +43,12 @@ const checkUserName = function(userNameField) {
     .then(res => res.json())
     .then(status => {
       if (status.available) {
-        userNameMessage.innerText = 'Username is Available';
+        userNameMessage.innerText = 'Username is available';
         userNameMessage.classList.remove('failure');
         userNameMessage.classList.add('success');
       } else {
-        userNameMessage.innerText = 'Username is not Available';
+        confirmBtn.attr('disabled', true);
+        userNameMessage.innerText = 'Username is not available';
         userNameMessage.classList.remove('success');
         userNameMessage.classList.add('failure');
       }

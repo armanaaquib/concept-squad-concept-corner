@@ -63,7 +63,7 @@ body {
 .inputBox input{
   position: relative;
   padding: 0.5rem;
-  padding-top: 1.2rem;
+  padding-top: 1.4rem;
   width: 100%;
   font-size: 15px;
   padding-left: 1rem;
@@ -105,6 +105,17 @@ body {
   border: none;
   color: white;
 }
+
+
+.primary-btn:disabled {
+  background-color: #3d8bf794;
+  height: 3em;
+  width: 8em;
+  border: none;
+  cursor: not-allowed;
+  color: white;
+}
+
 .cancel-btn {
   background-color: white;
   color: #b70f0a;
@@ -113,3 +124,4 @@ body {
   height: 3em;
   width: 8em;
 }
+
