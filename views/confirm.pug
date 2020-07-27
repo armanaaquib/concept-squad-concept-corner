@@ -16,9 +16,10 @@ block container
 				button.btn-uploadPic(type='button', onclick='callEvent()') Upload picture
 			.details#details
 				.inputBox
-					input(type="text", name="username",value="", onfocus='addContentActive(event)',onblur='checkContent()')
+					input(type="text", name="username",value="", onfocus='addContentActive(event)',onblur='checkContent()',onkeyup='checkUserName(this)')
 					label(for="username") Username 
 						span.required *
+					span#userNameMessage
 					br
 				.inputBox
 					input(type="text",name="name",value=userDetails.name,onchange='addContentActive(event)', onfocus='addContentActive(event)',onblur='checkContent()')

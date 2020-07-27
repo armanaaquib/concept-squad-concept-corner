@@ -4,5 +4,10 @@ block common_vars
   - var pageName="Concept Corner"
 block container
   div.h-container
+    .post-btn
+      if user
+        a(href="/postQuestion")
+          .btn
+            button.primary-btn Post Question
     each question in questions
       +questionCard(question)

@@ -1,7 +1,8 @@
 mixin navigationBar(authHref,user,profilePic)
 	div.nav
-		div.logo
-			img(src="/images/logo_transparent.png", alt="Concept Corner", srcset="")
+		a(href="/")
+			div.logo
+				img(src="/images/logo_transparent.png", alt="Concept Corner", srcset="")
 		div.list
 			.navInfo
 				if pageName !='Confirm Details'

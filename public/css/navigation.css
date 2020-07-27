@@ -2,6 +2,7 @@
   display: flex;
   flex-flow: row;
   flex-wrap: wrap;
+  justify-content: space-between;
   height: 7rem;
   align-items: center;
 }
@@ -23,7 +24,7 @@
   width: 15%;
   justify-content: space-evenly;
 }
-.list  div  a {
+.list div a {
   text-decoration: none;
   font-size: 1rem;
   font-weight: 600;
@@ -45,7 +46,7 @@ div:hover:after {
   width: 100%;
   background: rgb(0, 195, 255);
 }
-.navInfo{
+.navInfo {
   display: flex;
   flex-flow: row;
   width: 70%;
@@ -53,7 +54,7 @@ div:hover:after {
   align-items: center;
 }
 
-.navInfo  .navLink:after {
+.navInfo .navLink:after {
   content: '';
   display: block;
   margin: auto;
@@ -67,7 +68,7 @@ div:hover:after {
   background: rgb(0, 195, 255);
 }
 
-.userImage img{
+.userImage img {
   width: 50px;
   height: 50px;
   border-radius: 50%;

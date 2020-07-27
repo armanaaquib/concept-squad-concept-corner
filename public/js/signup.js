@@ -19,12 +19,12 @@ const confirmAndSignUp = async function(event, userDetails) {
   const detailsToAdd = new FormData($('.confirm-page-form')[0]);
   detailsToAdd.append('authLogin', userDetails.login);
   detailsToAdd.append('authSource', userDetails.authSource);
-  detailsToAdd.append('profilePic', image );
+  detailsToAdd.append('profilePic', image);
   const response = await fetch('/confirmAndSignUp', {
     method: 'POST',
     body: detailsToAdd
   });
-  if(response.status === 200){
+  if (response.status === 200) {
     window.location = '/';
   }
 };
