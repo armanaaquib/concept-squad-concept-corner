@@ -11,10 +11,11 @@ mixin questionCard(question)
 				div.tag tag3
 		div.question-details
 			div.question-addones
-				div.date#date
+				div.date(id=`${question.questionId}date`)
 					script.
-						let date = !{JSON.stringify(question.time)}
-						document.getElementById('date').innerText = getDate(date);
+						date = !{JSON.stringify(question.time)};
+						id = !{JSON.stringify(`${question.questionId}date`)};
+						document.getElementById(id).innerText = getDate(date);
 				div.popularity
 					div.view #{question.views} Views
 					div.response #{question.noOfAnswers} Answer(s)

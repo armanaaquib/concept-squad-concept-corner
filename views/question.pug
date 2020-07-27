@@ -14,7 +14,8 @@ block container
 				.views #{question.views} Views
 				.user
 					.username #{question.username}
-					.date#date
+					.date(id=`${question.questionId}date`)
 						script.
-							let date = !{JSON.stringify(question.time)}
-							document.getElementById('date').innerText = a=getDate(date);
+							date = !{JSON.stringify(question.time)};
+							id = !{JSON.stringify(`${question.questionId}date`)};
+							document.getElementById(id).innerText = getDate(date);
