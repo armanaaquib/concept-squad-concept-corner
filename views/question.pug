@@ -29,12 +29,14 @@ block container
 				.user
 					.username #{question.username}
 					.date(id=`${question.questionId}date`)
+		.noOfAnswers #{answers.length} Answer(s)
 		.answers
 			each answer in answers
 				+answerCard(answer)
 	
 	script.
-		showDescription(!{question.description}, 'q-desc')
 		date = !{JSON.stringify(question.time)};
 		id = !{JSON.stringify(`${question.questionId}date`)};
 		document.getElementById(id).innerText = getDate(date);
+		showDescription(!{question.description}, 'q-desc')
+		

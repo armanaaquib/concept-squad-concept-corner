@@ -2,8 +2,9 @@
   margin: 0 auto;
   padding: 1rem 2rem;
   border: 0.1px solid #c2c2c4;
-  width: 97%;
+  width: 100%;
   margin-top: 2rem;
+  box-sizing: border-box;
 }
 
 .q-title {
@@ -18,13 +19,15 @@
   margin-top: 1rem;
   padding: 1rem;
   border: none;
+  width: 95%;
 }
 
 .q-detail {
   display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-  color: #797979;
+    justify-content: space-between;
+    margin-top: 1rem;
+    color: #797979;
+    width: 95%;
 }
 
 .date {
@@ -33,26 +36,38 @@
 }
 
 .answers {
-  display: flex;
-  flex-flow: column;
-  justify-content: space-evenly;
-  align-items: center;
-  margin-top: 10rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 1rem;
 }
 
 .answer {
   width: 100%;
   border: 0.1px solid #c2c2c4;
-  margin: 3rem auto;
+  margin: 4rem auto;
 }
+.noOfAnswers{
+  font-size: 1.5rem;
+    margin-top: 3rem;
+    line-height: 3.2rem;
+    width: 100%;
+    border-top: 3px solid lightgray;
 
-.answer .user {
+}
+.answer .a-detail{
+  display: flex;
+  margin: 0 auto;
+  width: 95%;
+  flex-flow: column;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.a-detail .user {
   align-self: flex-end;
-  margin-left: 70%;
-  width: 30%;
 }
 
-.answer .description {
+.a-detail .description {
   border: none;
-  width: 90%;
 }
