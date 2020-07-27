@@ -25,14 +25,14 @@ module.exports = {
 
   answers: `CREATE TABLE answers (
 		answer_id integer PRIMARY KEY AUTOINCREMENT,
-		username varchar,
-		question_id integer,
+		username varchar NOT NULL,
+		question_id integer NOT NULL,
 		answer blob,
-		up_vote integer,
-		down_vote integer,
-		accepted boolean,
+		up_vote integer DEFAULT 0,
+		down_vote integer DEFAULT 0,
+		accepted boolean DEFAULT 0,
 		time datetime,
 		FOREIGN KEY(username) REFERENCES user_tbl(username),
 		FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
-	);`,
+	);`
 };

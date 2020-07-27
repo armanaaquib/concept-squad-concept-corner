@@ -19,15 +19,28 @@ class DataStore {
           user.title,
           user.aboutMe,
           user.company,
-          user.profilePic,
+          user.profilePic
         ],
-        (err) => {
+        err => {
           if (err) {
             reject(err.message);
           }
           resolve(true);
         }
       );
+    });
+  }
+
+  addAnswer(username, questionId, answer) {
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.addAnswer, [username, questionId, answer], function(
+        err
+      ) {
+        if (err) {
+          reject(err);
+        }
+        resolve(this.lastID);
+      });
     });
   }
 
@@ -46,7 +59,7 @@ class DataStore {
           title: row.title,
           aboutMe: row.about_me,
           company: row.company,
-          profilePic: row.profile_pic,
+          profilePic: row.profile_pic
         };
         resolve(user);
       });
@@ -66,7 +79,7 @@ class DataStore {
           const registeredUser = {
             authLogin: details.auth_login,
             authSource: details.auth_source,
-            username: details.username,
+            username: details.username
           };
           resolve(registeredUser);
         }
@@ -79,7 +92,7 @@ class DataStore {
       this.db.run(
         queries.addQuestion,
         [question.username, question.title, question.description],
-        function (err) {
+        function(err) {
           if (err) {
             reject(err);
           }
@@ -105,7 +118,7 @@ class DataStore {
             description: row.description,
             time: new Date(row.time),
             views: row.view_count,
-            noOfAnswers: row.no_of_answers,
+            noOfAnswers: row.no_of_answers
           });
         }
 
@@ -130,7 +143,7 @@ class DataStore {
             upVote: row.up_vote,
             downVote: row.down_vote,
             accepted: row.accepted === 1 ? true : false,
-            time: new Date(row.time),
+            time: new Date(row.time)
           });
         }
 
@@ -151,7 +164,7 @@ class DataStore {
           title: row.title,
           description: row.description,
           time: new Date(row.time),
-          views: row.view_count,
+          views: row.view_count
         });
       });
     });

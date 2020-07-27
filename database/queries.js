@@ -11,7 +11,11 @@ module.exports = {
           location, title, about_me, company , profile_pic )
         values(?, ?, ?, ?, ?, ?, ?, ? ,? ,?);
   `,
-
+  addAnswer: `
+  INSERT INTO 
+  answers( username, question_id, answer, time )
+  values(?, ?, ?,datetime('now'));
+  `,
   getUser: `
       SELECT
         username, name, email, location, title, about_me, company, profile_pic 
@@ -56,5 +60,5 @@ module.exports = {
   FROM 
     questions
   WHERE question_id = ?;
-`,
+`
 };
