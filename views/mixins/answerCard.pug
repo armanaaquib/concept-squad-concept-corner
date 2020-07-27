@@ -1,0 +1,13 @@
+mixin answerCard(answer)
+  .answer
+    .a-detail
+      .description(id=`desc-${answer.answerId}`)
+      .user
+        .username #{answer.username}
+        .date(id=`date-${answer.answerId}`)
+    .reactions
+  script.
+    date = !{JSON.stringify(answer.time)};
+    id = !{JSON.stringify(`date-${answer.answerId}`)};
+    document.getElementById(id).innerText = getDate(date);
+    showDescription(!{answer.answer}, !{JSON.stringify(`desc-${answer.answerId}`)})
