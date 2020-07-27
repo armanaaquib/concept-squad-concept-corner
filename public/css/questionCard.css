@@ -16,7 +16,8 @@ h3 {
 	padding-left: 2rem;
 	padding-right: 2rem;
 	margin: 0 auto;
-	width: 60%;
+	box-sizing: border-box;
+	width: 97%;
 	margin-top: 2.5rem;
 	margin-bottom: 2.5rem;
 	border-radius: 5px;
@@ -66,17 +67,4 @@ h3 {
 	height: 50px;
 	width: 50px;
 	border-radius: 50%;
-}
-
-.tags {
-	margin-top:1rem ;
-	padding-left: 1rem;
-  display: flex;
-}
-
-.tag {
-  margin-right: 2rem;
-  padding: 0.2em 0.5em;
-  background-color: #c9f1fd;
-  border-radius: 0.2em;
 }

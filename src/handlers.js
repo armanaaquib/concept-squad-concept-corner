@@ -45,7 +45,9 @@ const serveQuestionPage = (req, res) => {
   const { questions } = req.app.locals;
   const { username, profilePic } = req.session;
   questions.get(questionId).then(question => {
-    res.render('question', { question, user: username, profilePic });
+    res.render('question', { question, user: username,
+      profilePic, 
+      authLink: getAuthLink() });
     res.end();
   });
 };

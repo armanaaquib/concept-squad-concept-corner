@@ -12,13 +12,13 @@ mixin questionCard(question)
 		div.question-details
 			div.question-addones
 				div.date(id=`${question.questionId}date`)
-					script.
-						date = !{JSON.stringify(question.time)};
-						id = !{JSON.stringify(`${question.questionId}date`)};
-						document.getElementById(id).innerText = getDate(date);
 				div.popularity
 					div.view #{question.views} Views
 					div.response #{question.noOfAnswers} Answer(s)
 			div.askedBy 
 				img(src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80", height=100, width=100, alt="alt")
 				div #{question.username}
+				script.
+					date = !{JSON.stringify(question.time)};
+					id = !{JSON.stringify(`${question.questionId}date`)};
+					document.getElementById(id).innerText = getDate(date);

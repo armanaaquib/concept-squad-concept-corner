@@ -1,10 +1,4 @@
-.container {
-	display: flex;
-	flex-flow: column;
-	width: 70%;
-	justify-content: space-evenly;
-	margin: 0 auto;
-}
+
 .confirm-page-form{
 	display: flex;
 	width: 80%;

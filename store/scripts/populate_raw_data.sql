@@ -76,7 +76,7 @@ VALUES
   (
     'michel',
     'All possible array initialization syntaxes',
-    '{\"ops\":[{\"insert\":\"What are all the array initialization syntaxes that are possible with C#?\\n\"}]}',
+    '"{\"ops\":[{\"insert\":\"What are all the array initialization syntaxes that are possible with C#?\\n\"}]}"',
     9,
     3,
     5,

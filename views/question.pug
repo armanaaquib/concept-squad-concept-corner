@@ -1,11 +1,22 @@
-extends home.pug
+extends layout.pug
+
+block head
+	title Concept Corner | #{question.title}
+	link(href="https://cdn.quilljs.com/1.3.6/quill.snow.css", rel="stylesheet")
+	link(href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css", rel="stylesheet")
+	link(rel="stylesheet", href="/css/question.css")
+
 block container
 	.container
+		.post-btn
+			if user
+				a(href="/postQuestion")
+					.btn
+						button.primary-btn Post Question
 		.question
 			.q-title #{question.title}
 			input#desc-hide(type="text" ,style="display:none", value= question.description )
 			#q-desc
-				script(src="/js/show.js")
 			div.tags(style="margin-top: 0.5rem")
 						div.tag tag1
 						div.tag tag2
@@ -15,7 +26,12 @@ block container
 				.user
 					.username #{question.username}
 					.date(id=`${question.questionId}date`)
-						script.
-							date = !{JSON.stringify(question.time)};
-							id = !{JSON.stringify(`${question.questionId}date`)};
-							document.getElementById(id).innerText = getDate(date);
+	script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js")
+	script(src="https://cdn.quilljs.com/1.3.6/quill.js")
+	script(src='/js/editor.js')
+	script.
+		showDescription()
+		date = !{JSON.stringify(question.time)};
+		id = !{JSON.stringify(`${question.questionId}date`)};
+		document.getElementById(id).innerText = getDate(date);
+				

@@ -1,8 +1,12 @@
-extends home.pug
+extends layout.pug
 block common_vars
 	- var authLink= authHref
-	- var pageName="Post Question"
 	- var details=userDetails
+block head
+	title Concept Corner | Post Question
+	link(href="https://cdn.quilljs.com/1.3.6/quill.snow.css", rel="stylesheet")
+	link(href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css", rel="stylesheet")
+	link(rel="stylesheet", href="/css/postQuestion.css")
 block container
 	.container
 		.header
@@ -22,3 +26,9 @@ block container
 				button.primary-btn(type='button' , onclick="postQuestion()") Post Question
 				a(href=cancelUrl)
 					button.cancel-btn(type='button') Cancel
+
+	script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js")
+	script(src="https://cdn.quilljs.com/1.3.6/quill.js")
+	script(src='/js/editor.js')
+	script.
+		createEditor()

@@ -1,8 +1,12 @@
-extends home.pug 
+extends layout.pug
 block common_vars
 	- var authLink= authHref
-	- var pageName="Confirm Details"
 	- var details=userDetails
+block head
+	title Concept Corner | Confirm details
+	link(rel="stylesheet", href="/css/signup.css")
+	script(src="/js/signup.js")
+
 block container
 	.container
 		.header

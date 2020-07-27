@@ -2,7 +2,7 @@ body {
   font-family: sans-serif;
   margin: 0px;
   word-spacing: 4px;
-
+  margin-bottom: 5rem;
 }
 .failure {
   padding: 0.2rem;
@@ -31,10 +31,12 @@ body {
 }
 .container {
   display: flex;
-  flex-flow: row;
+  flex-flow: column;
   width: 70%;
   justify-content: space-evenly;
   margin: 0 auto;
+  margin-top: 3rem;
+  flex-wrap: wrap;
 }
 .details {
   width: 46%;
@@ -49,6 +51,7 @@ body {
 .inputBox.content_active label {
   font-size: 12px;
   top: 0;
+  padding-top: 3px;
 }
 .inputBox label {
   position: absolute;
@@ -91,7 +94,7 @@ body {
 .post-btn {
   display: flex;
   flex-direction: row-reverse;
-  padding: 0 18vw;
+  padding: 0 1vw;
 }
 
 .post-btn button {
@@ -126,3 +129,28 @@ body {
   cursor: pointer;
 }
 
+
+.tags {
+	margin-top:1rem ;
+	padding-left: 1rem;
+  display: flex;
+}
+
+.tag {
+  margin-right: 2rem;
+  padding: 0.2em 0.5em;
+  background-color: #c9f1fd;
+  border-radius: 0.2em;
+}
+
+
+.errorMsg {
+  color: #b70f0a;
+  font-size: small;
+  padding-left: 1em;
+}
+
+.required {
+  color: #b70f0a;
+  padding-left: 0.2em;
+}
