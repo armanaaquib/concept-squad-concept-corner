@@ -52,9 +52,10 @@ const serveQuestionPage = (req, res) => {
 
 const postQuestion = (req, res) => {
   const { title, description } = req.body;
-  const { user, questions } = req.app.locals;
+  const { username } = req.session;
+  const { questions } = req.app.locals;
   questions
-    .add({ username: user.username, title, description })
+    .add({ username, title, description })
     .then(questionId => {
       res.json(JSON.stringify(questionId));
       res.end();

@@ -12,7 +12,6 @@ const db = new sqlite.Database(config.getDBFilePath());
 const dataStore = new DataStore(db);
 app.locals.questions = new Questions(dataStore);
 app.locals.users = new Users(dataStore);
-app.locals.user = { username: 'michel' };
 
 app.set('view engine', 'pug');
 

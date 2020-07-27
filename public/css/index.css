@@ -123,5 +123,6 @@ body {
   margin-left: 3em;
   height: 3em;
   width: 8em;
+  cursor: pointer;
 }
 

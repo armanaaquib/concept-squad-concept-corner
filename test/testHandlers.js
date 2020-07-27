@@ -14,20 +14,19 @@ describe('handlers', function() {
       req.sessions.username = 'testuser';
       next();
     });
-    //it('should render Post question page', function(done) {
-    //request(app)
-    //.get('/postQuestion')
-    //.set('Content-Type', 'application/json')
-    //.expect(/Post your question/)
-    //.expect(200, done);
-    //});
+    it('should  not render Post question page when user is not logged in', function(done) {
+      request(app)
+        .get('/postQuestion')
+        .set('Content-Type', 'application/json')
+        .expect(302, done);
+    });
   });
 
   context('/postQuestion', function() {
     it('should add Question and give back question id', function(done) {
       app.locals.questions['add'] = mock()
         .withArgs({
-          username: 'michel',
+          username: undefined,
           title: 'question title',
           description: 'question description'
         })
@@ -37,7 +36,7 @@ describe('handlers', function() {
         .post('/postQuestion')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'michel',
+          username: undefined,
           title: 'question title',
           description: 'question description'
         })
