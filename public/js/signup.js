@@ -15,11 +15,13 @@ const validateFields = function() {
 
 const confirmAndSignUp = async function(event, userDetails) {
   event.preventDefault();
-  const image = $('.uploaded-image')[0].src;
+  if(!validateFields()){
+    return;
+  }
   const detailsToAdd = new FormData($('.confirm-page-form')[0]);
   detailsToAdd.append('authLogin', userDetails.login);
   detailsToAdd.append('authSource', userDetails.authSource);
-  detailsToAdd.append('profilePic', image);
+  detailsToAdd.append('profilePic', $('.uploaded-image')[0].src);
   const response = await fetch('/confirmAndSignUp', {
     method: 'POST',
     body: detailsToAdd

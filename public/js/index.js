@@ -28,3 +28,11 @@ const readUrl = function (event) {
 const callEvent = function () {
   $('.upload-image').trigger('click');
 };
+
+const getDate = function(dateString){
+  const date = new Date(dateString).toUTCString();
+  const [, newDate] = date.split(',');
+  const [day, month, year, time] = newDate.trim(' ').split(' ');
+  const [hour, minute] = time.split(':');
+  return `${month} ${day} '${year} at ${hour}:${minute}`;
+};

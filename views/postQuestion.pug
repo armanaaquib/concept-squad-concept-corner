@@ -9,10 +9,10 @@ block container
 			h2.header-text Post your question
 			hr
 		.question
-			.title
-				span.placeholder Title
-				span.required *
-				input#title(type="text")
+			.inputBox
+				input#title(type="text", name="title",value="" onchange='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
+				label(for="username") Username 
+					span.required *
 				br
 			p.errorMsg#errorTitle
 			br

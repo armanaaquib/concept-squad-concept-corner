@@ -16,13 +16,14 @@ block container
 				button.btn-uploadPic(type='button', onclick='callEvent()') Upload picture
 			.details#details
 				.inputBox
-					input(type="text", name="username",value="", onfocus='addContentActive(event)',onblur='checkContent()',onkeyup='checkUserName(this)')
+					input(type="text", name="username",value="" id='username'  onchange='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="username") Username 
 						span.required *
 					span#userNameMessage
 					br
+					#userNameMessage
 				.inputBox
-					input(type="text",name="name",value=userDetails.name,onchange='addContentActive(event)', onfocus='addContentActive(event)',onblur='checkContent()')
+					input(type="text",name="name",value=userDetails.name id='name' onchange='addContentActive(event)', onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="name") Name
 						span.required *
 					br
@@ -49,4 +50,8 @@ block container
 					br
 				script.
 					addContentActiveToAll()
-				button.primary-btn(type="submit") Confirm
+				.buttons
+					button.primary-btn(type="submit") Confirm
+					a(href='/')
+						button.cancel-btn(type="submit") Cancel
+

@@ -1,16 +1,24 @@
 body {
   font-family: sans-serif;
   margin: 0px;
+  word-spacing: 4px;
+
 }
 .failure {
+  padding: 0.2rem;
   color: red;
+  font-size: 12px;
+  padding-left: 1rem;
 }
 .success {
   color: green;
+  padding: 0.2rem;
+  font-size: 12px;
+  padding-left: 1rem;
 }
 
 .requiredFieldError {
-  border: 1px solid red;
+  border: 1px solid red !important;
 }
 .inputBox > label {
   position: absolute;
@@ -47,17 +55,17 @@ body {
   font-size: 1rem;
   z-index: 1;
   color: gray;
-  padding: 0.2rem;
-  top: 0.7rem;
+  top: 0.5rem;
   z-index: 0;
   left: 0.5rem;
   transition: all 0.3s ease;
 }
-.inputBox > input {
+.inputBox input{
   position: relative;
   padding: 0.5rem;
-  padding-top: 1rem;
+  padding-top: 1.2rem;
   width: 100%;
+  font-size: 15px;
   padding-left: 1rem;
   box-shadow: none;
   box-sizing: border-box;
@@ -88,4 +96,20 @@ body {
 
 .post-btn button {
   cursor: pointer;
+}
+
+.primary-btn {
+  background-color: #3d8af7;
+  height: 3em;
+  width: 8em;
+  border: none;
+  color: white;
+}
+.cancel-btn {
+  background-color: white;
+  color: #b70f0a;
+  border: 1px solid #b70f0a;
+  margin-left: 3em;
+  height: 3em;
+  width: 8em;
 }

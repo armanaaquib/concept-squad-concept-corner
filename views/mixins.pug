@@ -1,18 +1,23 @@
 mixin questionCard(question)
-  div.question-card
-    div.question-title
-      a(href=`/question/${question.questionId}`)
-        h3 #{question.title}
-    div.question-details
-      div.question-addones
-        div.tags
-          div.tag tag1
-          div.tag tag2
-          div.tag tag3
-        div.info
-          div.view #{question.views} Views
-          div.response #{question.noOfAnswers} Answer(s)
-          div.date #{question.time.toLocaleString()}
-      div.askedBy 
-        img(src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80", height=100, width=100, alt="alt")
-        div #{question.username}
+	- var date = question.time 
+	div.question-card
+		div.question-head 
+			a(href=`/question/${question.questionId}`)
+				h3 #{question.title}
+		div.description 
+			div.tags
+				div.tag tag1
+				div.tag tag2
+				div.tag tag3
+		div.question-details
+			div.question-addones
+				div.date#date
+					script.
+						let date = !{JSON.stringify(question.time)}
+						document.getElementById('date').innerText = getDate(date);
+				div.popularity
+					div.view #{question.views} Views
+					div.response #{question.noOfAnswers} Answer(s)
+			div.askedBy 
+				img(src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80", height=100, width=100, alt="alt")
+				div #{question.username}
