@@ -1,5 +1,31 @@
 const queries = require('./queries');
 
+const wrapQuestion = (row) => {
+  return {
+    questionId: row.question_id,
+    username: row.username,
+    title: row.title,
+    description: row.description,
+    time: new Date(row.time),
+    lastModified: row.last_modified,
+    views: row.view_count,
+    noOfAnswers: row.no_of_answers,
+  };
+};
+
+const wrapAnswer = (row) => {
+  return {
+    username: row.username,
+    answerId: row.answer_id,
+    answer: row.answer,
+    upVote: row.up_vote,
+    downVote: row.down_vote,
+    accepted: row.accepted === 1 ? true : false,
+    time: new Date(row.time),
+    lastModified: row.last_modified,
+  };
+};
+
 class DataStore {
   constructor(db) {
     this.db = db;
@@ -19,37 +45,20 @@ class DataStore {
           user.title,
           user.aboutMe,
           user.company,
-          user.profilePic
+          user.profilePic,
         ],
-        err => {
-          if (err) {
-            reject(err.message);
-          }
+        (err) => {
+          err && reject(err);
           resolve(true);
         }
       );
     });
   }
 
-  addAnswer(username, questionId, answer) {
-    return new Promise((resolve, reject) => {
-      this.db.run(queries.addAnswer, [username, questionId, answer], function(
-        err
-      ) {
-        if (err) {
-          reject(err);
-        }
-        resolve(this.lastID);
-      });
-    });
-  }
-
   getUser(username) {
     return new Promise((resolve, reject) => {
       this.db.get(queries.getUser, [username], (err, row) => {
-        if (err) {
-          reject(err);
-        }
+        err && reject(err);
 
         const user = row && {
           username: row.username,
@@ -59,7 +68,7 @@ class DataStore {
           title: row.title,
           aboutMe: row.about_me,
           company: row.company,
-          profilePic: row.profile_pic
+          profilePic: row.profile_pic,
         };
         resolve(user);
       });
@@ -72,14 +81,13 @@ class DataStore {
         queries.getRegisteredUser,
         [authLogin, authSource],
         (err, row) => {
-          if (err) {
-            reject(err);
-          }
+          err && reject(err);
+
           const details = row || {};
           const registeredUser = {
             authLogin: details.auth_login,
             authSource: details.auth_source,
-            username: details.username
+            username: details.username,
           };
           resolve(registeredUser);
         }
@@ -92,37 +100,45 @@ class DataStore {
       this.db.run(
         queries.addQuestion,
         [question.username, question.title, question.description],
-        function(err) {
-          if (err) {
-            reject(err);
-          }
+        function (err) {
+          err && reject(err);
+
           resolve(this.lastID);
         }
       );
     });
   }
 
+  getQuestion(questionId) {
+    return new Promise((resolve, reject) => {
+      this.db.get(queries.getQuestion, [questionId], (err, row) => {
+        err && reject(err);
+        resolve(wrapQuestion(row));
+      });
+    });
+  }
+
   getQuestions() {
     return new Promise((resolve, reject) => {
       this.db.all(queries.getQuestions, (err, rows) => {
-        if (err) {
-          reject(err);
-        }
+        err && reject(err);
 
         const questions = [];
         for (const row of rows) {
-          questions.push({
-            questionId: row.question_id,
-            username: row.username,
-            title: row.title,
-            description: row.description,
-            time: new Date(row.time),
-            views: row.view_count,
-            noOfAnswers: row.no_of_answers
-          });
+          questions.push(wrapQuestion(row));
         }
-
         resolve(questions);
+      });
+    });
+  }
+
+  addAnswer(username, questionId, answer) {
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.addAnswer, [username, questionId, answer], function (
+        err
+      ) {
+        err && reject(err);
+        resolve(this.lastID);
       });
     });
   }
@@ -130,42 +146,13 @@ class DataStore {
   getAnswers(questionId) {
     return new Promise((resolve, reject) => {
       this.db.all(queries.getAnswers, [questionId], (err, rows) => {
-        if (err) {
-          reject(err);
-        }
+        err && reject(err);
 
         const answers = [];
         for (const row of rows) {
-          answers.push({
-            username: row.username,
-            answerId: row.answer_id,
-            answer: row.answer,
-            upVote: row.up_vote,
-            downVote: row.down_vote,
-            accepted: row.accepted === 1 ? true : false,
-            time: new Date(row.time)
-          });
+          answers.push(wrapAnswer(row));
         }
-
         resolve(answers);
-      });
-    });
-  }
-
-  getQuestion(questionId) {
-    return new Promise((resolve, reject) => {
-      this.db.get(queries.getQuestion, [questionId], (err, row) => {
-        if (err) {
-          reject(err);
-        }
-        resolve({
-          questionId: row.question_id,
-          username: row.username,
-          title: row.title,
-          description: row.description,
-          time: new Date(row.time),
-          views: row.view_count
-        });
       });
     });
   }

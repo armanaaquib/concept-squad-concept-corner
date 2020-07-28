@@ -3,50 +3,38 @@ const app = require('../src/app');
 const { mock, replace, restore } = require('sinon');
 const authUtils = require('../src/authUtils');
 
-describe('handlers', function() {
+describe('handlers', function () {
   this.beforeEach(() => {
-    app.locals.questions = {};
     app.locals.users = {};
+    app.locals.dataStore = {};
   });
 
-  context('/postQuestion', function() {
-    app.use((req, res, next) => {
-      req.sessions.username = 'testuser';
-      next();
-    });
-    it('should  not render Post question page when user is not logged in', function(done) {
+  context('/postQuestion', function () {
+    it('should redirect to / if user is not logged in', function (done) {
       request(app)
         .get('/postQuestion')
         .set('Content-Type', 'application/json')
+        .send(JSON.stringify({ title: 'title', description: 'desc' }))
+        .expect('location', '/')
         .expect(302, done);
     });
-  });
 
-  context('/postQuestion', function() {
-    it('should add Question and give back question id', function(done) {
-      app.locals.questions['add'] = mock()
-        .withArgs({
-          username: undefined,
-          title: 'question title',
-          description: 'question description'
-        })
-        .returns(Promise.resolve(10));
+    it('should add Question and give back question id', function (done) {
+      app.locals.dataStore['addQuestion'] = mock()
+        .withArgs({ title: 'title', description: 'desc', username: undefined })
+        .returns(Promise.resolve(1));
 
       request(app)
         .post('/postQuestion')
         .set('Content-Type', 'application/json')
-        .send({
-          username: undefined,
-          title: 'question title',
-          description: 'question description'
-        })
-        .expect('"10"')
+        .send({ title: 'title', description: 'desc' })
+        .expect(JSON.stringify(1))
         .expect(200, done);
     });
   });
 
-  context('/confirmAndSignUp', function() {
-    it('should add User', function(done) {
+  context('/confirmAndSignUp', function () {
+    it('should add User', function (done) {
       this.timeout(4000);
       app.locals.users['add'] = mock().returns(Promise.resolve(true));
       request(app)
@@ -64,24 +52,24 @@ describe('handlers', function() {
             aboutMe:
               'java developer worked for 20 years across different companies',
             company: 'apple',
-            profilePic: ''
+            profilePic: '',
           })
         )
         .expect(200, done);
     });
   });
 
-  context('/confirmUser', function() {
+  context('/confirmUser', function () {
     afterEach(() => {
       restore();
     });
     const userDetails = {
       authSource: 'github',
-      name: 'michel'
+      name: 'michel',
     };
-    it('should redirect to home page if user exists', done => {
+    it('should redirect to home page if user exists', (done) => {
       const user = {
-        username: 'michel'
+        username: 'michel',
       };
       replace(
         authUtils,
@@ -94,7 +82,7 @@ describe('handlers', function() {
         .expect(302, done);
     });
 
-    it('should render confirm if user not exists', done => {
+    it('should render confirm if user not exists', (done) => {
       replace(
         authUtils,
         'getGithubUserDetails',
@@ -107,7 +95,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should 404 if code query is not present', function(done) {
+    it('should 404 if code query is not present', function (done) {
       request(app)
         .get('/confirmUser')
         .set('Content-Type', 'application/json')
@@ -115,8 +103,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/hasUser', function() {
-    it('should give availability as true when it has not user with the same name', function(done) {
+  context('/hasUser', function () {
+    it('should give availability as true when it has not user with the same name', function (done) {
       app.locals.users['hasUser'] = mock()
         .withArgs('AbC')
         .returns(Promise.resolve({ username: undefined }));
@@ -128,7 +116,7 @@ describe('handlers', function() {
         .expect({ available: true })
         .expect(200, done);
     });
-    it('should give availability as false when it has user with the same name', function(done) {
+    it('should give availability as false when it has user with the same name', function (done) {
       app.locals.users['hasUser'] = mock()
         .withArgs('michel')
         .returns(Promise.resolve({ username: 'michel' }));

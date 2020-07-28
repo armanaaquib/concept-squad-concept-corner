@@ -9,20 +9,19 @@ CREATE TABLE users (
 	title varchar,
 	about_me varchar,
 	company varchar,
-	profile_pic blob
+	profile_pic varchar
 );
 
 CREATE TABLE questions (
 	question_id integer PRIMARY KEY AUTOINCREMENT,
-	username varchar,
-	title text,
-	time datetime,
+	username varchar NOT NULL,
+	title text NOT NULL,
+	time datetime DEFAULT (datetime('now', 'localtime')),
+	last_modified datetime,
 	view_count integer DEFAULT 0,
 	description blob,
-	up_vote integer,
-	down_vote integer,
 	no_of_answers integer DEFAULT 0,
-	FOREIGN KEY(username) REFERENCES user_tbl(username)
+	FOREIGN KEY(username) REFERENCES users(username)
 );
 
 CREATE TABLE tags (
@@ -32,13 +31,14 @@ CREATE TABLE tags (
 
 CREATE TABLE answers (
 	answer_id integer PRIMARY KEY AUTOINCREMENT,
-	username varchar,
-	question_id integer,
-	answer blob,
-	up_vote integer,
-	down_vote integer,
-	accepted boolean,
-	time datetime,
+	username varchar NOT NULL,
+	question_id integer NOT NULL,
+	answer blob NOT NULL,
+	up_vote integer DEFAULT 0,
+	down_vote integer DEFAULT 0,
+	accepted boolean DEFAULT 0,
+	time datetime DEFAULT (datetime('now', 'localtime')),
+	last_modified datetime,
 	FOREIGN KEY(username) REFERENCES user_tbl(username),
 	FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
 );

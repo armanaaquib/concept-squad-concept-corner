@@ -36,7 +36,8 @@ module.exports = {
 
   getQuestions: `
     SELECT 
-      question_id, username, title, description, time, view_count, no_of_answers
+      question_id, username, title, description,
+      time, last_modified, view_count, no_of_answers
     FROM 
       questions 
     ORDER BY 
@@ -45,7 +46,8 @@ module.exports = {
 
   getAnswers: `
     SELECT
-      username, answer_id, answer, up_vote, down_vote, accepted, time
+      username, answer_id, answer, up_vote,
+      down_vote, accepted, time, last_modified
     FROM
       answers
     WHERE
@@ -56,9 +58,10 @@ module.exports = {
 
   getQuestion: `
   SELECT 
-    question_id, username, title, description, time, view_count
+    question_id, username, title, description,
+    time, last_modified, view_count, no_of_answers
   FROM 
     questions
   WHERE question_id = ?;
-`
+`,
 };

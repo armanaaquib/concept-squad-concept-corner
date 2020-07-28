@@ -1,7 +1,5 @@
+require('dotenv').config();
 const { env } = process;
-const dotenv = require('dotenv');
-
-dotenv.config();
 
 const getDBFilePath = () => {
   const fileName = env.CONCEPT_CORNER_DB || 'concept-corner.db';
@@ -33,5 +31,5 @@ module.exports = {
   getClientId,
   getClientSecret,
   getAuthLink,
-  getSessionSecretKey
+  getSessionSecretKey,
 };

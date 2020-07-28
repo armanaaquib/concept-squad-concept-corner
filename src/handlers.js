@@ -1,15 +1,15 @@
 const formidable = require('formidable');
-const { getAuthLink } = require('../config');
 const authUtils = require('./authUtils');
+const { getAuthLink } = require('../config');
 
 const loadHomePage = function (req, res) {
   const { user } = req.session;
-  const { users, questions } = req.app.locals;
+  const { users, dataStore } = req.app.locals;
   users.hasUser(user).then((userDetails) => {
     const { username, profilePic } = userDetails;
     req.session.username = username;
     req.session.profilePic = profilePic;
-    questions.all().then((questions) => {
+    dataStore.getQuestions().then((questions) => {
       res.render('index', {
         authLink: getAuthLink(),
         user: username,
@@ -32,7 +32,6 @@ const confirmDetails = (req, res) => {
     req.session.user = userInfo.username;
     res.end();
   });
-  //res.end();
 };
 
 const confirmUser = (req, res) => {
@@ -64,6 +63,7 @@ const hasUser = function (req, res) {
 
 const servePostQuestionPage = (req, res) => {
   const { username, profilePic } = req.session;
+  //need a middleware
   if (!username) {
     res.redirect('/');
     return;
@@ -75,10 +75,10 @@ const servePostQuestionPage = (req, res) => {
 
 const serveQuestionPage = (req, res) => {
   const { questionId } = req.params;
-  const { questions, answers } = req.app.locals;
+  const { dataStore } = req.app.locals;
   const { username, profilePic } = req.session;
-  questions.get(questionId).then(async (question) => {
-    const answerList = await answers.of(questionId);
+  dataStore.getQuestion(questionId).then(async (question) => {
+    const answerList = await dataStore.getAnswers(questionId);
     res.render('question', {
       question,
       user: username,
@@ -93,9 +93,9 @@ const serveQuestionPage = (req, res) => {
 const postQuestion = (req, res) => {
   const { title, description } = req.body;
   const { username } = req.session;
-  const { questions } = req.app.locals;
-  questions.add({ username, title, description }).then((questionId) => {
-    res.json(JSON.stringify(questionId));
+  const { dataStore } = req.app.locals;
+  dataStore.addQuestion({ username, title, description }).then((questionId) => {
+    res.json(questionId);
     res.end();
   });
 };
@@ -103,9 +103,9 @@ const postQuestion = (req, res) => {
 const postAnswer = (req, res) => {
   const { questionId, answer } = req.body;
   const { username } = req.session;
-  const { answers } = req.app.locals;
-  answers
-    .add(username, questionId, answer)
+  const { dataStore } = req.app.locals;
+  dataStore
+    .addAnswer(username, questionId, answer)
     .then(() => res.redirect(`/question/${questionId}`));
 };
 

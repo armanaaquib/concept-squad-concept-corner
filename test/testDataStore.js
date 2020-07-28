@@ -5,15 +5,15 @@ const { getDBFilePath } = require('../config');
 
 const DataStore = require('../database/dataStore.js');
 
-describe('DataStore', function() {
+describe('DataStore', function () {
   let dataStore;
   beforeEach(() => {
     const db = new sqlite.Database(getDBFilePath());
     dataStore = new DataStore(db);
   });
 
-  context('addUser', function() {
-    it('should add a user', async function() {
+  context('addUser', function () {
+    it('should add a user', async function () {
       const status = await dataStore.addUser({
         username: 'ram',
         authLogin: 'ram',
@@ -24,15 +24,15 @@ describe('DataStore', function() {
         title: 'Developer',
         aboutMe: 'Good person',
         company: null,
-        profilePic: null
+        profilePic: null,
       });
 
       assert.ok(status);
     });
   });
 
-  context('getUser', function() {
-    it('should resolve user details if user is available', async function() {
+  context('getUser', function () {
+    it('should resolve user details if user is available', async function () {
       const user = await dataStore.getUser('jake');
 
       assert.deepStrictEqual(user, {
@@ -43,38 +43,38 @@ describe('DataStore', function() {
         title: 'project manager',
         aboutMe: null,
         company: null,
-        profilePic: null
+        profilePic: null,
       });
     });
 
-    it('should resolve undefined if user is not available', async function() {
+    it('should resolve undefined if user is not available', async function () {
       const user = await dataStore.getUser('Bold');
       assert.isUndefined(user);
     });
   });
 
-  context('addQuestion', function() {
-    it('should add a question', async function() {
+  context('addQuestion', function () {
+    it('should add a question', async function () {
       const questionId = await dataStore.addQuestion({
         username: 'michel',
         title: 'question title',
-        description: 'question description'
+        description: 'question description',
       });
 
       assert.strictEqual(questionId, 6);
     });
   });
 
-  context('addAnswer', function() {
-    it('should add a answer', async function() {
+  context('addAnswer', function () {
+    it('should add a answer', async function () {
       const answerId = await dataStore.addAnswer('michel', 1, 'answer');
       assert.strictEqual(answerId, 6);
     });
   });
 
-  context('getQuestions', function() {
-    it('should gives all questions in reverse order by date', function(done) {
-      exec('npm run populate_test_data', () => {
+  context('getQuestions', function () {
+    it('should gives all questions in reverse order by date', function (done) {
+      exec('npm run populate-test-data', () => {
         const db = new sqlite.Database(getDBFilePath());
         dataStore = new DataStore(db);
 
@@ -85,8 +85,9 @@ describe('DataStore', function() {
             title: 'Question 5',
             description: 'Description 5',
             time: new Date('2020-07-21 11:24:35'),
+            lastModified: null,
             views: 9,
-            noOfAnswers: 3
+            noOfAnswers: 3,
           },
           {
             questionId: 4,
@@ -94,8 +95,9 @@ describe('DataStore', function() {
             title: 'Question 4',
             description: 'Description 4',
             time: new Date('2020-07-21 11:20:35'),
+            lastModified: null,
             views: 7,
-            noOfAnswers: 0
+            noOfAnswers: 0,
           },
           {
             questionId: 3,
@@ -103,8 +105,9 @@ describe('DataStore', function() {
             title: 'Question 3',
             description: null,
             time: new Date('2020-07-21 11:15:35'),
+            lastModified: null,
             views: 5,
-            noOfAnswers: 0
+            noOfAnswers: 0,
           },
           {
             questionId: 2,
@@ -112,8 +115,9 @@ describe('DataStore', function() {
             title: 'Question 2',
             description: 'Description 2',
             time: new Date('2020-07-20 11:24:35'),
+            lastModified: null,
             views: 9,
-            noOfAnswers: 2
+            noOfAnswers: 2,
           },
           {
             questionId: 1,
@@ -121,12 +125,13 @@ describe('DataStore', function() {
             title: 'Question Title 1',
             description: 'Description 1',
             time: new Date('2020-07-20 11:20:35'),
+            lastModified: null,
             views: 10,
-            noOfAnswers: 0
-          }
+            noOfAnswers: 0,
+          },
         ];
 
-        dataStore.getQuestions().then(questions => {
+        dataStore.getQuestions().then((questions) => {
           assert.deepStrictEqual(questions, expectedQuestions);
           done();
         });
@@ -134,25 +139,25 @@ describe('DataStore', function() {
     });
   });
 
-  context('getRegisteredUser', function() {
-    it('should resolve user details if user is available', async function() {
+  context('getRegisteredUser', function () {
+    it('should resolve user details if user is available', async function () {
       const user = await dataStore.getRegisteredUser('jake', 'github');
 
       assert.deepStrictEqual(user, {
         username: 'jake',
         authLogin: 'jake',
-        authSource: 'github'
+        authSource: 'github',
       });
     });
 
-    it('should resolve undefined if user is not available', async function() {
+    it('should resolve undefined if user is not available', async function () {
       const user = await dataStore.getUser('Bold');
       assert.isUndefined(user);
     });
   });
 
-  context('getAnswers', function() {
-    it('should gives all answers of given question in order by date', function(done) {
+  context('getAnswers', function () {
+    it('should gives all answers of given question in order by date', function (done) {
       exec('npm run populate_test_data', () => {
         const db = new sqlite.Database(getDBFilePath());
         dataStore = new DataStore(db);
@@ -165,7 +170,8 @@ describe('DataStore', function() {
             upVote: 10,
             downVote: 3,
             accepted: true,
-            time: new Date('2020-07-20 11:20:35')
+            time: new Date('2020-07-20 11:20:35'),
+            lastModified: null,
           },
           {
             username: 'bryce',
@@ -174,7 +180,8 @@ describe('DataStore', function() {
             upVote: 10,
             downVote: 3,
             accepted: false,
-            time: new Date('2020-07-21 11:20:35')
+            time: new Date('2020-07-21 11:20:35'),
+            lastModified: null,
           },
           {
             username: 'jake',
@@ -183,11 +190,12 @@ describe('DataStore', function() {
             upVote: 10,
             downVote: 3,
             accepted: false,
-            time: new Date('2020-07-21 12:20:35')
-          }
+            time: new Date('2020-07-21 12:20:35'),
+            lastModified: null,
+          },
         ];
 
-        dataStore.getAnswers(5).then(answers => {
+        dataStore.getAnswers(5).then((answers) => {
           assert.deepStrictEqual(answers, expectedAnswers);
           done();
         });
@@ -195,9 +203,9 @@ describe('DataStore', function() {
     });
   });
 
-  context('getQuestion', function() {
-    it('should gives question according to the question id', function(done) {
-      exec('npm run populate_test_data', () => {
+  context('getQuestion', function () {
+    it('should gives question according to the question id', function (done) {
+      exec('npm run populate-test-data', () => {
         const db = new sqlite.Database(getDBFilePath());
         dataStore = new DataStore(db);
 
@@ -207,10 +215,12 @@ describe('DataStore', function() {
           title: 'Question 5',
           description: 'Description 5',
           time: new Date('2020-07-21 11:24:35'),
-          views: 9
+          lastModified: null,
+          views: 9,
+          noOfAnswers: 3,
         };
 
-        dataStore.getQuestion(5).then(question => {
+        dataStore.getQuestion(5).then((question) => {
           assert.deepStrictEqual(question, expectedQuestion);
           done();
         });

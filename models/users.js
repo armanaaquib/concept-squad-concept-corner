@@ -8,10 +8,10 @@ class Users {
   }
 
   hasUser(username) {
-    return new Promise(resolve => {
-      this.dataStore.getUser(username).then(userDetails => {
+    return new Promise((resolve) => {
+      this.dataStore.getUser(username).then((userDetails) => {
         const details = userDetails || {};
-        resolve( {username: details.username, profilePic: details.profilePic});
+        resolve({ username: details.username, profilePic: details.profilePic });
       });
     });
   }
@@ -20,4 +20,5 @@ class Users {
     return this.dataStore.getRegisteredUser(login, source);
   }
 }
+
 module.exports = Users;
