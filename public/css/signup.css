@@ -1,39 +1,25 @@
 
 .confirm-page-form{
 	display: flex;
-	width: 80%;
 	flex-flow: row;
 	margin: 0 auto;
 	flex-wrap: wrap;
-	justify-content: space-evenly;
+	justify-content: space-between;
 }
-.header{
-	width: 90%;
-	margin: 0 auto;
-	margin-bottom: 3rem;
-}
-.header-text {
-	font-weight: 900;
-	width: 90%;
-	font-size: 1.7rem;
-	justify-content: center;
-	line-height: 3rem;
-	border-bottom: 2px solid lightgray;
-}
+
 .profile {
 	display: flex;
 	flex-wrap: wrap;
 	flex-flow: column;
 	overflow: hidden;
 	border: 1px solid lightgray;
-	height: 11rem;
-	width: 17%;
+	height: 14rem;
 	margin-top: 7rem;
-	top: 1rem;
-	justify-content: flex-end;
+  border-radius: 5px;
+
 }
+
 .details {
-	width: 46%;
 	display: flex;
 	flex-flow: column;
 	justify-content: space-evenly;

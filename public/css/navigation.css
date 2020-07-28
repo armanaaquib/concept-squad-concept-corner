@@ -5,6 +5,9 @@
   justify-content: space-between;
   height: 7rem;
   align-items: center;
+  flex: 0 0 auto;
+  border-bottom: 1px solid lightgray;
+  box-shadow: 1px 1px 11px 0px lightgrey;
 }
 
 .logo {
@@ -30,18 +33,7 @@
   font-weight: 600;
   color: black;
 }
-/* .list > div {
-  height: 3rem;
-}
-.list > div:after {
-  content: '';
-  display: block;
-  margin: auto;
-  height: 3px;
-  width: 0px;
-  background: transparent;
-  transition: width 0.5s ease, background-color 0.5s ease;
-} */
+
 div:hover:after {
   width: 100%;
   background: rgb(0, 195, 255);
