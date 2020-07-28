@@ -16,6 +16,7 @@
 }
 
 #q-desc {
+  font-size: 15px;
   margin-top: 1rem;
   padding: 1rem;
   border: none;
@@ -52,7 +53,6 @@
     line-height: 3.2rem;
     width: 100%;
     border-top: 3px solid lightgray;
-
 }
 .answer .a-detail{
   display: flex;
@@ -70,4 +70,6 @@
 
 .a-detail .description {
   border: none;
+  font-size: 15px;
+  width: 95%;
 }

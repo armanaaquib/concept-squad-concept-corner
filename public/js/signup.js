@@ -43,6 +43,7 @@ const checkUserName = function(userNameField) {
     .then(res => res.json())
     .then(status => {
       if (status.available) {
+        confirmBtn.removeAttr('disabled');
         userNameMessage.innerText = 'Username is available';
         userNameMessage.classList.remove('failure');
         userNameMessage.classList.add('success');

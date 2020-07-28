@@ -3,6 +3,9 @@
   font-family: sans-serif;
   font-size: 15px;
 }
+.question{
+  margin-top: 3rem;
+}
 .header-text {
   font-weight: 500;
 }

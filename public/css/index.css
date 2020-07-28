@@ -1,8 +1,11 @@
 body {
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
   margin: 0px;
   word-spacing: 4px;
   margin-bottom: 5rem;
+}
+.h2{
+  margin: 0.2rem auto;
 }
 .failure {
   padding: 0.2rem;
@@ -51,14 +54,14 @@ body {
 .inputBox.content_active label {
   font-size: 12px;
   top: 0;
-  padding-top: 3px;
+  padding-top: 4px;
 }
 .inputBox label {
   position: absolute;
   font-size: 1rem;
   z-index: 1;
   color: gray;
-  top: 0.5rem;
+  top: 1rem;
   z-index: 0;
   left: 0.5rem;
   transition: all 0.3s ease;
@@ -76,6 +79,9 @@ body {
   box-shadow: 0;
   z-index: 1;
   background: transparent;
+}
+.inputBox input:-internal-autofill-selected{
+  background: none !important;
 }
 .primary-btn {
   background-color: #3d8af7;
