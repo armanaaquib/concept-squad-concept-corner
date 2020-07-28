@@ -2,30 +2,30 @@ const formidable = require('formidable');
 const authUtils = require('./authUtils');
 const { getAuthLink } = require('../config');
 
-const loadHomePage = function (req, res) {
+const loadHomePage = function(req, res) {
   const { user } = req.session;
   const { dataStore } = req.app.locals;
   dataStore
     .getUser(user)
-    .then((userDetails) => {
+    .then(userDetails => {
       const { username, profilePic } = userDetails;
       req.session.username = username;
       req.session.profilePic = profilePic;
-      dataStore.getQuestions().then((questions) => {
+      dataStore.getQuestions().then(questions => {
         res.render('index', {
           authLink: getAuthLink(),
           user: username,
           questions,
-          profilePic,
+          profilePic
         });
         res.end();
       });
     })
     .catch(() => {
-      dataStore.getQuestions().then((questions) => {
+      dataStore.getQuestions().then(questions => {
         res.render('index', {
           authLink: getAuthLink(),
-          questions,
+          questions
         });
         res.end();
       });
@@ -35,7 +35,7 @@ const loadHomePage = function (req, res) {
 const confirmDetails = (req, res) => {
   const { dataStore } = req.app.locals;
   const form = new formidable.IncomingForm();
-  form.parse(req, function (err, userInfo) {
+  form.parse(req, function(err, userInfo) {
     if (err) {
       res.end();
     }
@@ -67,10 +67,10 @@ const confirmUser = (req, res) => {
     });
 };
 
-const hasUser = function (req, res) {
+const hasUser = function(req, res) {
   const { username } = req.params;
   const { dataStore } = req.app.locals;
-  dataStore.getUser(username).then((user) => {
+  dataStore.getUser(username).then(user => {
     res.json({ available: user ? false : true });
   });
 };
@@ -91,14 +91,14 @@ const serveQuestionPage = (req, res) => {
   const { questionId } = req.params;
   const { dataStore } = req.app.locals;
   const { username, profilePic } = req.session;
-  dataStore.getQuestion(questionId).then(async (question) => {
+  dataStore.getQuestion(questionId).then(async question => {
     const answerList = await dataStore.getAnswers(questionId);
     res.render('question', {
       question,
       user: username,
       profilePic,
       authLink: getAuthLink(),
-      answers: answerList,
+      answers: answerList
     });
     res.end();
   });
@@ -108,7 +108,7 @@ const postQuestion = (req, res) => {
   const { title, description } = req.body;
   const { username } = req.session;
   const { dataStore } = req.app.locals;
-  dataStore.addQuestion({ username, title, description }).then((questionId) => {
+  dataStore.addQuestion({ username, title, description }).then(questionId => {
     res.json(questionId);
     res.end();
   });
@@ -131,5 +131,5 @@ module.exports = {
   confirmUser,
   confirmDetails,
   hasUser,
-  postAnswer,
+  postAnswer
 };
