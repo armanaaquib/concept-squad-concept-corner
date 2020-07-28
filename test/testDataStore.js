@@ -49,8 +49,8 @@ describe('DataStore', function () {
     });
 
     it('should reject if user is not available', function (done) {
-      dataStore.getUser('Bold').catch((err) => {
-        assert.deepStrictEqual(err, { message: 'user does not exist.' });
+      dataStore.getUser('Bold').then((user) => {
+        assert.isUndefined(user);
         done();
       });
     });
@@ -65,8 +65,8 @@ describe('DataStore', function () {
     });
 
     it('should resolve undefined if user is not available', function (done) {
-      dataStore.getUser('Bold').catch((err) => {
-        assert.deepStrictEqual(err, { message: 'user does not exist.' });
+      dataStore.getUser('Bold').then((user) => {
+        assert.isUndefined(user);
         done();
       });
     });
