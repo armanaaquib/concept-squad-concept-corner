@@ -1,6 +1,6 @@
 mixin questionCard(question)
-	- var date = question.time 
-	div.question-card
+	- var date = question.time
+	.col-8.question-card
 		div.question-head 
 			a(href=`/question/${question.questionId}`)
 				h3 #{question.title}

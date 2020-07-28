@@ -4,11 +4,12 @@ block head
 	title Concept Corner
 	link(rel="stylesheet", href="/css/questionCard.css")
 block container
-	div.container
-		.post-btn
-			if user
-				a(href="/postQuestion")
-					.btn
-						button.primary-btn Post Question
-		each question in questions
-			+questionCard(question)
+	div.row
+		.col.page
+			.col-8.post-btn
+				if user
+					a(href="/postQuestion")
+						.btn
+							button.primary-btn Post Question
+			each question in questions
+				+questionCard(question)

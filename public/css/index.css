@@ -35,12 +35,61 @@ body {
 .container {
   display: flex;
   flex-flow: column;
-  width: 70%;
+  width: 100%;
   justify-content: space-evenly;
-  margin: 0 auto;
-  margin-top: 3rem;
   flex-wrap: wrap;
 }
+.row {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.col{
+  flex: 0 0  auto;
+  width: 100%;
+}
+.col-12 .col-10 .col-9 .col-8 .col-7 .col-6{
+  min-height: 1rem;
+  width: 100%;
+  position: relative;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+.col-12 {
+  max-width: calc(100%);
+  flex: 0 0  calc(100%);
+
+}
+.col-10 {
+  max-width: 80%;
+  display: flex;
+  flex: 0 0  80%;
+
+}
+.col-9 {
+  max-width: 70%;
+  display: flex;
+  flex: 0 0  70%;
+
+}
+.col-8 {
+  max-width: 60%;
+  display: flex;
+  flex: 0 0  60%;
+}
+
+.col-7 {
+  max-width: 50%;
+  display: flex;
+  flex: 0 0  50%;
+}
+
+.col-6 {
+  width: 40%;
+  display: flex;
+}
+
 .details {
   width: 46%;
   display: flex;
@@ -80,6 +129,10 @@ body {
   z-index: 1;
   background: transparent;
 }
+.page>*{
+  margin: 0 auto;
+  flex-flow: column;
+}
 .inputBox input:-internal-autofill-selected{
   background: none !important;
 }
@@ -97,12 +150,9 @@ body {
   height: 100px;
 }
 
-.post-btn {
-  display: flex;
+.post-btn{
   flex-direction: row-reverse;
-  padding: 0 1vw;
 }
-
 .post-btn button {
   cursor: pointer;
 }
@@ -159,4 +209,10 @@ body {
 .required {
   color: #b70f0a;
   padding-left: 0.2em;
+}
+.btn{
+  margin-top: 3rem;
+}
+#editor-container{
+  height:20rem;
 }

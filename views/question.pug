@@ -11,32 +11,33 @@ block head
 	script(src='/js/editor.js')
 
 block container
-	.container
-		.post-btn
-			if user
-				a(href="/postQuestion")
-					.btn
-						button.primary-btn Post Question
-		.question
-			.q-title #{question.title}
-			#q-desc
-			div.tags(style="margin-top: 0.5rem")
-						div.tag tag1
-						div.tag tag2
-						div.tag tag3
-			.q-detail
-				.views #{question.views} Views
-				.user
-					.username #{question.username}
-					.date(id=`${question.questionId}date`)
-		.noOfAnswers #{answers.length} Answer(s)
-		.answers
-			each answer in answers
-				+answerCard(answer)
-	
-	script.
-		date = !{JSON.stringify(question.time)};
-		id = !{JSON.stringify(`${question.questionId}date`)};
-		document.getElementById(id).innerText = getDate(date);
-		showDescription(!{question.description}, 'q-desc')
+	div.row
+		.col.page
+			.col-9.post-btn
+				if user
+					a(href="/postQuestion")
+						.btn
+							button.primary-btn Post Question
+			.col-9.question
+				.q-title #{question.title}
+				#q-desc
+				div.tags(style="margin-top: 0.5rem")
+							div.tag tag1
+							div.tag tag2
+							div.tag tag3
+				.q-detail
+					.views #{question.views} Views
+					.user
+						.username #{question.username}
+						.date(id=`${question.questionId}date`)
+			.col-10.noOfAnswers #{answers.length} Answer(s)
+			.col-9.answers
+				each answer in answers
+					+answerCard(answer)
+		
+		script.
+			date = !{JSON.stringify(question.time)};
+			id = !{JSON.stringify(`${question.questionId}date`)};
+			document.getElementById(id).innerText = getDate(date);
+			showDescription(!{question.description}, 'q-desc')
 		

@@ -6,15 +6,11 @@ h3 {
 	display: flex;
 	flex-flow: column;
 	border: 1px solid lightgray;
-	justify-content: center;
-	padding: 12px;
-	padding-left: 2rem;
-	padding-right: 2rem;
+	padding: 1rem;
 	margin: 0 auto;
 	box-sizing: border-box;
-	width: 97%;
-	margin-top: 2.5rem;
-	margin-bottom: 2.5rem;
+	margin-top: 1.5rem;
+	margin-bottom: 1.5rem;
 	border-radius: 5px;
 }
 

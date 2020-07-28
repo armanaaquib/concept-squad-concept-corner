@@ -8,24 +8,25 @@ block head
 	link(href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css", rel="stylesheet")
 	link(rel="stylesheet", href="/css/postQuestion.css")
 block container
-	.container
-		.header
-			h2.header-text Post your question
-			hr
-		.question
-			.inputBox
-				input#title(type="text", name="title",value="" onchange='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
-				label(for="username") Heading
-					span.required *
+	.row
+		.col.page
+			.col-8.header
+				h2.header-text Post your question
+				hr
+			.col-8.question
+				.col-12.inputBox
+					input#title(type="text", name="title",value="" onchange='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
+					label(for="username") Heading
+						span.required *
+					br
+				p.errorMsg#errorTitle
 				br
-			p.errorMsg#errorTitle
-			br
-			#editor-container
-			script(src="js/editor.js")
-			.btn
-				button.primary-btn(type='button' , onclick="postQuestion()") Post Question
-				a(href=cancelUrl)
-					button.cancel-btn(type='button') Cancel
+				.col-12#editor-container
+				script(src="js/editor.js")
+				.col-12.btn
+					button.primary-btn(type='button' , onclick="postQuestion()") Post Question
+					a(href=cancelUrl)
+						button.cancel-btn(type='button') Cancel
 
 	script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js")
 	script(src="https://cdn.quilljs.com/1.3.6/quill.js")
