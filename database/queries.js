@@ -27,7 +27,7 @@ module.exports = {
 
   getRegisteredUser: `
       SELECT 
-        auth_login, auth_source, username 
+        username 
       FROM 
         users 
       WHERE
@@ -63,5 +63,5 @@ module.exports = {
   FROM 
     questions
   WHERE question_id = ?;
-`,
+`
 };
