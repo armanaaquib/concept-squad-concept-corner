@@ -1,10 +1,16 @@
-const createSessionId = function() {
-  return (Date.now() + Math.random()).toString().replace('.', '');
-};
-
 class Sessions {
   constructor() {
     this.sessionList = {};
+  }
+
+  generateSessionId() {
+    const id1 = Date.now()
+      .toString(36)
+      .slice(0, 4);
+    const id2 = Math.random()
+      .toString(36)
+      .substr(2, 5);
+    return id1 + id2;
   }
 
   getSession(sessionId) {
@@ -12,7 +18,7 @@ class Sessions {
   }
 
   createSession() {
-    const sessionId = createSessionId();
+    const sessionId = this.generateSessionId();
     this.sessionList[sessionId] = {};
     return sessionId;
   }
