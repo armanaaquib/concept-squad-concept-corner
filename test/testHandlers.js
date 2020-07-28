@@ -5,7 +5,6 @@ const authUtils = require('../src/authUtils');
 
 describe('handlers', function () {
   this.beforeEach(() => {
-    app.locals.users = {};
     app.locals.dataStore = {};
   });
 
@@ -35,27 +34,27 @@ describe('handlers', function () {
 
   context('/confirmAndSignUp', function () {
     it('should add User', function (done) {
-      this.timeout(4000);
-      app.locals.users['add'] = mock().returns(Promise.resolve(true));
+      const userDetail = {
+        username: 'michel',
+        authLogin: 'michel',
+        authSource: 'github',
+        name: 'michel shawn',
+        emailId: 'michel@gmail.com',
+        location: 'new york',
+        title: 'developer',
+        aboutMe:
+          'java developer worked for 20 years across different companies',
+        company: 'apple',
+        profilePic: '',
+      };
+
+      app.locals.dataStore['addUser'] = mock().returns(Promise.resolve(true));
+
       request(app)
         .post('/confirmAndSignUp')
         .set('Content-Type', 'multipart/form-data')
-        .send(
-          JSON.stringify({
-            username: 'michel',
-            authLogin: 'michel',
-            authSource: 'github',
-            name: 'michel shawn',
-            emailId: 'michel@gmail.com',
-            location: 'new york',
-            title: 'developer',
-            aboutMe:
-              'java developer worked for 20 years across different companies',
-            company: 'apple',
-            profilePic: '',
-          })
-        )
-        .expect(200, done);
+        .send(JSON.stringify(userDetail))
+        .expect(302, done);
     });
   });
 
@@ -105,26 +104,25 @@ describe('handlers', function () {
 
   context('/hasUser', function () {
     it('should give availability as true when it has not user with the same name', function (done) {
-      app.locals.users['hasUser'] = mock()
+      app.locals.dataStore['getUser'] = mock()
         .withArgs('AbC')
-        .returns(Promise.resolve({ username: undefined }));
+        .returns(Promise.resolve(undefined));
 
       request(app)
         .get('/hasUser/AbC')
         .set('Content-Type', 'application/json')
-
         .expect({ available: true })
         .expect(200, done);
     });
+
     it('should give availability as false when it has user with the same name', function (done) {
-      app.locals.users['hasUser'] = mock()
+      app.locals.dataStore['getUser'] = mock()
         .withArgs('michel')
         .returns(Promise.resolve({ username: 'michel' }));
 
       request(app)
         .get('/hasUser/michel')
         .set('Content-Type', 'application/json')
-
         .expect({ available: false })
         .expect(200, done);
     });

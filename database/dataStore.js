@@ -1,5 +1,18 @@
 const queries = require('./queries');
 
+const wrapUser = (row) => {
+  return {
+    username: row.username,
+    name: row.name,
+    email: row.email,
+    location: row.location,
+    title: row.title,
+    aboutMe: row.about_me,
+    company: row.company,
+    profilePic: row.profile_pic,
+  };
+};
+
 const wrapQuestion = (row) => {
   return {
     questionId: row.question_id,
@@ -59,18 +72,11 @@ class DataStore {
     return new Promise((resolve, reject) => {
       this.db.get(queries.getUser, [username], (err, row) => {
         err && reject(err);
-
-        const user = row && {
-          username: row.username,
-          name: row.name,
-          email: row.email,
-          location: row.location,
-          title: row.title,
-          aboutMe: row.about_me,
-          company: row.company,
-          profilePic: row.profile_pic,
-        };
-        resolve(user);
+        if (!row) {
+          reject({ message: 'user does not exist.' });
+          return;
+        }
+        resolve(wrapUser(row));
       });
     });
   }
@@ -82,14 +88,11 @@ class DataStore {
         [authLogin, authSource],
         (err, row) => {
           err && reject(err);
-
-          const details = row || {};
-          const registeredUser = {
-            authLogin: details.auth_login,
-            authSource: details.auth_source,
-            username: details.username,
-          };
-          resolve(registeredUser);
+          if (!row) {
+            reject({ message: 'user does not exist.' });
+            return;
+          }
+          resolve({ username: row.username });
         }
       );
     });
@@ -102,7 +105,6 @@ class DataStore {
         [question.username, question.title, question.description],
         function (err) {
           err && reject(err);
-
           resolve(this.lastID);
         }
       );
@@ -113,6 +115,10 @@ class DataStore {
     return new Promise((resolve, reject) => {
       this.db.get(queries.getQuestion, [questionId], (err, row) => {
         err && reject(err);
+        if (!row) {
+          reject({ message: 'user does not exist.' });
+          return;
+        }
         resolve(wrapQuestion(row));
       });
     });

@@ -6,15 +6,10 @@ const config = require('../config');
 const handlers = require('./handlers');
 const DataStore = require('../database/dataStore');
 
-const Users = require('../models/users');
-
 const app = express();
 
 const db = new sqlite.Database(config.getDBFilePath());
 app.locals.dataStore = new DataStore(db);
-const dataStore = new DataStore(db);
-
-app.locals.users = new Users(dataStore);
 
 app.set('view engine', 'pug');
 app.use(express.static('public'));

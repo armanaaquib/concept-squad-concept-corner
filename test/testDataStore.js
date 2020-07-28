@@ -32,24 +32,43 @@ describe('DataStore', function () {
   });
 
   context('getUser', function () {
-    it('should resolve user details if user is available', async function () {
-      const user = await dataStore.getUser('jake');
-
-      assert.deepStrictEqual(user, {
-        username: 'jake',
-        name: 'jake shawn',
-        email: 'jake@gmail.com',
-        location: 'london',
-        title: 'project manager',
-        aboutMe: null,
-        company: null,
-        profilePic: null,
+    it('should resolve user details if user is available', function (done) {
+      dataStore.getUser('jake').then((user) => {
+        assert.deepStrictEqual(user, {
+          username: 'jake',
+          name: 'jake shawn',
+          email: 'jake@gmail.com',
+          location: 'london',
+          title: 'project manager',
+          aboutMe: null,
+          company: null,
+          profilePic: null,
+        });
+        done();
       });
     });
 
-    it('should resolve undefined if user is not available', async function () {
-      const user = await dataStore.getUser('Bold');
-      assert.isUndefined(user);
+    it('should reject if user is not available', function (done) {
+      dataStore.getUser('Bold').catch((err) => {
+        assert.deepStrictEqual(err, { message: 'user does not exist.' });
+        done();
+      });
+    });
+  });
+
+  context('getRegisteredUser', function () {
+    it('should resolve user details if user is available', function (done) {
+      dataStore.getRegisteredUser('jake', 'github').then((user) => {
+        assert.deepStrictEqual(user, { username: 'jake' });
+        done();
+      });
+    });
+
+    it('should resolve undefined if user is not available', function (done) {
+      dataStore.getUser('Bold').catch((err) => {
+        assert.deepStrictEqual(err, { message: 'user does not exist.' });
+        done();
+      });
     });
   });
 
@@ -136,23 +155,6 @@ describe('DataStore', function () {
           done();
         });
       });
-    });
-  });
-
-  context('getRegisteredUser', function () {
-    it('should resolve user details if user is available', async function () {
-      const user = await dataStore.getRegisteredUser('jake', 'github');
-
-      assert.deepStrictEqual(user, {
-        username: 'jake',
-        authLogin: 'jake',
-        authSource: 'github',
-      });
-    });
-
-    it('should resolve undefined if user is not available', async function () {
-      const user = await dataStore.getUser('Bold');
-      assert.isUndefined(user);
     });
   });
 
