@@ -2,7 +2,6 @@ body {
   font-family: "Roboto", sans-serif;
   margin: 0px;
   word-spacing: 4px;
-  margin-bottom: 5rem;
   height: 100vh;
   display: flex;
   flex-flow: column;
@@ -51,7 +50,6 @@ body a{
   width: 100%;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  padding-top: 3rem;
   height: 100%;
   overflow: hidden;
 }
@@ -152,8 +150,7 @@ body a{
 } */
 .inputBox {
   position: relative;
-  border: 1px solid lightgray;
-  border-radius: 5px;
+ 
 }
 .inputBox.content_active label {
   font-size: 12px;
@@ -171,6 +168,8 @@ body a{
   transition: all 0.3s ease;
 }
 .inputBox input{
+  border: 1px solid lightgray;
+  border-radius: 5px;
   position: relative;
   padding: 0.5rem;
   padding-top: 1.4rem;
@@ -179,9 +178,11 @@ body a{
   padding-left: 1rem;
   box-shadow: none;
   box-sizing: border-box;
-  border:none;
   z-index: 1;
   background: transparent;
+}
+.page{
+  margin-bottom: 5rem;
 }
 .page>*{
   margin: 0 auto;

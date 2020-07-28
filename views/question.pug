@@ -19,18 +19,22 @@ block container
 						.btn
 							button.primary-btn Post Question
 			.col-9.question
-				.q-title #{question.title}
-				#q-desc
-				div.tags(style="margin-top: 0.5rem")
-							div.tag tag1
-							div.tag tag2
-							div.tag tag3
-				.q-detail
-					.views #{question.views} Views
-					.user
+				.col-12.q-title #{question.title}
+				.col-12#q-desc
+				.col-12.tags
+							.col-1
+								.tag tag1
+							.col-1
+								.tag tag2
+							.col-1
+								.tag tag3
+				.col-12.q-detail
+					.col-6.views #{question.views} Views
+					.col-6.user
 						.username #{question.username}
 						.date(id=`${question.questionId}date`)
-			.col-10.noOfAnswers #{answers.length} Answer(s)
+			.col-10.noOfAnswers 
+				.col-11 #{answers.length} Answer(s)
 			.col-9.answers
 				each answer in answers
 					+answerCard(answer)

@@ -10,12 +10,13 @@
 .profile {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: flex-end;
 	flex-flow: column;
 	overflow: hidden;
 	border: 1px solid lightgray;
 	height: 14rem;
 	margin-top: 7rem;
-  border-radius: 5px;
+	border-radius: 5px;
 
 }
 
@@ -24,6 +25,7 @@
 	flex-flow: column;
 	justify-content: space-evenly;
 	min-height: 50rem;
+	margin: 0 auto;
 }
 .details textarea{
 	margin: 0px;
@@ -38,13 +40,18 @@
 }
 .uploaded-image {
 	margin: 0 auto;
-	min-height: 9rem;
 	width: 100%;
+	min-height: 11rem;
+	box-sizing: border-box;
 	padding-bottom: unset;
 }
 .btn-uploadPic {
 	border: none;
+	border-top: 1px solid #e7e7e7;
 	width: 100%;
-	padding: non;
+	padding: none;
 	height: 3rem;
+	font-weight: 900;
+	cursor: pointer;
+
 }

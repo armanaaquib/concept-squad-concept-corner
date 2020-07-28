@@ -13,12 +13,12 @@ block container
 			.col-8.header
 				h2.header-text Confirm your details
 			form.col-8.confirm-page-form(action="javascript:void(0)" method="POST" onsubmit='confirmAndSignUp(event, ' + JSON.stringify(userDetails) + ')')
-				.col-5
-					.col-9.profile
+				.col-4
+					.col-7.profile
 						input.upload-image(type="file", accept='image/*' name="uploadImage", onchange='readUrl(event)')
-						img.col-10.uploaded-image(src="/images/avatar.png", alt="",data-url='' srcset="")
-						button.col-2.btn-uploadPic(type='button', onclick='callEvent()') Upload picture
-				.col-7.details#details
+						img.uploaded-image(src="/images/avatar.png", alt="",data-url='' srcset="")
+						button.primary-btn.btn-uploadPic(type='button', onclick='callEvent()') Upload picture
+				.col-6.details#details
 					.inputBox
 						input(type="text", name="username",value="" id='username'  onchange='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="username") Username
@@ -55,7 +55,7 @@ block container
 					script.
 						addContentActiveToAll()
 					.col-8.btn
-						button#confirmBtn.primary-btn(type="submit") Post Question
+						button#confirmBtn.primary-btn(type="submit") Confirm
 						a(href='/')
 							button.cancel-btn(type='button') Cancel
 						

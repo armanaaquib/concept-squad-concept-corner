@@ -36,7 +36,6 @@ h3 {
 .question-details {
 	display: flex;
 	flex-flow: row;
-	justify-content: space-between;
 	color: rgb(168 168 168);
 	padding-top: 2rem;
 	align-items: center;
