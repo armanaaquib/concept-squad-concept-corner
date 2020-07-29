@@ -1,6 +1,6 @@
 const queries = require('./queries');
 
-const wrapUser = row => {
+const wrapUser = (row) => {
   return {
     username: row.username,
     name: row.name,
@@ -9,11 +9,11 @@ const wrapUser = row => {
     title: row.title,
     aboutMe: row.about_me,
     company: row.company,
-    profilePic: row.profile_pic
+    profilePic: row.profile_pic,
   };
 };
 
-const wrapQuestion = row => {
+const wrapQuestion = (row) => {
   return {
     questionId: row.question_id,
     username: row.username,
@@ -23,11 +23,11 @@ const wrapQuestion = row => {
     lastModified: row.last_modified,
     views: row.view_count,
     noOfAnswers: row.no_of_answers,
-    isAnswerAccepted: row.is_answer_accepted === 1 ? true : false
+    isAnswerAccepted: row.is_answer_accepted === 1 ? true : false,
   };
 };
 
-const wrapAnswer = row => {
+const wrapAnswer = (row) => {
   return {
     username: row.username,
     answerId: row.answer_id,
@@ -36,7 +36,7 @@ const wrapAnswer = row => {
     downVote: row.down_vote,
     accepted: row.accepted === 1 ? true : false,
     time: new Date(row.time),
-    lastModified: row.last_modified
+    lastModified: row.last_modified,
   };
 };
 
@@ -59,9 +59,9 @@ class DataStore {
           user.title,
           user.aboutMe,
           user.company,
-          user.profilePic
+          user.profilePic,
         ],
-        err => {
+        (err) => {
           err && reject(err);
           resolve(true);
         }
@@ -90,12 +90,11 @@ class DataStore {
         [authLogin, authSource],
         (err, row) => {
           err && reject(err);
-
           if (!row) {
             resolve(row);
             return;
           }
-          resolve({ username: row.username });
+          resolve({ username: row.username, profilePic: row.profile_pic });
         }
       );
     });
@@ -106,7 +105,7 @@ class DataStore {
       this.db.run(
         queries.addQuestion,
         [question.username, question.title, question.description],
-        function(err) {
+        function (err) {
           err && reject(err);
           resolve(this.lastID);
         }
@@ -143,7 +142,7 @@ class DataStore {
     });
   }
 
-  acceptAnswer(questionId, answerId){
+  acceptAnswer(questionId, answerId) {
     return new Promise((resolve, reject) => {
       this.db.run(queries.acceptAnswer, [answerId], (err) => {
         err && reject(err);
@@ -152,7 +151,6 @@ class DataStore {
           resolve(true);
         });
       });
-      
     });
   }
 
@@ -161,7 +159,7 @@ class DataStore {
       this.db.serialize(() => {
         this.db
           .run(queries.addAnswer, [username, questionId, answer])
-          .run(queries.updateAnswerCount, [questionId], function(err) {
+          .run(queries.updateAnswerCount, [questionId], function (err) {
             err && reject(err);
             resolve(this.lastID);
           });

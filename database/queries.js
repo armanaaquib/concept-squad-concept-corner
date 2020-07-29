@@ -30,7 +30,7 @@ module.exports = {
 
   getRegisteredUser: `
       SELECT 
-        username 
+        username, profile_pic 
       FROM 
         users 
       WHERE
@@ -85,5 +85,5 @@ module.exports = {
     is_answer_accepted = 1
   WHERE
     question_id = ?
-  `
+  `,
 };

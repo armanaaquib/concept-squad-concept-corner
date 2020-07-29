@@ -55,3 +55,7 @@ const checkUserName = function (userNameField) {
       }
     });
 };
+
+const readImage = () => {
+  $('.upload-image').trigger('onchange');
+};

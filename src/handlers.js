@@ -5,7 +5,6 @@ const { getAuthLink } = require('../config');
 const serveHomePage = function (req, res) {
   const { dataStore } = req.app.locals;
   dataStore.getQuestions().then((questions) => {
-
     res.render('index', {
       user: req.session.user,
       questions,
@@ -106,7 +105,8 @@ const confirmUser = (req, res) => {
         };
         res.redirect('/');
       } else {
-        res.render('confirm', {userDetail} );
+        userDetail.authSource = 'github';
+        res.render('confirm', { userDetail });
       }
     });
 };
