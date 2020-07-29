@@ -1,4 +1,4 @@
-mixin navigationBar(authHref,user,profilePic)
+mixin navigationBar(authHref,user)
 	div.nav
 		a(href="/")
 			div.logo
@@ -13,6 +13,6 @@ mixin navigationBar(authHref,user,profilePic)
 							a(href=authHref) Sign up
 					else
 						.userImage
-							img(src=profilePic, href='/profile' alt="", srcset="")
+							img(src=user.profilePic, href='/profile' alt="", srcset="")
 						.navLink
-							a(href='/profile') #{user}
+							a(href='/profile') #{user.username}

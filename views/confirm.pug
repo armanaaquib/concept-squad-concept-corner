@@ -1,7 +1,7 @@
 extends layout.pug
 block common_vars
 	- var authLink= authHref
-	- var details=userDetails
+	- var details=userDetail
 block head
 	title Concept Corner | Confirm details
 	link(rel="stylesheet", href="/css/signup.css")
@@ -12,7 +12,7 @@ block container
 		.col
 			.col-8.header
 				h2.header-text Confirm your details
-			form.col-8.confirm-page-form(action="javascript:void(0)" method="POST" onsubmit='confirmAndSignUp(event, ' + JSON.stringify(userDetails) + ')')
+			form.col-8.confirm-page-form(action="javascript:void(0)" method="POST" onsubmit='confirmAndSignUp(event, ' + JSON.stringify(userDetail) + ')')
 				.col-4
 					.col-7.profile
 						input.upload-image(type="file", accept='image/*' name="uploadImage", onchange='readUrl(event)')
@@ -27,12 +27,12 @@ block container
 						br
 						#userNameMessage
 					.inputBox
-						input(type="text",name="name",value=userDetails.name id='name' onchange='addContentActive(event)', onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text",name="name",value=userDetail.name id='name' onchange='addContentActive(event)', onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="name") Name
 							span.required *
 						br
 					.inputBox.content_active
-						input(type="text",name="emailId",value=userDetails.email, onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text",name="emailId",value=userDetail.email, onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="emailId") Email ID
 
 						br
@@ -41,15 +41,15 @@ block container
 						label(for="title") Title
 						br
 					.inputBox.content_active
-						input(type="text",name="company",value=userDetails.company, onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text",name="company",value=userDetail.company, onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="company") Company
 						br
 					.inputBox.content_active
-						input(type="text",name="location", value= userDetails.location, onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text",name="location", value=userDetail.location, onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="location") Location
 						br
 					.inputBox
-						textarea(name="aboutMe", cols="30", rows="10", value=userDetails.bio, onfocus='addContentActive(event)',onblur='checkContent()')
+						textarea(name="aboutMe", cols="30", rows="10", onfocus='addContentActive(event)',onblur='checkContent()') #{userDetail.bio}
 						label(for="aboutMe") About me
 						br
 					script.
@@ -58,5 +58,3 @@ block container
 						button#confirmBtn.primary-btn(type="submit") Confirm
 						a(href='/')
 							button.cancel-btn(type='button') Cancel
-						
-

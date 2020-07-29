@@ -119,7 +119,7 @@ class DataStore {
         err && reject(err);
 
         if (!row) {
-          resolve({ message: 'user does not exist.' });
+          resolve(row);
           return;
         }
         resolve(wrapQuestion(row));

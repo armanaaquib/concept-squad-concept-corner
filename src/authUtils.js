@@ -42,17 +42,4 @@ const getUserDetail = function (accessToken) {
   });
 };
 
-const getGithubUserDetails = async function (code, dataStore) {
-  const accessToken = await getAccessToken(code);
-  const userDetails = await getUserDetail(accessToken);
-  try {
-    const user = await dataStore.getRegisteredUser(userDetails.login, 'github');
-    return { user, userDetails };
-  } catch (err) {
-    return { user: undefined, userDetails };
-  }
-};
-
-module.exports = {
-  getGithubUserDetails,
-};
+module.exports = { getAccessToken, getUserDetail };

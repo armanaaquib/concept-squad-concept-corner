@@ -11,33 +11,36 @@ const app = express();
 
 const db = new sqlite.Database(config.getDBFilePath());
 app.locals.dataStore = new DataStore(db);
+app.locals.sessions = sessions;
 
 app.set('view engine', 'pug');
+
 app.use(express.static('public'));
 app.use(cookieParser());
 app.use(express.json({ limit: '12mb' }));
 
 app.use((req, res, next) => {
   const { sId } = req.cookies;
+  const { sessions } = app.locals;
   let session = sessions.getSession(sId);
   if (!session) {
     const newSid = sessions.createSession();
     session = sessions.getSession(newSid);
     res.cookie('sId', newSid);
   }
-  req['session'] = session;
+  req.session = session;
   next();
 });
 
-app.get('/', handlers.loadHomePage);
+app.get('/', handlers.serveHomePage);
 app.get('/question/:questionId', handlers.serveQuestionPage);
 
-app.post('/confirmAndSignUp', handlers.confirmDetails);
+app.post('/signUp', handlers.signUp);
 app.get('/confirmUser', handlers.confirmUser);
-
-app.get('/postQuestion', handlers.servePostQuestionPage);
 app.get('/hasUser/:username', handlers.hasUser);
-app.post('/postQuestion', handlers.postQuestion);
-app.post('/postAnswer', handlers.postAnswer);
+
+app.get('/postQuestion', handlers.ensureLogin, handlers.servePostQuestionPage);
+app.post('/postQuestion', handlers.ensureLogin, handlers.postQuestion);
+app.post('/postAnswer', handlers.ensureLogin, handlers.postAnswer);
 
 module.exports = app;

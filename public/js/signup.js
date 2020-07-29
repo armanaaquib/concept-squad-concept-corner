@@ -22,12 +22,12 @@ const confirmAndSignUp = async function (event, userDetails) {
   detailsToAdd.append('authLogin', userDetails.login);
   detailsToAdd.append('authSource', userDetails.authSource);
   detailsToAdd.append('profilePic', $('.uploaded-image')[0].src);
-  const response = await fetch('/confirmAndSignUp', {
+  const response = await fetch('/signUp', {
     method: 'POST',
     body: detailsToAdd,
   });
-  if (response.status === 302) {
-    window.location = response.headers['location'];
+  if (response.status === 200) {
+    window.location = '/';
   }
 };
 

@@ -1,6 +1,6 @@
 let quill;
 
-const getElement = id => document.getElementById(id);
+const getElement = (id) => document.getElementById(id);
 
 const createEditor = () => {
   quill = new Quill('#editor-container', {
@@ -9,11 +9,11 @@ const createEditor = () => {
       toolbar: [
         [{ size: ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
-        ['code-block']
-      ]
+        ['code-block'],
+      ],
     },
     placeholder: 'description...',
-    theme: 'snow'
+    theme: 'snow',
   });
 };
 
@@ -34,11 +34,15 @@ const postQuestion = () => {
     method: 'POST',
     body: JSON.stringify({ title, description }),
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   })
-    .then(res => res.json())
-    .then(questionId => {
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      }
+    })
+    .then((questionId) => {
       window.location = `/question/${questionId}`;
     });
 };
@@ -47,10 +51,10 @@ const showDescription = (description, id) => {
   const quill = new Quill(`#${id}`, {
     modules: {
       syntax: true,
-      toolbar: false
+      toolbar: false,
     },
     readOnly: true,
-    theme: 'snow'
+    theme: 'snow',
   });
 
   quill.setContents(JSON.parse(description));

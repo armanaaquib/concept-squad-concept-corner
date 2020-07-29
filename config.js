@@ -2,7 +2,7 @@ require('dotenv').config();
 const { env } = process;
 
 const getDBFilePath = () => {
-  const fileName = env.CONCEPT_CORNER_DB || 'concept-corner.db';
+  const fileName = env.CONCEPT_CORNER_DB;
   return `./store/${fileName}`;
 };
 
@@ -22,14 +22,9 @@ const getAuthLink = () => {
   return authLink;
 };
 
-const getSessionSecretKey = () => {
-  return env.CONCEPT_SECRET_KEY;
-};
-
 module.exports = {
   getDBFilePath,
   getClientId,
   getClientSecret,
   getAuthLink,
-  getSessionSecretKey,
 };
