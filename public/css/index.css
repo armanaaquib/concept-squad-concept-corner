@@ -286,12 +286,13 @@ body a {
 
 #editor-container {
   height: 20rem;
+  text-align: center;
 }
 
 .checked-answer {
-  font-size: 1.5rem;
-  color: #23c323;
+  color: #23c323 !important;
   display: flex;
+  font-size: 1.5rem;
   justify-content: center;
 }
 

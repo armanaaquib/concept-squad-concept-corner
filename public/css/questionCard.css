@@ -19,12 +19,12 @@ h3 {
 	flex-flow: column;
 }
 
-.question-card:hover{
+/* .question-card:hover{
 	box-shadow:  0px 11px 17px 0px rgba(0,0,0,0.16), -1px 0px 2px 0px rgba(0,0,0,0.12), 0px 15px 10px 0px rgba(0,0,0,0.09);
 	transform: translate(0, -2px);
 	transition:  all 0.2s ease-in;
 	transition-delay: 0s ;
-}
+} */
 .question-head a {
 	text-decoration: none;
 	color: #0f0f0f
@@ -60,6 +60,7 @@ h3 {
 .popularity {
 	display: flex;
 	flex-flow: row;
+	align-items: center;
 	padding-top: 1rem;
 }
 

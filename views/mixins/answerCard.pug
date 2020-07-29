@@ -1,18 +1,24 @@
 mixin answerCard(answer, isAuthor)
-	.col-12.answer
-		.col-11.a-detail
-			.col-12.description(id=`desc-${answer.answerId}`)
-			.col-12.user
-				.username #{answer.username}
-				.date(id=`date-${answer.answerId}`)
-	.col-12.reactions
-		if isAuthor
-			.col-3.unchecked-answer
-				i(class="fas fa-check-circle", onclick='markAccepted(' + JSON.stringify(answer) + ')')
-		else 
-			if answer.accepted 
-				.col-3.checked-answer
-					i.fas.fa-check-circle
+	.col-12.answer-card
+		.col-12.answer
+			.col-11.a-detail
+				.col-12.description(id=`desc-${answer.answerId}`)
+				.col-12.user
+					.username #{answer.username}
+					.date(id=`date-${answer.answerId}`)
+		.col-12.reactions
+			.col-4
+				.col-3
+					i.fas.fa-thumbs-up
+				.col-3
+					i.fas.fa-thumbs-down
+				if isAuthor
+					.col-3.unchecked-answer
+						i(class="fas fa-check-circle", onclick='markAccepted(' + JSON.stringify(answer) + ')')
+				else 
+					if answer.accepted 
+						.col-3.checked-answer
+							i.fas.fa-check-circle
 			
 			
 	script.

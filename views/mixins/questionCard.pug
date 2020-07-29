@@ -7,8 +7,10 @@ mixin questionCard(question)
 					h3 #{question.title}
 			div.col-12.description 
 				.col-12.tags
-					each tag in question.tags
-						.tag #{tag}
+					if question.tags.length
+						each tag in question.tags
+							if tag.length
+								tag.tag #{tag}
 			div.col-12.question-details
 				.col-6.question-addones
 					.col-12.date(id=`${question.questionId}date`)
