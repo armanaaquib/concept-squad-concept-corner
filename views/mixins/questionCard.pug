@@ -23,7 +23,7 @@ mixin questionCard(question)
 							<i class="fas fa-check-circle"></i>
 			.col-5.askedBy
 				.user
-					img(src=question.profilePic, height=100, width=100, alt="alt")
+					img(src=question.profilePic||'/images/avatar.png', height=100, width=100, alt="alt")
 					p #{question.username}
 				script.
 					date = !{JSON.stringify(question.time)};

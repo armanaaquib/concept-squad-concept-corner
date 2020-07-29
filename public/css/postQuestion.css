@@ -38,8 +38,19 @@
 #editor-container {
   height: 23em;
   font-size: 15px;
+  border-top:1px solid #e7e7e7 !important ;
 }
 
 .btn {
   margin-top: 2em;
 }
+.desc{
+  margin-top: 3rem;
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #e7e7e7 ;
+}
+
+
+
+
