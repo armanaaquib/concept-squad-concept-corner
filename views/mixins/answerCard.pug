@@ -1,4 +1,4 @@
-mixin answerCard(answer)
+mixin answerCard(answer, isAuthor)
 	.col-12.answer
 		.col-11.a-detail
 			.col-12.description(id=`desc-${answer.answerId}`)
@@ -6,9 +6,16 @@ mixin answerCard(answer)
 				.username #{answer.username}
 				.date(id=`date-${answer.answerId}`)
 	.col-12.reactions
-		.col-3.checked-answer
-			if answer.accepted
+		if isAuthor
+			.col-3.unchecked-answer
+			a(href='/check-answer')
 				<i class="fas fa-check-circle"></i>
+		else 
+			if answer.accepted 
+				.col-3.checked-answer
+					<i class="fas fa-check-circle"></i>
+			
+			
 	script.
 		date = !{JSON.stringify(answer.time)};
 		id = !{JSON.stringify(`date-${answer.answerId}`)};

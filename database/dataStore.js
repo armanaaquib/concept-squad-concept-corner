@@ -143,6 +143,19 @@ class DataStore {
     });
   }
 
+  acceptAnswer(questionId, answerId){
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.acceptAnswer, [answerId], (err) => {
+        err && reject(err);
+        this.db.run(queries.setAnswerAccepted, [questionId], (err) => {
+          err && reject(err);
+          resolve(true);
+        });
+      });
+      
+    });
+  }
+
   addAnswer(username, questionId, answer) {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {

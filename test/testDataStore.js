@@ -342,6 +342,25 @@ describe('DataStore', function() {
       });
     });
   });
+  
+  context('acceptAnswer', function(){
+    it('should set an answer as accepted', async function(){
+      dbClient['run'] = fake.yields(null);
+      dataStore.acceptAnswer(1, 2).then((status) => {
+        assert.ok(status);
+        assert.deepStrictEqual(dbClient.run.args[0][1], [2]);
+        assert.deepStrictEqual(dbClient.run.args[1][1], [1]);
+        assert.strictEqual(dbClient.run.callCount, 2);
+      });
+    });
+
+    it('should reject error if query is not valid', function () {
+      dbClient['run'] = fake.yields({ message: 'syntax error' });
+      dataStore.acceptAnswer(1, 2).catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+      });
+    });
+  });
 
   context('addAnswer', function() {
     it('should add a answer', async function() {

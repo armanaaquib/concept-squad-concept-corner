@@ -65,9 +65,25 @@ module.exports = {
   getQuestion: `
   SELECT 
     question_id, username, title, description,
-    time, last_modified, view_count, no_of_answers
+    time, last_modified, view_count, no_of_answers, is_answer_accepted
   FROM 
     questions
   WHERE question_id = ?;
-`
+`,
+  acceptAnswer: `
+  UPDATE 
+    answers 
+  SET
+    accepted = 1
+  WHERE
+    answer_id = ?
+  `,
+  setAnswerAccepted: `
+  UPDATE 
+    questions
+  SET
+    is_answer_accepted = 1
+  WHERE
+    question_id = ?
+  `
 };

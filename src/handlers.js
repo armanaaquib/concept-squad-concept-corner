@@ -5,6 +5,7 @@ const { getAuthLink } = require('../config');
 const serveHomePage = function (req, res) {
   const { dataStore } = req.app.locals;
   dataStore.getQuestions().then((questions) => {
+
     res.render('index', {
       user: req.session.user,
       questions,
@@ -46,7 +47,6 @@ const serveQuestionPage = (req, res) => {
       serveErrorPage(res, 404, 'Question not found.');
       return;
     }
-
     const answerList = await dataStore.getAnswers(questionId);
     res.render('question', {
       user: req.session.user,
@@ -97,7 +97,8 @@ const confirmUser = (req, res) => {
     .getAccessToken(code)
     .then(authUtils.getUserDetail)
     .then(async (userDetail) => {
-      const user = await dataStore.getUser(userDetail.login, 'github');
+      const { login } = userDetail;
+      const user = await dataStore.getRegisteredUser(login, 'github');
       if (user) {
         req.session.user = {
           username: user.username,
