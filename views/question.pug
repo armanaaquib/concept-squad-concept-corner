@@ -35,10 +35,11 @@ block container
 						.date(id=`${question.questionId}date`)
 			.col-10.noOfAnswers 
 				.col-11 #{answers.length} Answer(s)
-<<<<<<< HEAD
-			.col-9.answers
-				each answer in answers
-					+answerCard(answer)
+			if answers.length
+			- var isAuthor = user && ((user.username == question.username) && (question.isAnswerAccepted == false))
+				.col-9.answers
+					each answer in answers
+						+answerCard(answer, isAuthor)
 			.col-9.post_answer_box
 				if !user || user == 'undefined'
 					h2 Login with github to post question or answer
@@ -53,18 +54,11 @@ block container
 						script.
 							showPostAnswerEditor();
 
-=======
 			
-			if answers.length
-				- var isAuthor = user && ((user.username == question.username) && (question.isAnswerAccepted == false))
-				p #{isAuthor} #{question.isAnswerAccepted}
-				.col-9.answers
-					each answer in answers
-						+answerCard(answer, isAuthor)
+			
 				
 				
 		
->>>>>>> |#7|Aaquib/Neha| Mark an answer as correct
 		script.
 			date = !{JSON.stringify(question.time)};
 			id = !{JSON.stringify(`${question.questionId}date`)};
