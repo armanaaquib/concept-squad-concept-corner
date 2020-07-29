@@ -37,7 +37,7 @@ module.exports = {
   getQuestions: `
     SELECT 
       question_id, username, title, description,
-      time, last_modified, view_count, no_of_answers
+      time, last_modified, view_count, no_of_answers, is_answer_accepted
     FROM 
       questions 
     ORDER BY 

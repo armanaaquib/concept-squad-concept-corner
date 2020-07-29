@@ -23,6 +23,7 @@ const wrapQuestion = (row) => {
     lastModified: row.last_modified,
     views: row.view_count,
     noOfAnswers: row.no_of_answers,
+    isAnswerAccepted: row.is_answer_accepted === 1 ? true : false
   };
 };
 

@@ -20,6 +20,7 @@ CREATE TABLE questions (
 	last_modified datetime,
 	view_count integer DEFAULT 0,
 	description blob,
+	is_answer_accepted bool DEFAULT 0,
 	no_of_answers integer DEFAULT 0,
 	FOREIGN KEY(username) REFERENCES users(username)
 );

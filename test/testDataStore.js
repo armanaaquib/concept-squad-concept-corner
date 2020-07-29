@@ -167,6 +167,7 @@ describe('DataStore', function () {
         time: new Date('2020-07-21 11:24:35'),
         last_modified: null,
         view_count: 9,
+        is_answer_accepted: 1,
         no_of_answers: 3,
       });
 
@@ -178,6 +179,7 @@ describe('DataStore', function () {
         time: new Date('2020-07-21 11:24:35'),
         lastModified: null,
         views: 9,
+        isAnswerAccepted: true,
         noOfAnswers: 3,
       };
 
@@ -208,6 +210,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-21 11:24:35'),
           last_modified: null,
           view_count: 9,
+          is_answer_accepted: 1,
           no_of_answers: 3,
         },
         {
@@ -218,6 +221,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-21 11:20:35'),
           last_modified: null,
           view_count: 7,
+          is_answer_accepted: 0,
           no_of_answers: 0,
         },
         {
@@ -228,6 +232,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-21 11:15:35'),
           last_modified: null,
           view_count: 5,
+          is_answer_accepted: 0,
           no_of_answers: 0,
         },
         {
@@ -238,6 +243,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-20 11:24:35'),
           last_modified: null,
           view_count: 9,
+          is_answer_accepted: 0,
           no_of_answers: 2,
         },
         {
@@ -248,6 +254,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-20 11:20:35'),
           last_modified: null,
           view_count: 10,
+          is_answer_accepted: 0,
           no_of_answers: 0,
         },
       ];
@@ -263,6 +270,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-21 11:24:35'),
           lastModified: null,
           views: 9,
+          isAnswerAccepted: true,
           noOfAnswers: 3,
         },
         {
@@ -273,6 +281,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-21 11:20:35'),
           lastModified: null,
           views: 7,
+          isAnswerAccepted: false,
           noOfAnswers: 0,
         },
         {
@@ -283,6 +292,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-21 11:15:35'),
           lastModified: null,
           views: 5,
+          isAnswerAccepted: false,
           noOfAnswers: 0,
         },
         {
@@ -293,6 +303,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-20 11:24:35'),
           lastModified: null,
           views: 9,
+          isAnswerAccepted: false,
           noOfAnswers: 2,
         },
         {
@@ -303,6 +314,7 @@ describe('DataStore', function () {
           time: new Date('2020-07-20 11:20:35'),
           lastModified: null,
           views: 10,
+          isAnswerAccepted: false,
           noOfAnswers: 0,
         },
       ];

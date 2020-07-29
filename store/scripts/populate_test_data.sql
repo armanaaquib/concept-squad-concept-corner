@@ -69,6 +69,7 @@ insert into
     title,
     description,
     view_count,
+    is_answer_accepted,
     time
   )
 VALUES
@@ -77,6 +78,7 @@ VALUES
     'Question Title 1',
     'Description 1',
     10,
+    0,
     '2020-07-20 11:20:35'
   ),
   (
@@ -84,6 +86,7 @@ VALUES
     'Question 2',
     'Description 2',
     9,
+    0,
     '2020-07-20 11:24:35'  
   ),
   (
@@ -91,6 +94,7 @@ VALUES
     'Question 3',
     NULL,
     5,
+    0,
     '2020-07-21 11:15:35'
   ),
   (
@@ -98,6 +102,7 @@ VALUES
     'Question 4',
     'Description 4',
     7,
+    0,
     '2020-07-21 11:20:35'
   ),
   (
@@ -105,6 +110,7 @@ VALUES
     'Question 5',
     'Description 5',
     9,
+    1,
     '2020-07-21 11:24:35'
   );
 

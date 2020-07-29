@@ -300,3 +300,10 @@ body a{
 #editor-container{
   height:20rem;
 }
+
+.checked-answer{  
+  font-size: 1.5rem;
+  color: #23c323;
+  display: flex;
+  justify-content: center;
+}
