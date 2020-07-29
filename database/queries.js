@@ -39,12 +39,15 @@ module.exports = {
 
   getQuestions: `
     SELECT 
-      question_id, username, title, description,
-      time, last_modified, view_count, no_of_answers, is_answer_accepted
+      que.question_id, que.username, que.title, que.description,
+      que.time, que.last_modified, que.view_count, 
+      que.no_of_answers, que.is_answer_accepted,
+      usr.profile_pic
     FROM 
-      questions 
+      questions as que join users as usr
+    ON que.username = usr.username
     ORDER BY 
-      time DESC;
+    time DESC;
   `,
 
   getAnswers: `

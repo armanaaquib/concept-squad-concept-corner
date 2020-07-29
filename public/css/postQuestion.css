@@ -3,7 +3,7 @@
   font-family: sans-serif;
   font-size: 15px;
 }
-.question{
+.question {
   margin-top: 3rem;
 }
 .header-text {
@@ -34,8 +34,6 @@
   color: #c0c0c0;
   margin-left: 0.4em;
 }
-
-
 
 #editor-container {
   height: 23em;

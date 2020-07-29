@@ -168,7 +168,7 @@ describe('DataStore', function() {
         last_modified: null,
         view_count: 9,
         is_answer_accepted: 1,
-        no_of_answers: 3,
+        no_of_answers: 3
       });
 
       const expectedQuestion = {
@@ -180,7 +180,7 @@ describe('DataStore', function() {
         lastModified: null,
         views: 9,
         isAnswerAccepted: true,
-        noOfAnswers: 3,
+        noOfAnswers: 3
       };
 
       dataStore.getQuestion(5).then(question => {
@@ -212,6 +212,7 @@ describe('DataStore', function() {
           view_count: 9,
           is_answer_accepted: 1,
           no_of_answers: 3,
+          profile_pic: null
         },
         {
           question_id: 4,
@@ -223,6 +224,7 @@ describe('DataStore', function() {
           view_count: 7,
           is_answer_accepted: 0,
           no_of_answers: 0,
+          profile_pic: null
         },
         {
           question_id: 3,
@@ -234,6 +236,7 @@ describe('DataStore', function() {
           view_count: 5,
           is_answer_accepted: 0,
           no_of_answers: 0,
+          profile_pic: null
         },
         {
           question_id: 2,
@@ -245,6 +248,7 @@ describe('DataStore', function() {
           view_count: 9,
           is_answer_accepted: 0,
           no_of_answers: 2,
+          profile_pic: null
         },
         {
           question_id: 1,
@@ -256,7 +260,8 @@ describe('DataStore', function() {
           view_count: 10,
           is_answer_accepted: 0,
           no_of_answers: 0,
-        },
+          profile_pic: null
+        }
       ];
 
       dbClient['all'] = fake.yields(null, questions);
@@ -272,6 +277,7 @@ describe('DataStore', function() {
           views: 9,
           isAnswerAccepted: true,
           noOfAnswers: 3,
+          profilePic: null
         },
         {
           questionId: 4,
@@ -283,6 +289,7 @@ describe('DataStore', function() {
           views: 7,
           isAnswerAccepted: false,
           noOfAnswers: 0,
+          profilePic: null
         },
         {
           questionId: 3,
@@ -294,6 +301,7 @@ describe('DataStore', function() {
           views: 5,
           isAnswerAccepted: false,
           noOfAnswers: 0,
+          profilePic: null
         },
         {
           questionId: 2,
@@ -305,6 +313,7 @@ describe('DataStore', function() {
           views: 9,
           isAnswerAccepted: false,
           noOfAnswers: 2,
+          profilePic: null
         },
         {
           questionId: 1,
@@ -316,11 +325,12 @@ describe('DataStore', function() {
           views: 10,
           isAnswerAccepted: false,
           noOfAnswers: 0,
-        },
+          profilePic: null
+        }
       ];
       dataStore.getQuestions().then(questions => {
         assert.deepStrictEqual(questions, expectedQuestions);
-        assert.ok(dbClient.get.calledOnce);
+        assert.ok(dbClient.all.calledOnce);
         done();
       });
     });

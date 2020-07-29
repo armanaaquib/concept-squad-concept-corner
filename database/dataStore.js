@@ -134,7 +134,9 @@ class DataStore {
         err && reject(err);
         const questions = [];
         for (const row of rows) {
-          questions.push(wrapQuestion(row));
+          const question = wrapQuestion(row);
+          question['profilePic'] = row.profile_pic;
+          questions.push(question);
         }
         resolve(questions);
       });
