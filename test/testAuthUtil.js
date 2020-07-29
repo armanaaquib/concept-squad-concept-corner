@@ -4,8 +4,8 @@ const authUtils = require('../src/authUtils');
 const { assert } = require('chai');
 const { env } = process;
 
-describe('getAccessToken', function () {
-  it('should give access token for valid code', function (done) {
+describe('getAccessToken', function() {
+  it('should give access token for valid code', function(done) {
     const callback = fake.yields(
       null,
       null,
@@ -20,16 +20,16 @@ describe('getAccessToken', function () {
       url: 'https://github.com/login/oauth/access_token',
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
+        Accept: 'application/json'
       },
       body: JSON.stringify({
         client_id: 'client-id',
         client_secret: 'client-secret',
-        code: '123',
-      }),
+        code: '123'
+      })
     };
 
-    authUtils.getAccessToken('123').then((accessToken) => {
+    authUtils.getAccessToken('123').then(accessToken => {
       assert.strictEqual(accessToken, 'access-token');
       assert.ok(callback.calledOnce);
       assert.deepStrictEqual(callback.args[0][0], arg);
@@ -40,8 +40,8 @@ describe('getAccessToken', function () {
   });
 });
 
-describe('getUserDetail', function () {
-  it('should give access token for valid code', function (done) {
+describe('getUserDetail', function() {
+  it('should give access token for valid code', function(done) {
     const callback = fake.yields(
       null,
       null,
@@ -53,12 +53,15 @@ describe('getUserDetail', function () {
       url: 'https://api.github.com/user',
       headers: {
         Authorization: 'token access-token',
-        'User-Agent': 'node.js',
-      },
+        'User-Agent': 'node.js'
+      }
     };
 
-    authUtils.getUserDetail('access-token').then((userDetail) => {
-      assert.deepStrictEqual(userDetail, { login: 'michel' });
+    authUtils.getUserDetail('access-token').then(userDetail => {
+      assert.deepStrictEqual(userDetail, {
+        login: 'michel',
+        authSource: 'github'
+      });
       assert.ok(callback.calledOnce);
       assert.deepStrictEqual(callback.args[0][0], arg);
       done();

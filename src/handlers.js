@@ -2,22 +2,26 @@ const formidable = require('formidable');
 const authUtils = require('./authUtils');
 const { getAuthLink } = require('../config');
 
-const serveHomePage = function (req, res) {
+const serveHomePage = function(req, res) {
   const { dataStore } = req.app.locals;
+<<<<<<< HEAD
   dataStore.getQuestions().then((questions) => {
+=======
+  dataStore.getQuestions().then(questions => {
+>>>>>>> |#3|Rajat/Sruthy|Tag a Question
     res.render('index', {
       user: req.session.user,
       questions,
-      authLink: getAuthLink(),
+      authLink: getAuthLink()
     });
     res.end();
   });
 };
 
-const hasUser = function (req, res) {
+const hasUser = function(req, res) {
   const { username } = req.params;
   const { dataStore } = req.app.locals;
-  dataStore.getUser(username).then((user) => {
+  dataStore.getUser(username).then(user => {
     res.json({ available: user ? false : true });
   });
 };
@@ -29,19 +33,21 @@ const servePostQuestionPage = (req, res) => {
 };
 
 const postQuestion = (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, tags } = req.body;
   const { username } = req.session.user;
   const { dataStore } = req.app.locals;
-  dataStore.addQuestion({ username, title, description }).then((questionId) => {
-    res.json(questionId);
-  });
+  dataStore
+    .addQuestion({ username, title, description, tags })
+    .then(questionId => {
+      res.json(questionId);
+    });
 };
 
 const serveQuestionPage = (req, res) => {
   const { questionId } = req.params;
   const { dataStore } = req.app.locals;
 
-  dataStore.getQuestion(questionId).then(async (question) => {
+  dataStore.getQuestion(questionId).then(async question => {
     if (!question) {
       serveErrorPage(res, 404, 'Question not found.');
       return;
@@ -51,7 +57,7 @@ const serveQuestionPage = (req, res) => {
       user: req.session.user,
       question,
       answers: answerList,
-      authLink: getAuthLink(),
+      authLink: getAuthLink()
     });
     res.end();
   });
@@ -69,7 +75,7 @@ const postAnswer = (req, res) => {
 const signUp = (req, res) => {
   const { dataStore } = req.app.locals;
   const form = new formidable.IncomingForm();
-  form.parse(req, function (err, userInfo) {
+  form.parse(req, function(err, userInfo) {
     if (err) {
       res.status(400);
       res.end();
@@ -78,7 +84,7 @@ const signUp = (req, res) => {
     dataStore.addUser(userInfo).then(() => {
       req.session.user = {
         username: userInfo.username,
-        profilePic: userInfo.profilePic,
+        profilePic: userInfo.profilePic
       };
       res.end();
     });
@@ -95,17 +101,20 @@ const confirmUser = (req, res) => {
   authUtils
     .getAccessToken(code)
     .then(authUtils.getUserDetail)
-    .then(async (userDetail) => {
+    .then(async userDetail => {
       const { login } = userDetail;
       const user = await dataStore.getRegisteredUser(login, 'github');
       if (user) {
         req.session.user = {
           username: user.username,
-          profilePic: user.profilePic,
+          profilePic: user.profilePic
         };
         res.redirect('/');
       } else {
+<<<<<<< HEAD
         userDetail.authSource = 'github';
+=======
+>>>>>>> |#3|Rajat/Sruthy|Tag a Question
         res.render('confirm', { userDetail });
       }
     });
@@ -144,6 +153,10 @@ module.exports = {
   signUp,
   hasUser,
   postAnswer,
+<<<<<<< HEAD
   ensureLogin,
   markAccepted,
+=======
+  ensureLogin
+>>>>>>> |#3|Rajat/Sruthy|Tag a Question
 };

@@ -27,7 +27,7 @@ CREATE TABLE questions (
 
 CREATE TABLE tags (
 	tag_id integer PRIMARY KEY AUTOINCREMENT,
-	tagname varchar
+	tag_name varchar
 );
 
 CREATE TABLE answers (
@@ -63,7 +63,7 @@ CREATE TABLE question_comments (
 	FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
 );
 
-CREATE TABLE question_tags (
+CREATE TABLE question_tag (
 	question_id integer,
 	tag_id integer,
 	FOREIGN KEY(question_id) REFERENCES question_tbl(question_id),

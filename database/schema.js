@@ -38,4 +38,16 @@ module.exports = {
 		FOREIGN KEY(username) REFERENCES user_tbl(username),
 		FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
 	);`,
+
+  tags: `CREATE TABLE tags(
+		tag_id integer PRIMARY KEY AUTOINCREMENT,
+		tag_name varchar NOT NULL
+	)
+	`,
+  question_tag: `create table question_tag(
+		question_id integer,
+		tag_id integer,
+		FOREIGN KEY(tag_id) REFERENCES tags(tag_id),
+		FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
+	)`
 };

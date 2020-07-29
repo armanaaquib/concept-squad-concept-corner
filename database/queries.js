@@ -86,4 +86,16 @@ module.exports = {
   WHERE
     question_id = ?
   `,
+  addTag: `
+  insert into tags(tag_name) values(?);
+  `,
+  addQuestionTag: `
+  insert into question_tag(question_id,tag_id) values(?,?);
+  `,
+  getTags: `
+    select distinct * from tags;
+  `,
+  getTagId: `
+   select tag_id from tags where tag_name = ?;
+  `
 };

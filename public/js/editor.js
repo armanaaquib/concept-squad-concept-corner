@@ -32,7 +32,7 @@ const postQuestion = () => {
   const description = JSON.stringify(JSON.stringify(quill.getContents()));
   fetch('/postQuestion', {
     method: 'POST',
-    body: JSON.stringify({ title, description }),
+    body: JSON.stringify({ title, description, tags: ['node', 'java'] }),
     headers: {
       'Content-Type': 'application/json'
     }
