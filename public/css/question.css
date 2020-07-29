@@ -88,3 +88,8 @@
   border: none;
   font-size: 15px;
 }
+ .reactions{
+  margin-top: 1rem;
+  position: relative;
+  z-index: 1;
+}

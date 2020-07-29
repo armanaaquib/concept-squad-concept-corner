@@ -1,13 +1,16 @@
 mixin answerCard(answer)
-  .col-12.answer
-    .col-11.a-detail
-      .col-12.description(id=`desc-${answer.answerId}`)
-      .col-12.user
-        .username #{answer.username}
-        .date(id=`date-${answer.answerId}`)
-    .reactions
-  script.
-    date = !{JSON.stringify(answer.time)};
-    id = !{JSON.stringify(`date-${answer.answerId}`)};
-    document.getElementById(id).innerText = getDate(date);
-    showDescription(!{answer.answer}, !{JSON.stringify(`desc-${answer.answerId}`)})
+	.col-12.answer
+		.col-11.a-detail
+			.col-12.description(id=`desc-${answer.answerId}`)
+			.col-12.user
+				.username #{answer.username}
+				.date(id=`date-${answer.answerId}`)
+	.col-12.reactions
+		.col-3.checked-answer
+			if answer.accepted
+				<i class="fas fa-check-circle"></i>
+	script.
+		date = !{JSON.stringify(answer.time)};
+		id = !{JSON.stringify(`date-${answer.answerId}`)};
+		document.getElementById(id).innerText = getDate(date);
+		showDescription(!{answer.answer}, !{JSON.stringify(`desc-${answer.answerId}`)})
