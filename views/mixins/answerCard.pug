@@ -8,12 +8,11 @@ mixin answerCard(answer, isAuthor)
 	.col-12.reactions
 		if isAuthor
 			.col-3.unchecked-answer
-			a(href='/check-answer')
-				<i class="fas fa-check-circle"></i>
+				i(class="fas fa-check-circle", onclick='markAccepted(' + JSON.stringify(answer) + ')')
 		else 
 			if answer.accepted 
 				.col-3.checked-answer
-					<i class="fas fa-check-circle"></i>
+					i.fas.fa-check-circle
 			
 			
 	script.

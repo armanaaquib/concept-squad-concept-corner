@@ -31,6 +31,7 @@ const wrapAnswer = (row) => {
   return {
     username: row.username,
     answerId: row.answer_id,
+    questionId: row.question_id,
     answer: row.answer,
     upVote: row.up_vote,
     downVote: row.down_vote,

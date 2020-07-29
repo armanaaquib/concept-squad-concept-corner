@@ -52,7 +52,7 @@ module.exports = {
 
   getAnswers: `
     SELECT
-      username, answer_id, answer, up_vote,
+      username, answer_id, question_id, answer, up_vote,
       down_vote, accepted, time, last_modified
     FROM
       answers

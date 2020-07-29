@@ -125,6 +125,16 @@ const serveErrorPage = (res, status, message) => {
   res.end();
 };
 
+const markAccepted = (req, res) => {
+  const { questionId, answerId, username } = req.body;
+  const { dataStore } = req.app.locals;
+  if (username === req.session.user.username) {
+    dataStore.acceptAnswer(questionId, answerId).then(() => res.end());
+  } else {
+    serveErrorPage(res, 403, 'Access Denied');
+  }
+};
+
 module.exports = {
   serveHomePage,
   servePostQuestionPage,
@@ -135,4 +145,5 @@ module.exports = {
   hasUser,
   postAnswer,
   ensureLogin,
+  markAccepted,
 };

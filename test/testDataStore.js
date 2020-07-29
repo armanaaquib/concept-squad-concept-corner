@@ -409,6 +409,7 @@ describe('DataStore', function () {
         {
           username: 'michel',
           answer_id: 1,
+          question_id: 1,
           answer: 'Answer 1',
           up_vote: 10,
           down_vote: 3,
@@ -419,6 +420,7 @@ describe('DataStore', function () {
         {
           username: 'bryce',
           answer_id: 2,
+          question_id: 1,
           answer: 'Answer 2',
           up_vote: 10,
           down_vote: 3,
@@ -429,6 +431,7 @@ describe('DataStore', function () {
         {
           username: 'jake',
           answer_id: 3,
+          question_id: 1,
           answer: 'Answer 3',
           up_vote: 10,
           down_vote: 3,
@@ -444,6 +447,7 @@ describe('DataStore', function () {
         {
           username: 'michel',
           answerId: 1,
+          questionId: 1,
           answer: 'Answer 1',
           upVote: 10,
           downVote: 3,
@@ -454,6 +458,7 @@ describe('DataStore', function () {
         {
           username: 'bryce',
           answerId: 2,
+          questionId: 1,
           answer: 'Answer 2',
           upVote: 10,
           downVote: 3,
@@ -464,6 +469,7 @@ describe('DataStore', function () {
         {
           username: 'jake',
           answerId: 3,
+          questionId: 1,
           answer: 'Answer 3',
           upVote: 10,
           downVote: 3,
@@ -472,7 +478,7 @@ describe('DataStore', function () {
           lastModified: null,
         },
       ];
-      dataStore.getAnswers(5).then((answers) => {
+      dataStore.getAnswers(1).then((answers) => {
         assert.deepStrictEqual(answers, expectedAnswers);
         done();
       });

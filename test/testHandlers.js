@@ -189,4 +189,32 @@ describe('handlers', function () {
         .expect(403, done);
     });
   });
+
+  context('/markAccept', function () {
+    it('should accept given answer as correct if user is the author', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel', profilePic: null };
+      request(app)
+        .post('/markAccepted')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({ questionId: 5, answerId: 1, username: 'michel' })
+        .expect(200, done);
+    });
+
+    it('should not accept given answer as correct if user is not the author', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel', profilePic: null };
+      request(app)
+        .post('/markAccepted')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({ questionId: 5, answerId: 1, username: 'shawn' })
+        .expect(403, done);
+    });
+  });
 });
