@@ -3,7 +3,7 @@ const { fake } = require('sinon');
 
 const DataStore = require('../database/dataStore.js');
 
-describe('DataStore', function () {
+describe('DataStore', function() {
   let dataStore;
   let dbClient;
   before(() => {
@@ -11,8 +11,8 @@ describe('DataStore', function () {
     dataStore = new DataStore(dbClient);
   });
 
-  context('addUser', function () {
-    it('should add a user', async function () {
+  context('addUser', function() {
+    it('should add a user', async function() {
       dbClient['run'] = fake.yields(null);
       const status = await dataStore.addUser({
         username: 'ram',
@@ -24,7 +24,7 @@ describe('DataStore', function () {
         title: 'Developer',
         aboutMe: 'Good person',
         company: null,
-        profilePic: null,
+        profilePic: null
       });
       assert.ok(dbClient.run.calledOnce);
       assert.deepStrictEqual(dbClient.run.args[0][1], [
@@ -37,21 +37,21 @@ describe('DataStore', function () {
         'Developer',
         'Good person',
         null,
-        null,
+        null
       ]);
       assert.ok(status);
     });
 
-    it('should reject error if query is not valid', function () {
+    it('should reject error if query is not valid', function() {
       dbClient['run'] = fake.yields({ message: 'syntax error' });
-      dataStore.addUser({}).catch((err) => {
+      dataStore.addUser({}).catch(err => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
   });
 
-  context('getUser', function () {
-    it('should resolve user details if user is available', function (done) {
+  context('getUser', function() {
+    it('should resolve user details if user is available', function(done) {
       dbClient['get'] = fake.yields(null, {
         username: 'jake',
         name: 'jake shawn',
@@ -60,10 +60,10 @@ describe('DataStore', function () {
         title: 'project manager',
         about_me: null,
         company: null,
-        profile_pic: null,
+        profile_pic: null
       });
 
-      dataStore.getUser('jake').then((user) => {
+      dataStore.getUser('jake').then(user => {
         assert.deepStrictEqual(user, {
           username: 'jake',
           name: 'jake shawn',
@@ -72,7 +72,7 @@ describe('DataStore', function () {
           title: 'project manager',
           aboutMe: null,
           company: null,
-          profilePic: null,
+          profilePic: null
         });
         assert.ok(dbClient.get.calledOnce);
         assert.deepStrictEqual(dbClient.get.args[0][1], ['jake']);
@@ -80,9 +80,9 @@ describe('DataStore', function () {
       });
     });
 
-    it('should give undefined if user is not available', function (done) {
+    it('should give undefined if user is not available', function(done) {
       dbClient['get'] = fake.yields(null, undefined);
-      dataStore.getUser('Bold').then((user) => {
+      dataStore.getUser('Bold').then(user => {
         assert.isUndefined(user);
         assert.ok(dbClient.get.calledOnce);
         assert.deepStrictEqual(dbClient.get.args[0][1], ['Bold']);
@@ -90,19 +90,19 @@ describe('DataStore', function () {
       });
     });
 
-    it('should reject error if query is not valid', function () {
+    it('should reject error if query is not valid', function() {
       dbClient['get'] = fake.yields({ message: 'syntax error' });
-      dataStore.getUser('Bold').catch((err) => {
+      dataStore.getUser('Bold').catch(err => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
   });
 
-  context('getRegisteredUser', function () {
-    it('should resolve user details if user is available', function (done) {
+  context('getRegisteredUser', function() {
+    it('should resolve user details if user is available', function(done) {
       dbClient['get'] = fake.yields(null, { username: 'jake' });
 
-      dataStore.getRegisteredUser('jake', 'github').then((user) => {
+      dataStore.getRegisteredUser('jake', 'github').then(user => {
         assert.deepStrictEqual(user, { username: 'jake' });
         assert.ok(dbClient.get.calledOnce);
         assert.deepStrictEqual(dbClient.get.args[0][1], ['jake', 'github']);
@@ -110,9 +110,9 @@ describe('DataStore', function () {
       });
     });
 
-    it('should resolve undefined if user is not available', function (done) {
+    it('should resolve undefined if user is not available', function(done) {
       dbClient['get'] = fake.yields(null, undefined);
-      dataStore.getRegisteredUser('Bold', 'github').then((user) => {
+      dataStore.getRegisteredUser('Bold', 'github').then(user => {
         assert.isUndefined(user);
         assert.ok(dbClient.get.calledOnce);
         assert.deepStrictEqual(dbClient.get.args[0][1], ['Bold', 'github']);
@@ -120,22 +120,22 @@ describe('DataStore', function () {
       });
     });
 
-    it('should reject error if query is not valid', function () {
+    it('should reject error if query is not valid', function() {
       dbClient['get'] = fake.yields({ message: 'syntax error' });
-      dataStore.getRegisteredUser('Bold', 'github').catch((err) => {
+      dataStore.getRegisteredUser('Bold', 'github').catch(err => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
   });
 
-  context('addQuestion', function () {
-    it('should add a question', async function () {
+  context('addQuestion', function() {
+    it('should add a question', async function() {
       let callCount = 0;
-      dbClient['run'] = function (query, params, callback) {
+      dbClient['run'] = function(query, params, callback) {
         assert.deepStrictEqual(params, [
           'michel',
           'question title',
-          'question description',
+          'question description'
         ]);
         callCount++;
         callback.call({ lastID: 10 }, null);
@@ -143,22 +143,22 @@ describe('DataStore', function () {
       const questionId = await dataStore.addQuestion({
         username: 'michel',
         title: 'question title',
-        description: 'question description',
+        description: 'question description'
       });
       assert.strictEqual(callCount, 1);
       assert.strictEqual(questionId, 10);
     });
 
-    it('should reject error if query is not valid', function () {
+    it('should reject error if query is not valid', function() {
       dbClient['run'] = fake.yields({ message: 'syntax error' });
-      dataStore.addQuestion({}).catch((err) => {
+      dataStore.addQuestion({}).catch(err => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
   });
 
-  context('getQuestion', function () {
-    it('should gives question according to the question id', function (done) {
+  context('getQuestion', function() {
+    it('should gives question according to the question id', function(done) {
       dbClient['get'] = fake.yields(null, {
         question_id: 5,
         username: 'carlo',
@@ -183,7 +183,7 @@ describe('DataStore', function () {
         noOfAnswers: 3,
       };
 
-      dataStore.getQuestion(5).then((question) => {
+      dataStore.getQuestion(5).then(question => {
         assert.deepStrictEqual(question, expectedQuestion);
         assert.ok(dbClient.get.calledOnce);
         assert.deepStrictEqual(dbClient.get.args[0][1], [5]);
@@ -191,16 +191,16 @@ describe('DataStore', function () {
       });
     });
 
-    it('should reject error if query is not valid', function () {
+    it('should reject error if query is not valid', function() {
       dbClient['get'] = fake.yields({ message: 'syntax error' });
-      dataStore.getQuestion(1).catch((err) => {
+      dataStore.getQuestion(1).catch(err => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
   });
 
-  context('getQuestions', function () {
-    it('should gives all questions in reverse order by date', function (done) {
+  context('getQuestions', function() {
+    it('should gives all questions in reverse order by date', function(done) {
       const questions = [
         {
           question_id: 5,
@@ -318,44 +318,61 @@ describe('DataStore', function () {
           noOfAnswers: 0,
         },
       ];
-      dataStore.getQuestions().then((questions) => {
+      dataStore.getQuestions().then(questions => {
         assert.deepStrictEqual(questions, expectedQuestions);
         assert.ok(dbClient.get.calledOnce);
         done();
       });
     });
 
-    it('should reject error if query is not valid', function () {
+    it('should reject error if query is not valid', function() {
       dbClient['all'] = fake.yields({ message: 'syntax error' });
-      dataStore.getQuestions().catch((err) => {
+      dataStore.getQuestions().catch(err => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
   });
 
-  context('addAnswer', function () {
-    it('should add a answer', async function () {
+  context('addAnswer', function() {
+    it('should add a answer', async function() {
       let callCount = 0;
-      dbClient['run'] = function (query, params, callback) {
-        assert.deepStrictEqual(params, ['michel', 1, 'answer']);
+      dbClient['serialize'] = function(callback) {
+        callback();
+      };
+      const isValidAnswerParams = params => {
+        return (
+          params[0] === 'michel' && params[1] === 1 && params[2] === 'answer'
+        );
+      };
+      dbClient['run'] = function(query, params, callback) {
+        const isUpdateQuestionParams = params[0] === 1;
+        assert.ok(isUpdateQuestionParams || isValidAnswerParams(params));
         callCount++;
-        callback.call({ lastID: 10 }, null);
+        callback && callback.call({ lastID: 10 }, null);
+        return dbClient;
       };
       const answerId = await dataStore.addAnswer('michel', 1, 'answer');
       assert.strictEqual(answerId, 10);
-      assert.strictEqual(callCount, 1);
+      assert.strictEqual(callCount, 2);
     });
 
-    it('should reject error if query is not valid', function () {
-      dbClient['run'] = fake.yields({ message: 'syntax error' });
-      dataStore.addAnswer('michel', 1, 'answer').catch((err) => {
+    it('should reject error if query is not valid', function() {
+      dbClient['serialize'] = function(callback) {
+        callback();
+      };
+      dbClient['run'] = function(query, params, callback) {
+        callback && callback({ message: 'syntax error' });
+        return dbClient;
+      };
+
+      dataStore.addAnswer('michel', 1, 'answer').catch(err => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
   });
 
-  context('getAnswers', function () {
-    it('should gives all answers of given question in order by date', function (done) {
+  context('getAnswers', function() {
+    it('should gives all answers of given question in order by date', function(done) {
       const answers = [
         {
           username: 'michel',
@@ -365,7 +382,7 @@ describe('DataStore', function () {
           down_vote: 3,
           accepted: 1,
           time: new Date('2020-07-20 11:20:35'),
-          last_modified: null,
+          last_modified: null
         },
         {
           username: 'bryce',
@@ -375,7 +392,7 @@ describe('DataStore', function () {
           down_vote: 3,
           accepted: 0,
           time: new Date('2020-07-21 11:20:35'),
-          last_modified: null,
+          last_modified: null
         },
         {
           username: 'jake',
@@ -385,8 +402,8 @@ describe('DataStore', function () {
           down_vote: 3,
           accepted: 0,
           time: new Date('2020-07-21 12:20:35'),
-          last_modified: null,
-        },
+          last_modified: null
+        }
       ];
 
       dbClient['all'] = fake.yields(null, answers);
@@ -400,7 +417,7 @@ describe('DataStore', function () {
           downVote: 3,
           accepted: true,
           time: new Date('2020-07-20 11:20:35'),
-          lastModified: null,
+          lastModified: null
         },
         {
           username: 'bryce',
@@ -410,7 +427,7 @@ describe('DataStore', function () {
           downVote: 3,
           accepted: false,
           time: new Date('2020-07-21 11:20:35'),
-          lastModified: null,
+          lastModified: null
         },
         {
           username: 'jake',
@@ -420,18 +437,18 @@ describe('DataStore', function () {
           downVote: 3,
           accepted: false,
           time: new Date('2020-07-21 12:20:35'),
-          lastModified: null,
-        },
+          lastModified: null
+        }
       ];
-      dataStore.getAnswers(5).then((answers) => {
+      dataStore.getAnswers(5).then(answers => {
         assert.deepStrictEqual(answers, expectedAnswers);
         done();
       });
     });
 
-    it('should reject error if query is not valid', function () {
+    it('should reject error if query is not valid', function() {
       dbClient['all'] = fake.yields({ message: 'syntax error' });
-      dataStore.getAnswers(5).catch((err) => {
+      dataStore.getAnswers(5).catch(err => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });

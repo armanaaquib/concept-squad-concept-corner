@@ -8,7 +8,7 @@ block head
 	link(rel="stylesheet", href="/css/question.css")
 	script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js")
 	script(src="https://cdn.quilljs.com/1.3.6/quill.js")
-	script(src='/js/editor.js')
+	script(src='/js/postAnswer.js')
 
 block container
 	div.row
@@ -35,15 +35,26 @@ block container
 						.date(id=`${question.questionId}date`)
 			.col-10.noOfAnswers 
 				.col-11 #{answers.length} Answer(s)
-			if(answers.length)
-				.col-9.answers
-					each answer in answers
-						+answerCard(answer)
-				
-				
-		
+			.col-9.answers
+				each answer in answers
+					+answerCard(answer)
+			.col-9.post_answer_box
+				if !user || user == 'undefined'
+					h2 Login with github to post question or answer
+				else
+					.post-answer-editor
+						h2.header-text Post your answer
+						h2
+						#editor-postAnswer
+						.btn
+							input#h_qId(type="hidden",value=question.questionId)
+							button#postAnswer-btn.primary-btn(type='button') Post Answer
+						script.
+							showPostAnswerEditor();
+
 		script.
 			date = !{JSON.stringify(question.time)};
 			id = !{JSON.stringify(`${question.questionId}date`)};
 			document.getElementById(id).innerText = getDate(date);
-			showDescription(!{question.description}, 'q-desc')
+			showDescription(!{question.description}, 'q-desc');
+			

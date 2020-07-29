@@ -16,6 +16,9 @@ module.exports = {
   answers( username, question_id, answer, time )
   values(?, ?, ?,datetime('now'));
   `,
+  updateAnswerCount: `
+      update questions set no_of_answers=no_of_answers+1 where question_id = ?;
+  `,
   getUser: `
       SELECT
         username, name, email, location, title, about_me, company, profile_pic 
