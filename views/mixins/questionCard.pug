@@ -1,26 +1,27 @@
 mixin questionCard(question)
 	- var date = question.time
 	.col-8.question-card
-		div.col-12.question-head 
-			a(href=`/question/${question.questionId}`)
-				h3 #{question.title}
-		div.col-12.description 
-			.col-12.tags
-				each tag in question.tags
-					.tag #{tag}
-		div.col-12.question-details
-			.col-6.question-addones
-				.col-12.date(id=`${question.questionId}date`)
-				.col-12.popularity
-					.col-3.view #{question.views} Views
-					.col-3.response #{question.noOfAnswers} Answer(s)
-					.col-3.checked-answer
-						if question.isAnswerAccepted
-							<i class="fas fa-check-circle"></i>
-			.col-5.askedBy
-				.user
-					img(src=question.profilePic||'/images/avatar.png', height=100, width=100, alt="alt")
-					p #{question.username}
+		.col-10.question
+			div.col-12.question-head 
+				a(href=`/question/${question.questionId}`)
+					h3 #{question.title}
+			div.col-12.description 
+				.col-12.tags
+					each tag in question.tags
+						.tag #{tag}
+			div.col-12.question-details
+				.col-6.question-addones
+					.col-12.date(id=`${question.questionId}date`)
+					.col-12.popularity
+						.col-3.view #{question.views} Views
+						.col-3.response #{question.noOfAnswers} Answer(s)
+						.col-3.checked-answer
+							if question.isAnswerAccepted
+								<i class="fas fa-check-circle"></i>
+		.col-2.askedBy
+			.user
+				img(src=question.profilePic||'/images/avatar.png', height=100, width=100, alt="alt")
+				p #{question.username}
 				script.
 					date = !{JSON.stringify(question.time)};
 					id = !{JSON.stringify(`${question.questionId}date`)};

@@ -110,3 +110,15 @@
   font-weight: 500;
 }
 
+.unchecked-answer{
+  font-size: 1.5rem;
+  color: #171a17;
+  display: flex;
+  justify-content: center;
+}
+
+.unchecked-answer:hover{
+  color:#23c323;
+  transition: all 1s linear;
+
+}

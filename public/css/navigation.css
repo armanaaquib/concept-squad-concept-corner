@@ -41,9 +41,10 @@ div:hover:after {
 .navInfo {
   display: flex;
   flex-flow: row;
-  width: 70%;
+  width: 100%;
   justify-content: space-evenly;
   align-items: center;
+
 }
 
 .navInfo .navLink:after {
