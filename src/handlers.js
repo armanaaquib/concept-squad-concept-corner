@@ -4,11 +4,7 @@ const { getAuthLink } = require('../config');
 
 const serveHomePage = function(req, res) {
   const { dataStore } = req.app.locals;
-<<<<<<< HEAD
-  dataStore.getQuestions().then((questions) => {
-=======
   dataStore.getQuestions().then(questions => {
->>>>>>> |#3|Rajat/Sruthy|Tag a Question
     res.render('index', {
       user: req.session.user,
       questions,
@@ -111,10 +107,6 @@ const confirmUser = (req, res) => {
         };
         res.redirect('/');
       } else {
-<<<<<<< HEAD
-        userDetail.authSource = 'github';
-=======
->>>>>>> |#3|Rajat/Sruthy|Tag a Question
         res.render('confirm', { userDetail });
       }
     });
@@ -153,10 +145,6 @@ module.exports = {
   signUp,
   hasUser,
   postAnswer,
-<<<<<<< HEAD
   ensureLogin,
-  markAccepted,
-=======
-  ensureLogin
->>>>>>> |#3|Rajat/Sruthy|Tag a Question
+  markAccepted
 };

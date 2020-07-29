@@ -30,6 +30,7 @@ const wrapQuestion = row => {
 const wrapAnswer = row => {
   return {
     username: row.username,
+    questionId: row.question_id,
     answerId: row.answer_id,
     answer: row.answer,
     upVote: row.up_vote,
