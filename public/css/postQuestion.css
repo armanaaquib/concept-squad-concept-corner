@@ -38,14 +38,33 @@
 #editor-container {
   height: 23em;
   font-size: 15px;
-  border-top:1px solid #e7e7e7 !important ;
+  border-top: 1px solid #e7e7e7 !important ;
 }
 
 .btn {
   margin-top: 2em;
 }
 
-
-
-
-
+/* quill */
+.ql-snow .ql-editor pre.ql-syntax {
+  background-color: #ebf5fb; /* <== change this color */
+  color: #000000;
+}
+#q-desc {
+  font-size: 17px;
+}
+.hljs-params {
+  color: #000000;
+}
+.hljs-title {
+  color: #2407a8;
+}
+.hljs-type {
+  color: #044e2f;
+}
+.hljs-string {
+  color: #42067a;
+}
+.hljs-built_in {
+  color: #052e88;
+}

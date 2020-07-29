@@ -51,16 +51,16 @@
   padding-bottom: 1rem;
   background: #f5f5f7;
 }
-.answer-card{
+.answer-card {
   box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16),
-  0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+    0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
   border-radius: 5px;
   background: white;
   border: 0.1px solid #e7e7e7;
   margin-top: 4rem;
 }
 .answer {
- background: white;
+  background: white;
 }
 .noOfAnswers {
   font-size: 1.7rem;
@@ -86,7 +86,8 @@
 
 .a-detail .description {
   border: none;
-  font-size: 15px;
+  font-size: 17px;
+  color: black;
 }
 .reactions {
   z-index: 2;
@@ -94,15 +95,15 @@
   height: 4rem;
   display: flex;
   align-items: center;
-  padding-left: 2rem ;
+  padding-left: 2rem;
   box-shadow: 0px -1px 8px 1px #e7e7e7;
 }
-.reactions *{
+.reactions * {
   font-size: 2rem;
   text-align: center;
-
 }
-.fa-thumbs-up, .fa-thumbs-down {
+.fa-thumbs-up,
+.fa-thumbs-down {
   color: #3e3e3e;
 }
 
@@ -128,15 +129,38 @@
   font-weight: 500;
 }
 
-.unchecked-answer{
+.unchecked-answer {
   font-size: 2rem;
   color: #525252;
   display: flex;
   justify-content: center;
 }
 
-.unchecked-answer:hover{
-  color:#23c323;
+.unchecked-answer:hover {
+  color: #23c323;
   transition: all 1s linear;
+}
 
+/* quill */
+.ql-snow .ql-editor pre.ql-syntax {
+  background-color: #ebf5fb; /* <== change this color */
+  color: #000000;
+}
+#q-desc {
+  font-size: 17px;
+}
+.hljs-params {
+  color: #000000;
+}
+.hljs-title {
+  color: #2407a8;
+}
+.hljs-type {
+  color: #044e2f;
+}
+.hljs-string {
+  color: #42067a;
+}
+.hljs-built_in {
+  color: #052e88;
 }
