@@ -5,7 +5,7 @@ mixin navigationBar(authHref,user)
 				img(src="/images/logo_transparent.png", alt="Concept Corner", srcset="")
 		div.list
 			.navInfo
-				if pageName !='Confirm Details'
+				if authHref
 					if !user || user == 'undefined'
 						.navLink
 							a(href=authHref) Log in

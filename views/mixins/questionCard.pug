@@ -18,9 +18,10 @@ mixin questionCard(question)
 				.col-12.popularity
 					.col-3.view #{question.views} Views
 					.col-3.response #{question.noOfAnswers} Answer(s)
-			.col-5.askedBy 
-				img(src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80", height=100, width=100, alt="alt")
-				div #{question.username}
+			.col-5.askedBy
+				.user
+					img(src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80", height=100, width=100, alt="alt")
+					p #{question.username}
 				script.
 					date = !{JSON.stringify(question.time)};
 					id = !{JSON.stringify(`${question.questionId}date`)};

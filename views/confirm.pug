@@ -16,22 +16,20 @@ block container
 				.col-4
 					.col-7.profile
 						input.upload-image(type="file", accept='image/*' name="uploadImage", onchange='readUrl(event)')
-						img.uploaded-image(src="/images/avatar.png", alt="",data-url='' srcset="")
+						img.uploaded-image(src=userDetail['avatar_url']||'/images/avatar.png', alt="",data-url='' srcset="")
 						button.primary-btn.btn-uploadPic(type='button', onclick='callEvent()') Upload picture
 				.col-6.details#details
 					.inputBox
 						input(type="text", name="username",value="" id='username'  onchange='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="username") Username
 							span.required *
-						span#userNameMessage
-						br
 						#userNameMessage
 					.inputBox
 						input(type="text",name="name",value=userDetail.name id='name' onchange='addContentActive(event)', onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="name") Name
 							span.required *
 						br
-					.inputBox.content_active
+					.inputBox
 						input(type="text",name="emailId",value=userDetail.email, onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="emailId") Email ID
 
@@ -40,21 +38,21 @@ block container
 						input(type="text", name="title",value="", onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="title") Title
 						br
-					.inputBox.content_active
+					.inputBox
 						input(type="text",name="company",value=userDetail.company, onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="company") Company
 						br
-					.inputBox.content_active
-						input(type="text",name="location", value=userDetail.location, onfocus='addContentActive(event)',onblur='checkContent()')
+					.inputBox
+						input(type="text",name="location", value= userDetail.location, onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="location") Location
 						br
 					.inputBox
-						textarea(name="aboutMe", cols="30", rows="10", onfocus='addContentActive(event)',onblur='checkContent()') #{userDetail.bio}
+						textarea(name="aboutMe" onfocus='addContentActive(event)',onblur='checkContent()') #{userDetail.bio}
 						label(for="aboutMe") About me
 						br
 					script.
 						addContentActiveToAll()
-					.col-8.btn
+					.col-7.btn
 						button#confirmBtn.primary-btn(type="submit") Confirm
 						a(href='/')
 							button.cancel-btn(type='button') Cancel

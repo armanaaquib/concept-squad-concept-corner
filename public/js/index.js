@@ -14,7 +14,8 @@ const checkContent = function(){
 
 const addContentActiveToAll = function(){
   $('.inputBox input').trigger('focus');
- 
+  $('.inputBox textarea').trigger('focus');
+  
 };
 
 const readUrl = function (event) {

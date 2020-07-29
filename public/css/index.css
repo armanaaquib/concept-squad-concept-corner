@@ -24,12 +24,15 @@ body a{
   color: #f04b4c;
   font-size: 12px;
   padding-left: 1rem;
+  background: #F5F5F6;
+
 }
 .success {
   color: green;
   padding: 0.2rem;
   font-size: 12px;
   padding-left: 1rem;
+  background: #F5F5F6;
 }
 
 .requiredFieldError {
@@ -61,6 +64,8 @@ body a{
   position: relative; 
   flex: 1 1 auto;
   overflow-y: auto;
+  background-color: #F5F5F6;
+
 }
 .col{
   flex: 0 0  auto;
@@ -150,8 +155,9 @@ body a{
 } */
 .inputBox {
   position: relative;
- 
+ background: white;
 }
+
 .inputBox.content_active label {
   font-size: 12px;
   top: 0;
@@ -184,7 +190,7 @@ body a{
 .page{
   margin-bottom: 5rem;
 }
-.page>*{
+.page >*{
   margin: 0 auto;
   flex-flow: column;
 }

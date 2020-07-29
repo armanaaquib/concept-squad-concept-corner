@@ -35,9 +35,12 @@ block container
 						.date(id=`${question.questionId}date`)
 			.col-10.noOfAnswers 
 				.col-11 #{answers.length} Answer(s)
-			.col-9.answers
-				each answer in answers
-					+answerCard(answer)
+			if(answers.length)
+				.col-9.answers
+					each answer in answers
+						+answerCard(answer)
+				
+				
 		
 		script.
 			date = !{JSON.stringify(question.time)};

@@ -18,9 +18,7 @@ block container
 					input#title(type="text", name="title",value="" onchange='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
 					label(for="username") Heading
 						span.required *
-					br
-				p.errorMsg#errorTitle
-				br
+				.errorMsg#errorTitle
 				.col-12#editor-container
 				script(src="js/editor.js")
 				.col-4.btn

@@ -105,7 +105,7 @@ const confirmUser = (req, res) => {
         };
         res.redirect('/');
       } else {
-        res.render('confirm', { userDetail, authHref: getAuthLink() });
+        res.render('confirm', {userDetail} );
       }
     });
 };
