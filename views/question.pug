@@ -22,12 +22,8 @@ block container
 				.col-12.q-title #{question.title}
 				.col-12#q-desc
 				.col-12.tags
-							.col-1
-								.tag tag1
-							.col-1
-								.tag tag2
-							.col-1
-								.tag tag3
+					each tag in question.tags
+						.tag #{tag}
 				.col-12.q-detail
 					.col-6.views #{question.views} Views
 					.col-6.user

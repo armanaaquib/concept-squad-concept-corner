@@ -6,12 +6,8 @@ mixin questionCard(question)
 				h3 #{question.title}
 		div.col-12.description 
 			.col-12.tags
-				.col-1
-					.tag tag1
-				.col-1
-					.tag tag2
-				.col-1
-					.tag tag3
+				each tag in question.tags
+					.tag #{tag}
 		div.col-12.question-details
 			.col-6.question-addones
 				.col-12.date(id=`${question.questionId}date`)

@@ -160,7 +160,7 @@ VALUES
 
 --insert tags
 insert into
-  tags(tagname)
+  tags(tag_name)
 values
   ('nodejs'),
   ('java'),
@@ -171,25 +171,25 @@ values
 
 --insert question_tags
 insert into
-  question_tags(question_id, tag_id)
+  question_tag(question_id, tag_id)
 VALUES
-  (10, 1),
-  (10, 3),
-  (11, 2),
-  (11, 4),
-  (12, 5),
-  (13, 4),
-  (13, 5),
-  (14, 1),
-  (14, 2),
-  (15, 6),
-  (15, 3),
-  (16, 2),
-  (16, 5),
-  (17, 3),
-  (17, 6),
-  (18, 2),
-  (18, 5);
+  (1, 1),
+  (1, 3),
+  (2, 2),
+  (2, 4),
+  (3, 5),
+  (3, 4),
+  (4, 5),
+  (4, 1),
+  (5, 2),
+  (5, 6),
+  (5, 3),
+  (6, 2),
+  (6, 5),
+  (6, 3),
+  (6, 6),
+  (6, 2),
+  (1, 5);
 
 --insert prefered_tags
 insert into

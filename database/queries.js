@@ -97,5 +97,9 @@ module.exports = {
   `,
   getTagId: `
    select tag_id from tags where tag_name = ?;
+  `,
+  getQuestionTags: `
+    select tags.tag_name from question_tag as qt 
+    join tags on qt.tag_id=tags.tag_id where qt.question_id = ?;
   `
 };

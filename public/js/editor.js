@@ -30,9 +30,10 @@ const postQuestion = () => {
   }
   const title = getElement('title').value;
   const description = JSON.stringify(JSON.stringify(quill.getContents()));
+  const tags = getElement('tags').value;
   fetch('/postQuestion', {
     method: 'POST',
-    body: JSON.stringify({ title, description, tags: ['node', 'java'] }),
+    body: JSON.stringify({ title, description, tags: tags.split(' ') }),
     headers: {
       'Content-Type': 'application/json'
     }

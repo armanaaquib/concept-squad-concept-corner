@@ -17,6 +17,7 @@ const wrapQuestion = row => {
   return {
     questionId: row.question_id,
     username: row.username,
+    profilePic: row.profile_pic,
     title: row.title,
     description: row.description,
     time: new Date(row.time),
@@ -123,28 +124,39 @@ class DataStore {
     });
   }
 
+  getTags(questionId) {
+    return new Promise((resolve, reject) => {
+      this.db.all(queries.getQuestionTags, [questionId], function(err, rows) {
+        err && reject(err);
+        resolve(rows.map(row => row.tag_name));
+      });
+    });
+  }
+
   getQuestion(questionId) {
     return new Promise((resolve, reject) => {
-      this.db.get(queries.getQuestion, [questionId], (err, row) => {
+      this.db.get(queries.getQuestion, [questionId], async (err, row) => {
         err && reject(err);
 
         if (!row) {
           resolve(row);
           return;
         }
-        resolve(wrapQuestion(row));
+        const question = wrapQuestion(row);
+        question['tags'] = await this.getTags(question.questionId);
+        resolve(question);
       });
     });
   }
 
   getQuestions() {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getQuestions, (err, rows) => {
+      this.db.all(queries.getQuestions, async (err, rows) => {
         err && reject(err);
         const questions = [];
         for (const row of rows) {
           const question = wrapQuestion(row);
-          question['profilePic'] = row.profile_pic;
+          question['tags'] = await this.getTags(question.questionId);
           questions.push(question);
         }
         resolve(questions);
