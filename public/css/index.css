@@ -174,7 +174,7 @@ body a{
   transition: all 0.3s ease;
 }
 .inputBox input{
-  border: 1px solid lightgray;
+  border: 1px solid #e7e7e7;
   border-radius: 5px;
   position: relative;
   padding: 0.5rem;
@@ -241,8 +241,6 @@ body a{
 
 .primary-btn:disabled {
   background-color: #3d8bf794;
-  height: 3em;
-  width: 8em;
   border: none;
   cursor: not-allowed;
   color: white;
@@ -306,4 +304,14 @@ body a{
   color: #23c323;
   display: flex;
   justify-content: center;
+}
+
+.desc{
+  margin-top: 3rem;
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #e7e7e7 ;
+}
+.desc *{
+  border: none !important;
 }

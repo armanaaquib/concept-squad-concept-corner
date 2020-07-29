@@ -13,7 +13,7 @@
 	justify-content: flex-end;
 	flex-flow: column;
 	overflow: hidden;
-	border: 1px solid lightgray;
+	border: 1.5px solid #e7e7e7;
 	height: 14rem;
 	margin-top: 7rem;
 	border-radius: 5px;
@@ -31,7 +31,7 @@
 	margin: 0px;
 	height: 13rem;
 	width: 100%;
-	border: 1px solid lightgray;
+	border: 1.5px solid #e7e7e7;
 	resize: none;
 	font-size: 15px;
 	font-family: sans-serif;

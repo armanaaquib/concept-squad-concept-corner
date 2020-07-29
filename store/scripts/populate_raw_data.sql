@@ -17,7 +17,7 @@ VALUES
     'neha',
     'Neha Sanserwal',
     'github',
-    'Neha-sanserwal',
+    'Neha-Sanserwal',
     'neha16sanserwal@gmail.com',
     'new york',
     'developer',
