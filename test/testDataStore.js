@@ -1,5 +1,5 @@
 const { assert } = require('chai');
-const { fake, mock } = require('sinon');
+const { fake, stub } = require('sinon');
 
 const DataStore = require('../database/dataStore.js');
 
@@ -147,7 +147,7 @@ describe('DataStore', function() {
         callback.call({ lastID: 10 }, null);
       };
 
-      dataStore['addQuestionTag'] = mock()
+      dataStore['addQuestionTag'] = stub()
         .withArgs(10, ['node', 'java'])
         .returns(Promise.resolve(10));
       const questionId = await dataStore.addQuestion({
@@ -169,7 +169,11 @@ describe('DataStore', function() {
   });
 
   context('getQuestion', function() {
-    it.skip('should gives question according to the question id', function(done) {
+    beforeEach(() => {
+      dbClient = {};
+      dataStore = new DataStore(dbClient);
+    });
+    it('should gives question according to the question id', function(done) {
       dbClient['get'] = fake.yields(null, {
         question_id: 5,
         username: 'carlo',
@@ -193,13 +197,17 @@ describe('DataStore', function() {
         views: 9,
         isAnswerAccepted: true,
         noOfAnswers: 3,
-        profilePic: null
+        profilePic: null,
+        tags: ['node', 'java']
       };
+
+      dataStore['getTags'] = stub().returns(Promise.resolve(['node', 'java']));
 
       dataStore.getQuestion(5).then(question => {
         assert.deepStrictEqual(question, expectedQuestion);
         assert.ok(dbClient.get.calledOnce);
         assert.deepStrictEqual(dbClient.get.args[0][1], [5]);
+        assert.ok(dataStore.getTags.calledOnceWithExactly(5));
         done();
       });
     });
@@ -213,7 +221,7 @@ describe('DataStore', function() {
   });
 
   context('getQuestions', function() {
-    it.skip('should gives all questions in reverse order by date', function(done) {
+    it('should gives all questions in reverse order by date', function(done) {
       const questions = [
         {
           question_id: 5,
@@ -278,6 +286,7 @@ describe('DataStore', function() {
       ];
 
       dbClient['all'] = fake.yields(null, questions);
+      dataStore['getTags'] = stub().returns(Promise.resolve(['node', 'java']));
 
       const expectedQuestions = [
         {
@@ -290,7 +299,8 @@ describe('DataStore', function() {
           views: 9,
           isAnswerAccepted: true,
           noOfAnswers: 3,
-          profilePic: null
+          profilePic: null,
+          tags: ['node', 'java']
         },
         {
           questionId: 4,
@@ -302,7 +312,8 @@ describe('DataStore', function() {
           views: 7,
           isAnswerAccepted: false,
           noOfAnswers: 0,
-          profilePic: null
+          profilePic: null,
+          tags: ['node', 'java']
         },
         {
           questionId: 3,
@@ -314,7 +325,8 @@ describe('DataStore', function() {
           views: 5,
           isAnswerAccepted: false,
           noOfAnswers: 0,
-          profilePic: null
+          profilePic: null,
+          tags: ['node', 'java']
         },
         {
           questionId: 2,
@@ -326,7 +338,8 @@ describe('DataStore', function() {
           views: 9,
           isAnswerAccepted: false,
           noOfAnswers: 2,
-          profilePic: null
+          profilePic: null,
+          tags: ['node', 'java']
         },
         {
           questionId: 1,
@@ -338,7 +351,8 @@ describe('DataStore', function() {
           views: 10,
           isAnswerAccepted: false,
           noOfAnswers: 0,
-          profilePic: null
+          profilePic: null,
+          tags: ['node', 'java']
         }
       ];
       dataStore.getQuestions().then(questions => {
@@ -558,6 +572,29 @@ describe('DataStore', function() {
     it('should reject error if get throws error', function(done) {
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.addQuestionTag(10, ['node', 'java']).catch(err => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+        done();
+      });
+    });
+  });
+
+  context('getTags', function() {
+    it('should give tags belong to question_id', function(done) {
+      dbClient['all'] = fake.yields(null, [
+        { tag_name: 'node' },
+        { tag_name: 'java' }
+      ]);
+
+      dataStore.getTags(5).then(tags => {
+        assert.deepStrictEqual(tags, ['node', 'java']);
+        assert.ok(dbClient.all.calledOnce);
+        done();
+      });
+    });
+
+    it('should give err if query is wrong', function(done) {
+      dbClient['all'] = fake.yields({ message: 'syntax error' }, []);
+      dataStore.getTags(5).catch(err => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
         done();
       });

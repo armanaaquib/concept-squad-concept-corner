@@ -107,17 +107,17 @@
   color: #3e3e3e;
 } */
 
-.animated-icon{
+.animated-icon {
   color: #525252;
   cursor: pointer;
 }
 
-.animated-icon:hover{
+.animated-icon:hover {
   color: #3d8af7;
-  animation: animate 0.5s  ease-out;
+  animation: animate 0.5s ease-out;
   transition-delay: 2s;
 }
-.count{
+.count {
   font-size: 1rem;
   color: #525252;
   display: flex;
