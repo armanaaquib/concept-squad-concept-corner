@@ -56,7 +56,6 @@ const markAccepted = (answer) => {
     body: JSON.stringify({
       questionId: answer.questionId,
       answerId: answer.answerId,
-      username: answer.username,
     }),
   }).then((res) => {
     if (res.status === 200) {

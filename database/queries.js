@@ -105,15 +105,20 @@ module.exports = {
   getVotesOfAnswer: `
   SELECT 
     vote, count(*) as vote_count
+  FROM
+    answer_votes
   WHERE
     answer_id = ?
   GROUP BY
     vote
   `,
   getVote: `
-  SELECT vote
+  SELECT 
+    vote
+  FROM
+    answer_votes
   WHERE
     username = ? and answer_id = ?
   `,
-  getTagSuggestion: 'select tag_name from tags where tag_name like ?;'
+  getTagSuggestion: 'select tag_name from tags where tag_name like ?;',
 };

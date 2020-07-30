@@ -220,7 +220,7 @@ class DataStore {
 
   getVote(username, answerId) {
     return new Promise((resolve, reject) => {
-      this.db.get(queries.getReaction, [username, answerId], (err, row) => {
+      this.db.get(queries.getVote, [username, answerId], (err, row) => {
         err && reject(err);
         const vote = row || {};
         resolve(vote.vote);

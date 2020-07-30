@@ -2,22 +2,22 @@ const formidable = require('formidable');
 const authUtils = require('./authUtils');
 const { getAuthLink } = require('../config');
 
-const serveHomePage = function(req, res) {
+const serveHomePage = function (req, res) {
   const { dataStore } = req.app.locals;
-  dataStore.getQuestions().then(questions => {
+  dataStore.getQuestions().then((questions) => {
     res.render('index', {
       user: req.session.user,
       questions,
-      authLink: getAuthLink()
+      authLink: getAuthLink(),
     });
     res.end();
   });
 };
 
-const hasUser = function(req, res) {
+const hasUser = function (req, res) {
   const { username } = req.params;
   const { dataStore } = req.app.locals;
-  dataStore.getUser(username).then(user => {
+  dataStore.getUser(username).then((user) => {
     res.json({ available: user ? false : true });
   });
 };
@@ -34,7 +34,7 @@ const postQuestion = (req, res) => {
   const { dataStore } = req.app.locals;
   dataStore
     .addQuestion({ username, title, description, tags })
-    .then(questionId => {
+    .then((questionId) => {
       res.json(questionId);
     });
 };
@@ -43,7 +43,7 @@ const serveQuestionPage = (req, res) => {
   const { questionId } = req.params;
   const { dataStore } = req.app.locals;
 
-  dataStore.getQuestion(questionId).then(async question => {
+  dataStore.getQuestion(questionId).then(async (question) => {
     if (!question) {
       serveErrorPage(res, 404, 'Question not found.');
       return;
@@ -53,7 +53,7 @@ const serveQuestionPage = (req, res) => {
       user: req.session.user,
       question,
       answers: answerList,
-      authLink: getAuthLink()
+      authLink: getAuthLink(),
     });
     res.end();
   });
@@ -71,7 +71,7 @@ const postAnswer = (req, res) => {
 const signUp = (req, res) => {
   const { dataStore } = req.app.locals;
   const form = new formidable.IncomingForm();
-  form.parse(req, function(err, userInfo) {
+  form.parse(req, function (err, userInfo) {
     if (err) {
       res.status(400);
       res.end();
@@ -80,7 +80,7 @@ const signUp = (req, res) => {
     dataStore.addUser(userInfo).then(() => {
       req.session.user = {
         username: userInfo.username,
-        profilePic: userInfo.profilePic
+        profilePic: userInfo.profilePic,
       };
       res.end();
     });
@@ -97,13 +97,13 @@ const confirmUser = (req, res) => {
   authUtils
     .getAccessToken(code)
     .then(authUtils.getUserDetail)
-    .then(async userDetail => {
+    .then(async (userDetail) => {
       const { login } = userDetail;
       const user = await dataStore.getRegisteredUser(login, 'github');
       if (user) {
         req.session.user = {
           username: user.username,
-          profilePic: user.profilePic
+          profilePic: user.profilePic,
         };
         res.redirect('/');
       } else {
@@ -127,13 +127,19 @@ const serveErrorPage = (res, status, message) => {
 };
 
 const markAccepted = (req, res) => {
-  const { questionId, answerId, username } = req.body;
+  const { questionId, answerId } = req.body;
   const { dataStore } = req.app.locals;
-  if (username === req.session.user.username) {
-    dataStore.acceptAnswer(questionId, answerId).then(() => res.end());
-  } else {
-    serveErrorPage(res, 403, 'Access Denied');
-  }
+  dataStore.acceptAnswer(questionId, answerId).then(() => res.end());
+};
+
+const getVote = (req, res) => {
+  const { answerId } = req.body;
+  const { dataStore } = req.app.locals;
+  const { username } = req.session.user;
+  dataStore.getVote(username, answerId).then((vote) => {
+    res.json({ vote });
+    res.end();
+  });
 };
 
 const getTagSuggestion = (req, res) => {
@@ -155,5 +161,9 @@ module.exports = {
   postAnswer,
   ensureLogin,
   markAccepted,
+<<<<<<< HEAD
   getTagSuggestion
+=======
+  getVote,
+>>>>>>> |#9|Aaquib/Neha| upvote or downvote an answer
 };

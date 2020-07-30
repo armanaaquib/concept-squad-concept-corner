@@ -3,16 +3,16 @@ const app = require('../src/app');
 const { mock, replace, restore } = require('sinon');
 const authUtils = require('../src/authUtils');
 
-describe('handlers', function() {
-  context('/', function() {
-    it('serve homepage without login', function(done) {
+describe('handlers', function () {
+  context('/', function () {
+    it('serve homepage without login', function (done) {
       request(app)
         .get('/')
         .expect(/Log in/)
         .expect(200, done);
     });
 
-    it('serve homepage with login', function(done) {
+    it('serve homepage with login', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -25,8 +25,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/hasUser', function() {
-    it('should give availability as true when it has not user with the same name', function(done) {
+  context('/hasUser', function () {
+    it('should give availability as true when it has not user with the same name', function (done) {
       request(app)
         .get('/hasUser/AbC')
         .set('Content-Type', 'application/json')
@@ -34,7 +34,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should give availability as false when it has user with the same name', function(done) {
+    it('should give availability as false when it has user with the same name', function (done) {
       request(app)
         .get('/hasUser/michel')
         .set('Content-Type', 'application/json')
@@ -43,16 +43,16 @@ describe('handlers', function() {
     });
   });
 
-  context('/postQuestion', function() {
-    context('GET', function() {
-      it('should redirect to / if user is not logged in', function(done) {
+  context('/postQuestion', function () {
+    context('GET', function () {
+      it('should redirect to / if user is not logged in', function (done) {
         request(app)
           .get('/postQuestion')
           .expect('location', '/')
           .expect(302, done);
       });
 
-      it('should serve postQuestion page if user is logged in', function(done) {
+      it('should serve postQuestion page if user is logged in', function (done) {
         const { sessions } = app.locals;
         const sessionId = sessions.createSession();
         const session = sessions.getSession(sessionId);
@@ -65,8 +65,8 @@ describe('handlers', function() {
       });
     });
 
-    context('POST', function() {
-      it('should add Question and redirect to question page', function(done) {
+    context('POST', function () {
+      it('should add Question and redirect to question page', function (done) {
         const { sessions } = app.locals;
         const sessionId = sessions.createSession();
         const session = sessions.getSession(sessionId);
@@ -82,15 +82,15 @@ describe('handlers', function() {
     });
   });
 
-  context('/question/:questionId', function() {
-    it('should serve question if question is found', function(done) {
+  context('/question/:questionId', function () {
+    it('should serve question if question is found', function (done) {
       request(app)
         .get('/question/1')
         .expect(/Concept Corner | Question Title 1/)
         .expect(200, done);
     });
 
-    it('should serve not found page if question is not found', function(done) {
+    it('should serve not found page if question is not found', function (done) {
       request(app)
         .get('/question/10')
         .expect(/Concept Corner | 404 Not Found/)
@@ -98,8 +98,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/postAnswer', function() {
-    it('should add Answer and redirect to question page again', function(done) {
+  context('/postAnswer', function () {
+    it('should add Answer and redirect to question page again', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -114,8 +114,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/signUp', function() {
-    it('should signUp user and redirect to home page', function(done) {
+  context('/signUp', function () {
+    it('should signUp user and redirect to home page', function (done) {
       request(app)
         .post('/signUp')
         .set('Content-Type', 'multipart/form-data')
@@ -123,7 +123,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should give Bad Request if content is not valid', function(done) {
+    it('should give Bad Request if content is not valid', function (done) {
       request(app)
         .post('/signUp')
         .set('Content-Type', 'multipart/form-data')
@@ -132,18 +132,16 @@ describe('handlers', function() {
     });
   });
 
-  context('/confirmUser', function() {
+  context('/confirmUser', function () {
     afterEach(() => {
       restore();
     });
 
-    it('should redirect to home page if user exists', done => {
+    it('should redirect to home page if user exists', (done) => {
       replace(
         authUtils,
         'getAccessToken',
-        mock()
-          .withArgs('123')
-          .returns(Promise.resolve('access-token'))
+        mock().withArgs('123').returns(Promise.resolve('access-token'))
       );
 
       replace(
@@ -161,13 +159,11 @@ describe('handlers', function() {
         .expect(302, done);
     });
 
-    it('should render confirm if user not exists', done => {
+    it('should render confirm if user not exists', (done) => {
       replace(
         authUtils,
         'getAccessToken',
-        mock()
-          .withArgs('123')
-          .returns(Promise.resolve('access-token'))
+        mock().withArgs('123').returns(Promise.resolve('access-token'))
       );
 
       replace(
@@ -185,7 +181,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should say access denied if code query is not present', function(done) {
+    it('should say access denied if code query is not present', function (done) {
       request(app)
         .get('/confirmUser')
         .set('Content-Type', 'application/json')
@@ -194,8 +190,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/markAccept', function() {
-    it('should accept given answer as correct if user is the author', function(done) {
+  context('/markAccept', function () {
+    it('should accept given answer as correct if user is the author', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -207,23 +203,40 @@ describe('handlers', function() {
         .send({ questionId: 5, answerId: 1, username: 'michel' })
         .expect(200, done);
     });
+  });
 
-    it('should not accept given answer as correct if user is not the author', function(done) {
+  context('/getVote', function () {
+    it('should return vote of user for given answer id if user has voted', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
       session.user = { username: 'michel', profilePic: null };
       request(app)
-        .post('/markAccepted')
+        .get('/getVote')
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
-        .send({ questionId: 5, answerId: 1, username: 'shawn' })
-        .expect(403, done);
+        .send({ answerId: 1 })
+        .expect({ vote: 'up' })
+        .expect(200, done);
+    });
+
+    it('should return vote undefine of user for given answer id if user has not voted', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'carlo', profilePic: null };
+      request(app)
+        .get('/getVote')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({ answerId: 1 })
+        .expect({})
+        .expect(200, done);
     });
   });
 
-  context('/getTagSuggestion', function() {
-    it('should give list of matching tags', function(done) {
+  context('/getTagSuggestion', function () {
+    it('should give list of matching tags', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -235,7 +248,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should give empty array if no matching tags present', function(done) {
+    it('should give empty array if no matching tags present', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
