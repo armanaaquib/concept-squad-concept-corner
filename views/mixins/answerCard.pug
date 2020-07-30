@@ -7,7 +7,7 @@ mixin answerCard(answer, isAuthor)
 					.username #{answer.username}
 					.date(id=`date-${answer.answerId}`)
 		.col-12.reactions
-			.col-4
+			.col-4(id=`a-${answer.answerId}`)
 				.col-3
 					i.material-icons.animated-icon thumb_up
 					.count 4
