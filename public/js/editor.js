@@ -61,8 +61,24 @@ const getCancelButton = function () {
   </path></svg>`;
 };
 
-const removetag = function (tagToRemove) {
+const getRemainingTags = function() {
+  const selectedTags = document.querySelector('.selected-tags');
+  return 5 - selectedTags.childElementCount;
+};
+
+const updateRemainingTags = function() {
+  const remainigTags = document.querySelector('.remaining_tags');
+  const remainigTagsCount = getRemainingTags();
+  remainigTags.style.color = 'black';
+  if (remainigTagsCount < 1) {
+    remainigTags.style.color = 'red';
+  }
+  remainigTags.innerText = remainigTagsCount;
+};
+
+const removetag = function(tagToRemove) {
   tagToRemove.parentElement.remove();
+  updateRemainingTags();
 };
 
 const setTagsFieldWidth = function () {
@@ -70,7 +86,7 @@ const setTagsFieldWidth = function () {
     .offsetWidth;
   const tagsBoxWidth = document.querySelector('.tagsBox').offsetWidth;
   const tagsField = getElement('tags');
-  tagsField.style.width = tagsBoxWidth - selectedTagsWidth - 40;
+  tagsField.style.width = tagsBoxWidth - selectedTagsWidth - 50;
 };
 
 const removeLastTag = function (tagField) {
@@ -82,11 +98,12 @@ const removeLastTag = function (tagField) {
   const tagToRemove = selectedTags[selectedTags.length - 1];
   tagField.value = tagToRemove.innerText;
   tagToRemove.remove();
+  updateRemainingTags();
 };
 
 const addTag = function (tag) {
   const tagField = getElement('tags');
-  if (tag.trim() === '') {
+  if (tag.trim() === '' || getRemainingTags() < 1) {
     tagField.value = '';
     return;
   }
@@ -94,6 +111,7 @@ const addTag = function (tag) {
   const tagHtml = `<span class="selected-tag">${tag}<a class="removetag"
    onclick="removetag(this)">${getCancelButton()}</a></span>`;
   selectedTags.innerHTML += tagHtml;
+  updateRemainingTags();
   tagField.value = '';
 };
 
