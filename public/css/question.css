@@ -167,6 +167,7 @@
 .unchecked-answer {
   font-size: 2rem;
   color: #525252;
+  cursor: pointer;
   display: flex;
   justify-content: center;
 }

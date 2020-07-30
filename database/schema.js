@@ -35,8 +35,8 @@ module.exports = {
 		accepted boolean DEFAULT 0,
 		time datetime DEFAULT (datetime('now', 'localtime')),
 		last_modified datetime,
-		FOREIGN KEY(username) REFERENCES user_tbl(username),
-		FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
+		FOREIGN KEY(username) REFERENCES users(username),
+		FOREIGN KEY(question_id) REFERENCES questions(question_id)
 	);`,
 
   tags: `CREATE TABLE tags(
@@ -48,6 +48,13 @@ module.exports = {
 		question_id integer,
 		tag_id integer,
 		FOREIGN KEY(tag_id) REFERENCES tags(tag_id),
-		FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
-	)`
+		FOREIGN KEY(question_id) REFERENCES questions(question_id)
+	)`,
+  answer_votes: `CREATE TABLE answer_votes (
+		usrename varchar,
+		answer_id integer,
+		vote varchar,
+		FOREIGN KEY(username) REFERENCES users(username),
+		FOREIGN KEY(answer_id) REFERENCES answers(answer_id)
+	);`,
 };
