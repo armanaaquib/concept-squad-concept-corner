@@ -19,7 +19,7 @@ mixin questionCard(question)
 						.col-3.response #{question.noOfAnswers} Answer(s)
 						.col-3.checked-answer
 							if question.isAnswerAccepted
-								<i class="fas fa-check-circle"></i>
+								i.material-icons.md  check_circle 
 		.col-2.askedBy
 			.user
 				img(src=question.profilePic||'/images/avatar.png', height=100, width=100, alt="alt")

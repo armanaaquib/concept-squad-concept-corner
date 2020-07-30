@@ -102,11 +102,46 @@
   font-size: 2rem;
   text-align: center;
 }
-.fa-thumbs-up,
+/* .fa-thumbs-up,
 .fa-thumbs-down {
   color: #3e3e3e;
+} */
+
+.animated-icon{
+  color: #525252;
+  cursor: pointer;
 }
 
+.animated-icon:hover{
+  color: #3d8af7;
+  animation: animate 0.5s  ease-out;
+  transition-delay: 2s;
+}
+.count{
+  font-size: 1rem;
+  color: #525252;
+  display: flex;
+  padding-left: 1rem;
+  align-items: center;
+}
+@keyframes animate {
+  25% {
+    color: #3d8af7;
+    transform: rotate(30deg);
+  }
+  50% {
+    color: #3d8af7;
+    transform: rotate(-15deg);
+  }
+  75% {
+    color: #3d8af7;
+    transform: rotate(15deg);
+  }
+  100% {
+    color: #3d8af7;
+    transform: rotate(-15deg);
+  }
+}
 /* .reactions.checked-answer{
   color: #23c323 !important;
 } */

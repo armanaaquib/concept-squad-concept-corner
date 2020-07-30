@@ -9,16 +9,18 @@ mixin answerCard(answer, isAuthor)
 		.col-12.reactions
 			.col-4
 				.col-3
-					i.fas.fa-thumbs-up
+					i.material-icons.animated-icon thumb_up
+					.count 4
 				.col-3
-					i.fas.fa-thumbs-down
+					i.material-icons.animated-icon thumb_down
+					.count 6
 				if isAuthor
 					.col-3.unchecked-answer
-						i(class="fas fa-check-circle", onclick='markAccepted(' + JSON.stringify(answer) + ')')
+						i(class="material-icons", onclick='markAccepted(' + JSON.stringify(answer) + ')') check_circle_outline
 				else 
 					if answer.accepted 
 						.col-3.checked-answer
-							i.fas.fa-check-circle
+							i.material-icons check_circle
 			
 			
 	script.
