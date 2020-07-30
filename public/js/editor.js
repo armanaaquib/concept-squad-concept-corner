@@ -84,8 +84,8 @@ const removeLastTag = function(tagField) {
   tagToRemove.remove();
 };
 
-const addTag = function(tagField) {
-  const tag = tagField.value;
+const addTag = function(tag) {
+  const tagField = getElement('tags');
   if (tag.trim() === '') {
     tagField.value = '';
     return;
@@ -97,12 +97,47 @@ const addTag = function(tagField) {
   tagField.value = '';
 };
 
+const getSelectedSuggestion = function(selectedField) {
+  const selectedTag = selectedField.firstElementChild.value;
+  addTag(selectedTag);
+  setTagsFieldWidth();
+};
+
+const showTagSuggestions = function(tags) {
+  document.addEventListener('click', function() {
+    removeTagSuggestion();
+  });
+  const showSuggestionBox = document.querySelector('.suggestionTags');
+  const tagsToShow = tags.map(
+    tag =>
+      `<div onclick="getSelectedSuggestion(this)">${tag}
+      <input type="hidden" value="${tag}"></div>`
+  );
+  showSuggestionBox.innerHTML = tagsToShow.join('');
+};
+
+const removeTagSuggestion = function() {
+  const showSuggestionBox = document.querySelector('.suggestionTags');
+  showSuggestionBox.innerHTML = '';
+};
+
+const getTagSuggestion = function(tagField) {
+  if (tagField.value.length < 1) {
+    removeTagSuggestion();
+    return;
+  }
+  fetch(`/getTagSuggestion/${tagField.value}`)
+    .then(res => res.json())
+    .then(showTagSuggestions);
+};
+
 const createTag = function(tagField) {
   if (window.event.keyCode == 8 && tagField.value == '') {
     removeLastTag(tagField);
   }
   if (window.event.keyCode == 32) {
-    addTag(tagField);
+    addTag(tagField.value);
   }
+  getTagSuggestion(tagField);
   setTagsFieldWidth();
 };
