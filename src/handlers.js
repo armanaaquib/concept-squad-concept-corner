@@ -136,6 +136,14 @@ const markAccepted = (req, res) => {
   }
 };
 
+const getTagSuggestion = (req, res) => {
+  const { tagName } = req.params;
+  const { dataStore } = req.app.locals;
+  dataStore.getTagSuggestion(tagName).then(matchingTags => {
+    res.json(matchingTags);
+  });
+};
+
 module.exports = {
   serveHomePage,
   servePostQuestionPage,
@@ -146,5 +154,6 @@ module.exports = {
   hasUser,
   postAnswer,
   ensureLogin,
-  markAccepted
+  markAccepted,
+  getTagSuggestion
 };

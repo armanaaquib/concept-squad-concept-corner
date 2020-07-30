@@ -677,4 +677,27 @@ describe('DataStore', function () {
       });
     });
   });
+
+  context('getTagSuggestion', function() {
+    it('should give tags belong to question_id', function(done) {
+      dbClient['all'] = fake.yields(null, [
+        { tag_name: 'nav' },
+        { tag_name: 'java' }
+      ]);
+
+      dataStore.getTagSuggestion('a').then(tags => {
+        assert.deepStrictEqual(tags, ['nav', 'java']);
+        assert.ok(dbClient.all.calledOnce);
+        done();
+      });
+    });
+
+    it('should give err if query is wrong', function(done) {
+      dbClient['all'] = fake.yields({ message: 'syntax error' }, []);
+      dataStore.getTagSuggestion(5).catch(err => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+        done();
+      });
+    });
+  });
 });

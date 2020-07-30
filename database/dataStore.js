@@ -258,6 +258,16 @@ class DataStore {
       });
     });
   }
+
+  getTagSuggestion(tagname) {
+    return new Promise((resolve, reject) => {
+      this.db.all(queries.getTagSuggestion, [`%${tagname}%`], (err, rows) => {
+        err && reject(err);
+        const matchingTags = rows.map(row => row.tag_name);
+        resolve(matchingTags);
+      });
+    });
+  }
 }
 
 module.exports = DataStore;

@@ -115,4 +115,5 @@ module.exports = {
   WHERE
     username = ? and answer_id = ?
   `,
+  getTagSuggestion: 'select tag_name from tags where tag_name like ?;'
 };

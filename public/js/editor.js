@@ -84,17 +84,25 @@ const removeLastTag = function(tagField) {
   tagToRemove.remove();
 };
 
+const addTag = function(tagField) {
+  const tag = tagField.value;
+  if (tag.trim() === '') {
+    tagField.value = '';
+    return;
+  }
+  const selectedTags = document.querySelector('.selected-tags');
+  const tagHtml = `<span class="selected-tag">${tag}<a class="removetag"
+   onclick="removetag(this)">${getCancelButton()}</a></span>`;
+  selectedTags.innerHTML += tagHtml;
+  tagField.value = '';
+};
+
 const createTag = function(tagField) {
   if (window.event.keyCode == 8 && tagField.value == '') {
     removeLastTag(tagField);
   }
   if (window.event.keyCode == 32) {
-    const tag = tagField.value;
-    const selectedTags = document.querySelector('.selected-tags');
-    const tagHtml = `<span class="selected-tag">${tag}<a class="removetag"
-     onclick="removetag(this)">${getCancelButton()}</a></span>`;
-    selectedTags.innerHTML += tagHtml;
-    tagField.value = '';
+    addTag(tagField);
   }
   setTagsFieldWidth();
 };

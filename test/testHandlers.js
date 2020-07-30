@@ -194,8 +194,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/markAccept', function () {
-    it('should accept given answer as correct if user is the author', function (done) {
+  context('/markAccept', function() {
+    it('should accept given answer as correct if user is the author', function(done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -208,7 +208,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should not accept given answer as correct if user is not the author', function (done) {
+    it('should not accept given answer as correct if user is not the author', function(done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -219,6 +219,32 @@ describe('handlers', function() {
         .set('Content-Type', 'application/json')
         .send({ questionId: 5, answerId: 1, username: 'shawn' })
         .expect(403, done);
+    });
+  });
+
+  context('/getTagSuggestion', function() {
+    it('should give list of matching tags', function(done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel', profilePic: null };
+      request(app)
+        .get('/getTagSuggestion/a')
+        .set('Cookie', `sId=${sessionId}`)
+        .expect(['java', 'nav'])
+        .expect(200, done);
+    });
+
+    it('should give empty array if no matching tags present', function(done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel', profilePic: null };
+      request(app)
+        .get('/getTagSuggestion/z')
+        .set('Cookie', `sId=${sessionId}`)
+        .expect([])
+        .expect(200, done);
     });
   });
 });

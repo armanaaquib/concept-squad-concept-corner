@@ -187,3 +187,5 @@ VALUES
   ('michel', 6, 'down'),
   ('jake', 6, 'up'),
   ('bryce', 6, 'up');
+  
+INSERT INTO tags (tag_name) VALUES ('java'),('nav'),('node');

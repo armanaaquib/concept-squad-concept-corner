@@ -40,6 +40,11 @@ app.get('/confirmUser', handlers.confirmUser);
 app.get('/hasUser/:username', handlers.hasUser);
 
 app.get('/postQuestion', handlers.ensureLogin, handlers.servePostQuestionPage);
+app.get(
+  '/getTagSuggestion/:tagName',
+  handlers.ensureLogin,
+  handlers.getTagSuggestion
+);
 app.post('/postQuestion', handlers.ensureLogin, handlers.postQuestion);
 app.post('/postAnswer', handlers.ensureLogin, handlers.postAnswer);
 app.post('/markAccepted', handlers.ensureLogin, handlers.markAccepted);
