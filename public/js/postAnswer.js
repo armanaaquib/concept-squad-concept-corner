@@ -10,7 +10,6 @@ const showDescription = (description, id) => {
 
   quill.setContents(JSON.parse(description));
 };
-
 const postAnswer = function (editor) {
   const questionId = document.getElementById('h_qId').value;
   fetch('/postAnswer', {
@@ -65,6 +64,14 @@ const markAccepted = (answer) => {
       checkedAnswer.classList.add('checked-answer');
       checkedAnswer.innerHTML = '<i class="material-icons">check_circle</i>';
       $(`.reactions #a-${answer.answerId}`).append(checkedAnswer);
+    }
+  });
+};
+
+const updateVotes = (answerId) => {
+  fetch(`/getVote/${answerId}`).then(res => res.json()).then((result) => {
+    if(result.vote){
+      $(`#a-${answerId} .${result.vote}`).css('color', '#3d8af7');
     }
   });
 };

@@ -205,17 +205,15 @@ describe('handlers', function () {
     });
   });
 
-  context('/getVote', function () {
+  context('/getVote/:answerId', function () {
     it('should return vote of user for given answer id if user has voted', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
       session.user = { username: 'michel', profilePic: null };
       request(app)
-        .get('/getVote')
+        .get('/getVote/1')
         .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({ answerId: 1 })
         .expect({ vote: 'up' })
         .expect(200, done);
     });
@@ -226,10 +224,8 @@ describe('handlers', function () {
       const session = sessions.getSession(sessionId);
       session.user = { username: 'carlo', profilePic: null };
       request(app)
-        .get('/getVote')
+        .get('/getVote/1')
         .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({ answerId: 1 })
         .expect({})
         .expect(200, done);
     });

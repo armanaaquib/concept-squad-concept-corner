@@ -133,7 +133,7 @@ const markAccepted = (req, res) => {
 };
 
 const getVote = (req, res) => {
-  const { answerId } = req.body;
+  const { answerId } = req.params;
   const { dataStore } = req.app.locals;
   const { username } = req.session.user;
   dataStore.getVote(username, answerId).then((vote) => {

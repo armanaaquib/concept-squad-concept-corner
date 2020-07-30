@@ -15,9 +15,9 @@ insert into
 VALUES
   (
     'neha',
-    'Neha Sanserwal',
+    'Neha-sanserwal',
     'github',
-    'Neha-Sanserwal',
+    'Neha-sanserwal',
     'neha16sanserwal@gmail.com',
     'new york',
     'developer',
@@ -264,6 +264,7 @@ INSERT INTO
   answer_votes(username, answer_id, vote)
 VALUES
   ('neha', 1, 'up'),
+  ('neha', 2, 'down'),
   ('jake', 1, 'up'),
   ('bryce', 1, 'down'),
   ('neha', 5, 'down'),

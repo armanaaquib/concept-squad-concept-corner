@@ -49,6 +49,6 @@ app.get(
 app.post('/postQuestion', handlers.ensureLogin, handlers.postQuestion);
 app.post('/postAnswer', handlers.ensureLogin, handlers.postAnswer);
 app.post('/markAccepted', handlers.ensureLogin, handlers.markAccepted);
-app.get('/getVote', ensureLogin, handlers.getVote);
+app.get('/getVote/:answerId', ensureLogin, handlers.getVote);
 
 module.exports = app;
