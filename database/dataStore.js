@@ -218,6 +218,16 @@ class DataStore {
     });
   }
 
+  getVote(username, answerId) {
+    return new Promise((resolve, reject) => {
+      this.db.get(queries.getReaction, [username, answerId], (err, row) => {
+        err && reject(err);
+        const vote = row || {};
+        resolve(vote.vote);
+      });
+    });
+  }
+
   addQuestionTag(questionId, tags) {
     return new Promise((resolve, reject) => {
       tags.forEach((tag, index) => {

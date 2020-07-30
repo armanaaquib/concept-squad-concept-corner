@@ -565,6 +565,34 @@ describe('DataStore', function () {
     });
   });
 
+  context('getVote', function () {
+    it('should give vote of user for given answer if user has voted', function () {
+      dbClient['get'] = fake.yields(null, { vote: 'up' });
+      dataStore.getVote('michel', 1).then((vote) => {
+        assert.strictEqual(vote, 'up');
+        assert.ok(dbClient.get.calledOnce);
+        assert.deepStrictEqual(dbClient.get.args[0][1], ['michel', 1]);
+      });
+    });
+
+    it('should give vote undefined of user for given answer if user has not voted', function () {
+      dbClient['get'] = fake.yields(null, undefined);
+      dataStore.getVote('michel', 2).then((vote) => {
+        assert.isUndefined(vote);
+        assert.ok(dbClient.get.calledOnce);
+        assert.deepStrictEqual(dbClient.get.args[0][1], ['michel', 2]);
+      });
+    });
+
+    it('should reject error if get throws error', function (done) {
+      dbClient['get'] = fake.yields({ message: 'syntax error' });
+      dataStore.getVote('michel', 1).catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+        done();
+      });
+    });
+  });
+
   context('getTagId', function () {
     it('should give tagId if tag is already present', function (done) {
       dbClient['get'] = fake.yields(null, { tag_id: 1 });

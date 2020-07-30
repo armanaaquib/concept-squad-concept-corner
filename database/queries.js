@@ -110,4 +110,9 @@ module.exports = {
   GROUP BY
     vote
   `,
+  getVote: `
+  SELECT vote
+  WHERE
+    username = ? and answer_id = ?
+  `,
 };
