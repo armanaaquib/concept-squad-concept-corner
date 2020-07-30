@@ -26,6 +26,18 @@ VALUES
     null
   ),
   (
+    'armanaaquib',
+    'Aaquib Equbal',
+    'github',
+    'armanaaquib',
+    'armanaaquibequbal@gmail.com',
+    'new york',
+    'developer',
+    'java developer worked for 20 years across different companies',
+    'apple',
+    null
+  ),
+  (
     'michel',
     'michel shawn',
     'github',
@@ -118,7 +130,7 @@ VALUES
     datetime('now')
   ),
   (
-    'carlo',
+    'armanaaquib',
     'Calculate number of days between unix timestamps',
     '"{\"ops\":[{\"insert\":\"I have text-to-speech services in my app. I also have a Check Box. When the text-to-speech completed.I want the text-to-speech to be restarted all the time when the checkBox is true. Please anyone help me.\\n\"}]}"',
     9,
@@ -265,6 +277,8 @@ INSERT INTO
 VALUES
   ('neha', 1, 'up'),
   ('neha', 2, 'down'),
+  ('armanaaquib', 1, 'up'),
+  ('armanaaquib', 2, 'down'),
   ('jake', 1, 'up'),
   ('bryce', 1, 'down'),
   ('neha', 5, 'down'),
