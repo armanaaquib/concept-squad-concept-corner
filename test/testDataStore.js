@@ -678,23 +678,65 @@ describe('DataStore', function () {
     });
   });
 
-  context('getTagSuggestion', function() {
-    it('should give tags belong to question_id', function(done) {
+  context('getTagSuggestion', function () {
+    it('should give tags belong to question_id', function (done) {
       dbClient['all'] = fake.yields(null, [
         { tag_name: 'nav' },
-        { tag_name: 'java' }
+        { tag_name: 'java' },
       ]);
 
-      dataStore.getTagSuggestion('a').then(tags => {
+      dataStore.getTagSuggestion('a').then((tags) => {
         assert.deepStrictEqual(tags, ['nav', 'java']);
         assert.ok(dbClient.all.calledOnce);
         done();
       });
     });
 
-    it('should give err if query is wrong', function(done) {
+    it('should give err if query is wrong', function (done) {
       dbClient['all'] = fake.yields({ message: 'syntax error' }, []);
-      dataStore.getTagSuggestion(5).catch(err => {
+      dataStore.getTagSuggestion(5).catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+        done();
+      });
+    });
+  });
+
+  context('updateVote', function () {
+    it('should update vote', function (done) {
+      dbClient['run'] = fake.yields(null);
+
+      dataStore.updateVote('michel', 1, 'up').then((status) => {
+        assert.ok(status);
+        assert.ok(dbClient.run.calledOnce);
+        assert.deepStrictEqual(dbClient.run.args[0][1], ['up', 'michel', 1]);
+        done();
+      });
+    });
+
+    it('should give err if query is wrong', function (done) {
+      dbClient['run'] = fake.yields({ message: 'syntax error' });
+      dataStore.updateVote('michel', 1, 'up').catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+        done();
+      });
+    });
+  });
+
+  context('addVote', function () {
+    it('should add vote', function (done) {
+      dbClient['run'] = fake.yields(null);
+
+      dataStore.addVote('michel', 1, 'up').then((status) => {
+        assert.ok(status);
+        assert.ok(dbClient.run.calledOnce);
+        assert.deepStrictEqual(dbClient.run.args[0][1], ['michel', 1, 'up']);
+        done();
+      });
+    });
+
+    it('should give err if query is wrong', function (done) {
+      dbClient['run'] = fake.yields({ message: 'syntax error' });
+      dataStore.addVote('michel', 1, 'up').catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
         done();
       });

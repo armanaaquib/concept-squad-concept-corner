@@ -110,7 +110,7 @@ module.exports = {
   WHERE
     answer_id = ?
   GROUP BY
-    vote
+    vote;
   `,
   getVote: `
   SELECT 
@@ -118,7 +118,27 @@ module.exports = {
   FROM
     answer_votes
   WHERE
-    username = ? and answer_id = ?
+    username = ? and answer_id = ?;
   `,
-  getTagSuggestion: 'select tag_name from tags where tag_name like ?;',
+  getTagSuggestion: `
+  SELECT 
+    tag_name 
+  FROM 
+    tags 
+  WHERE 
+    tag_name like ?;
+  `,
+  updateVote: `
+  UPDATE
+    answer_votes
+  SET
+    vote = ?;
+  WHERE
+    username = ? AND answer_id = ?;
+  `,
+  addVote: `
+  INSERT INTO
+    answer_votes(username, answer_id, vote)
+    values (?, ?, ?);
+  `,
 };

@@ -263,8 +263,26 @@ class DataStore {
     return new Promise((resolve, reject) => {
       this.db.all(queries.getTagSuggestion, [`%${tagname}%`], (err, rows) => {
         err && reject(err);
-        const matchingTags = rows.map(row => row.tag_name);
+        const matchingTags = rows.map((row) => row.tag_name);
         resolve(matchingTags);
+      });
+    });
+  }
+
+  updateVote(username, answerId, vote) {
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.updateVote, [vote, username, answerId], (err) => {
+        err && reject(err);
+        resolve(true);
+      });
+    });
+  }
+
+  addVote(username, answerId, vote) {
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.addVote, [username, answerId, vote], (err) => {
+        err && reject(err);
+        resolve(true);
       });
     });
   }
