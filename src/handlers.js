@@ -145,7 +145,7 @@ const getVote = (req, res) => {
 const getTagSuggestion = (req, res) => {
   const { tagName } = req.params;
   const { dataStore } = req.app.locals;
-  dataStore.getTagSuggestion(tagName).then(matchingTags => {
+  dataStore.getTagSuggestion(tagName).then((matchingTags) => {
     res.json(matchingTags);
   });
 };
@@ -161,9 +161,6 @@ module.exports = {
   postAnswer,
   ensureLogin,
   markAccepted,
-<<<<<<< HEAD
-  getTagSuggestion
-=======
+  getTagSuggestion,
   getVote,
->>>>>>> |#9|Aaquib/Neha| upvote or downvote an answer
 };
