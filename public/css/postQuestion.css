@@ -105,11 +105,14 @@
   position: absolute;
   border: 1px solid #d4d4d4;
   border-bottom: none;
-  border-top: none;
   z-index: 99;
   top: 100%;
   left: 0;
   right: 0;
+}
+
+.s-tag:hover {
+  background-color: #c9f1fd;
 }
 
 .suggestionTags div {

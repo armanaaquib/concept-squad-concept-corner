@@ -197,6 +197,7 @@ body a {
   border: 1px solid #3d8af7;
   color: #3d8af7;
   font-weight: 900;
+  cursor: pointer;
 }
 
 .primary-btn:hover {
@@ -226,9 +227,6 @@ body a {
 
 .post-btn {
   flex-direction: row-reverse;
-}
-.post-btn button {
-  cursor: pointer;
 }
 
 .primary-btn:disabled {
