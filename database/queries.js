@@ -52,8 +52,8 @@ module.exports = {
 
   getAnswers: `
     SELECT
-      username, answer_id, question_id, answer, up_vote,
-      down_vote, accepted, time, last_modified
+      username, answer_id, question_id, answer,
+      accepted, time, last_modified
     FROM
       answers
     WHERE
@@ -101,5 +101,13 @@ module.exports = {
   getQuestionTags: `
     select tags.tag_name from question_tag as qt 
     join tags on qt.tag_id=tags.tag_id where qt.question_id = ?;
-  `
+  `,
+  getVotesOfAnswer: `
+  SELECT 
+    vote, count(*) as vote_count
+  WHERE
+    answer_id = ?
+  GROUP BY
+    vote
+  `,
 };

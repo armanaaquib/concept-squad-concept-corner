@@ -30,8 +30,6 @@ module.exports = {
 		username varchar NOT NULL,
 		question_id integer NOT NULL,
 		answer blob NOT NULL,
-		up_vote integer DEFAULT 0,
-		down_vote integer DEFAULT 0,
 		accepted boolean DEFAULT 0,
 		time datetime DEFAULT (datetime('now', 'localtime')),
 		last_modified datetime,

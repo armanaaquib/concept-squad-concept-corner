@@ -35,8 +35,6 @@ CREATE TABLE answers (
 	username varchar NOT NULL,
 	question_id integer NOT NULL,
 	answer blob NOT NULL,
-	up_vote integer DEFAULT 0,
-	down_vote integer DEFAULT 0,
 	accepted boolean DEFAULT 0,
 	time datetime DEFAULT (datetime('now', 'localtime')),
 	last_modified datetime,
@@ -75,4 +73,12 @@ CREATE TABLE preferred_tags (
 	tag_id integer,
 	FOREIGN KEY(username) REFERENCES user_tbl(username),
 	FOREIGN KEY(tag_id) REFERENCES tags(tag_id)
+);
+
+CREATE TABLE answer_votes (
+	username varchar,
+	answer_id integer,
+	vote varchar,
+	FOREIGN KEY(username) REFERENCES users(username),
+	FOREIGN KEY(answer_id) REFERENCES answers(answer_id)
 );

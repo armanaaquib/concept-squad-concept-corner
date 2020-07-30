@@ -120,8 +120,6 @@ VALUES
     username,
     question_id,
     answer,
-    up_vote,
-    down_vote,
     accepted,
     time
   )
@@ -130,8 +128,6 @@ VALUES
     'michel',
     5,
     'Answer 1',
-    10,
-    3,
     1,
      '2020-07-20 11:20:35'
   ),
@@ -139,8 +135,6 @@ VALUES
     'bryce',
     5,
     'Answer 2',
-    10,
-    3,
     0,
     '2020-07-21 11:20:35'
   ),
@@ -148,8 +142,6 @@ VALUES
     'jake',
     5,
     'Answer 3',
-    10,
-    3,
     0,
      '2020-07-21 12:20:35'
   ),
@@ -157,8 +149,6 @@ VALUES
     'michel',
     2,
     'Answer 4',
-    10,
-    3,
     0,
     '2020-07-22 11:20:35'
   ),
@@ -166,8 +156,6 @@ VALUES
     'carlo',
     2,
     'Answer 5',
-    10,
-    3,
     0,
      '2020-07-22 11:30:35'
   );
@@ -185,3 +173,17 @@ VALUES
     no_of_answers = 2
   WHERE
     question_id = 2;
+
+
+INSERT INTO
+  answer_votes(username, answer_id, vote)
+VALUES
+  ('michel', 1, 'up'),
+  ('jake', 1, 'up'),
+  ('bryce', 1, 'down'),
+  ('michel', 5, 'down'),
+  ('jake', 5, 'up'),
+  ('bryce', 5, 'up'),
+  ('michel', 6, 'down'),
+  ('jake', 6, 'up'),
+  ('bryce', 6, 'up');
