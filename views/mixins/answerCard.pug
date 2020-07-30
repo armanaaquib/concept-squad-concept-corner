@@ -10,10 +10,10 @@ mixin answerCard(answer, isAuthor)
 			.col-4(id=`a-${answer.answerId}`)
 				.col-3
 					i.up.material-icons.animated-icon thumb_up
-					.count 4
+					.count #{answer.upVote}
 				.col-3
 					i.down.material-icons.animated-icon thumb_down
-					.count 6
+					.count #{answer.downVote}
 				if isAuthor
 					.col-3.unchecked-answer
 						i(class="material-icons", onclick='markAccepted(' + JSON.stringify(answer) + ')') check_circle_outline
