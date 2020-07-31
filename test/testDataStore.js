@@ -767,9 +767,12 @@ describe('DataStore', function () {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };
-
+    
       dataStore.addQuestionComment('michel', 1, 'comment').catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
+      });
+    });
+  });
   context('deleteVote', function () {
     it('should delete vote', function (done) {
       dbClient['run'] = fake.yields(null);
