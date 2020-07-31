@@ -20,7 +20,7 @@ module.exports = {
   addQuestionComment: `
   INSERT INTO 
   question_comments( username, question_id, comment, time )
-  values(?, ?, ?,datetime('now'));
+  values(?, ?, ?, datetime('now'));
   `,
   updateAnswerCount: `
       update questions set no_of_answers=no_of_answers+1 where question_id = ?;
@@ -155,12 +155,19 @@ module.exports = {
     username = ? AND answer_id = ?;
   `,
 
-  getCommentsOfQuestions: `
+  getCommentsOfQuestion: `
   SELECT 
-    (comment, comment_id, time, username) 
+  comment, comment_id, time, username 
   FROM 
-    question_comments 
+  question_comments 
   WHERE
-    question_id = ?
+  question_id=?;
 `,
+
+  getComment: `SELECT 
+  comment, comment_id, time, username
+  FROM 
+  question_comments 
+  WHERE
+  comment_id=?;`,
 };

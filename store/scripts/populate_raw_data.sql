@@ -378,4 +378,4 @@ VALUES
     11,
     'To determine how many days an order was placed on that day, all you have to do is add a sum via SQL for the same day',
     datetime('now')
-  );
+  ); 

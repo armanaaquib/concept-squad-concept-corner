@@ -57,5 +57,7 @@ app.post(
 app.get('/getVote/:answerId', handlers.ensureLogin, handlers.getVote);
 app.post('/updateVote', handlers.ensureLogin, handlers.updateVote);
 app.get('/logout', handlers.ensureLogin, handlers.logout);
+app.get('/getCommentsOfQuestion/:questionId', handlers.getCommentsOfQuestion);
+app.get('/comment/:commentId', handlers.getComment);
 
 module.exports = app;

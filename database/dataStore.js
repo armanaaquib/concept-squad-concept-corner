@@ -280,18 +280,21 @@ class DataStore {
 
   updateVote(username, answerId, vote) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.updateVote, 
-        [vote, username, answerId], async(err) => {
+      this.db.run(
+        queries.updateVote,
+        [vote, username, answerId],
+        async (err) => {
           err && reject(err);
           const votes = await this.getVotesOfAnswer(answerId);
           resolve(votes);
-        });
+        }
+      );
     });
   }
 
   addVote(username, answerId, vote) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.addVote, [username, answerId, vote], async(err) => {
+      this.db.run(queries.addVote, [username, answerId, vote], async (err) => {
         err && reject(err);
         const votes = await this.getVotesOfAnswer(answerId);
         resolve(votes);
@@ -299,9 +302,9 @@ class DataStore {
     });
   }
 
-  deleteVote(username, answerId){
+  deleteVote(username, answerId) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.deleteVote, [username, answerId], async(err) => {
+      this.db.run(queries.deleteVote, [username, answerId], async (err) => {
         err && reject(err);
         const votes = await this.getVotesOfAnswer(answerId);
         resolve(votes);
@@ -324,11 +327,28 @@ class DataStore {
 
   getCommentsOfQuestion(questionId) {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getCommentsOfQuestions, [questionId], (err, rows) => {
+      this.db.all(queries.getCommentsOfQuestion, [questionId], (err, rows) => {
         err && reject(err);
-
-        const comments = rows.map(wrapQuestionComments);
+        if (!rows) {
+          resolve([]);
+        }
+        let comments = rows || [];
+        comments = comments.map(wrapQuestionComments);
         resolve(comments);
+      });
+    });
+  }
+
+  getComment(commentId) {
+    return new Promise((resolve, reject) => {
+      this.db.getpq(queries.getComment, [commentId], (err, rows) => {
+        err && reject(err);
+        if (!rows) {
+          resolve([]);
+        }
+        let comment = rows || {};
+        comment = wrapQuestionComments(comment);
+        resolve(comment);
       });
     });
   }

@@ -121,6 +121,12 @@ const showQuestionCommentContainer = () => {
     'flex';
   document.querySelector('.btn-add-question-comment').style.display = 'none';
 };
+const hideQuestionCommentContainer = () => {
+  document.querySelector('.post-question-comment-container').style.display =
+    'none';
+  document.querySelector('#comment-text').value = '';
+  document.querySelector('.btn-add-question-comment').style.display = 'flex';
+};
 
 const addQuestionComment = (questionId) => {
   const comment = $('#comment-text').val().trim();
@@ -133,7 +139,15 @@ const addQuestionComment = (questionId) => {
     headers: {
       'Content-Type': 'application/json',
     },
-  }).then(async (commentId) => {
-    const comment = await fetch(`/comment/:${commentId}`);
-  });
+  })
+    .then((res) => res.json())
+    .then(async (commentId) => {
+      hideQuestionCommentContainer();
+    });
+};
+
+const getAllQuestionComment = (questionId) => {
+  fetch(`/getCommentsOfQuestion/${questionId}`)
+    .then((res) => res.json())
+    .then((comments) => {});
 };

@@ -173,7 +173,9 @@ const addQuestionComment = (req, res) => {
   const { dataStore } = req.app.locals;
   dataStore
     .addQuestionComment(username, questionId, comment)
-    .then((commentId) => res.json({ commentId }));
+    .then((commentId) => {
+      res.json(commentId);
+    });
 };
 
 const logout = (req, res) => {
@@ -189,6 +191,22 @@ const serveProfilePage = (req, res) => {
   const { username } = req.params;
   dataStore.getUser(username).then((user) => {
     res.render('profile', { user });
+  });
+};
+
+const getCommentsOfQuestion = (req, res) => {
+  const { questionId } = req.params;
+  const { dataStore } = req.app.locals;
+  dataStore.getCommentsOfQuestion(questionId).then((comments) => {
+    res.json(comments);
+  });
+};
+
+const getComment = (req, res) => {
+  const { commentId } = req.params;
+  const { dataStore } = req.app.locals;
+  dataStore.getComment(commentId).then((comment) => {
+    res.json(comment);
   });
 };
 
@@ -209,4 +227,6 @@ module.exports = {
   updateVote,
   logout,
   serveProfilePage,
+  getCommentsOfQuestion,
+  getComment,
 };

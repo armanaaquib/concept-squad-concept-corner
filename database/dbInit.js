@@ -3,7 +3,7 @@ const { getDBFilePath } = require('../config');
 
 const schema = require('./schema');
 
-const throwError = err => {
+const throwError = (err) => {
   if (err) {
     throw err;
   }
@@ -16,6 +16,7 @@ const createTables = () => {
   db.run(schema.answers, throwError);
   db.run(schema.tags, throwError);
   db.run(schema.question_tag, throwError);
+  db.run(schema.question_comments, throwError);
   db.close(throwError);
 };
 
