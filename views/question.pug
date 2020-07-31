@@ -37,7 +37,7 @@ block container
 			- var isAuthor = user && ((user.username == question.username) && (question.isAnswerAccepted == false))
 				.col-9.answers
 					each answer in answers
-						+answerCard(answer, isAuthor)
+						+answerCard(answer, isAuthor, user)
 			.col-9.post_answer_box
 				if !user || user == 'undefined'
 					h2 Login with github to post question or answer
@@ -54,11 +54,6 @@ block container
 							showPostAnswerEditor();
 							hljs.initHighlightingOnLoad()
 
-			
-			
-				
-				
-		
 		script.
 			date = !{JSON.stringify(question.time)};
 			id = !{JSON.stringify(`${question.questionId}date`)};

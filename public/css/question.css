@@ -102,21 +102,18 @@
   font-size: 2rem;
   text-align: center;
 }
-/* .fa-thumbs-up,
-.fa-thumbs-down {
-  color: #3e3e3e;
-} */
-
+.up,.down{
+  color: #c2c2c2;
+}
 .animated-icon {
-  color: #525252;
   cursor: pointer;
 }
 
-.animated-icon:hover {
-  color: #3d8af7;
+.animated-icon:active{
   animation: animate 0.5s ease-out;
-  transition-delay: 2s;
+
 }
+
 .count {
   font-size: 1rem;
   color: #525252;

@@ -141,6 +141,23 @@ const getVote = (req, res) => {
     res.end();
   });
 };
+const updateVote = (req, res) => {
+  const {answerId, vote} = req.body;
+  const {username} = req.session.user;
+  const {dataStore} = req.app.locals;
+  dataStore.getVote(username, answerId).then( async(prevVote) => {
+    let votes;
+    if(!prevVote){
+      votes = await dataStore.addVote(username, answerId, vote);
+    } else if(vote === prevVote ){
+      votes = await dataStore.deleteVote(username, answerId);
+    }else{
+      votes = await dataStore.updateVote(username, answerId, vote);
+    }
+    res.json(votes);
+    res.end();
+  });
+};
 
 const getTagSuggestion = (req, res) => {
   const { tagName } = req.params;
@@ -173,4 +190,5 @@ module.exports = {
   getTagSuggestion,
   getVote,
   addQuestionComment,
+  updateVote
 };

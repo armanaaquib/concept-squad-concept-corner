@@ -231,6 +231,50 @@ describe('handlers', function () {
     });
   });
 
+  context('/updateVote', function(){
+    it('should return total votes for given answer after change of vote status', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel', profilePic: null };
+      request(app)
+        .post('/updateVote')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({ answerId: 5, vote: 'up' })
+        .expect({'up': 3, 'down': 0})
+        .expect(200, done);
+    });
+    it('should return total votes for given answer after user has removed vote', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'bryce', profilePic: null };
+      request(app)
+        .post('/updateVote')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({ answerId: 1, vote: 'down' })
+        .expect({'up': 2, 'down': 0})
+        .expect(200, done);
+    });
+
+    it('should return total votes for given answer after user has voted first time ', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'carlo', profilePic: null };
+      request(app)
+        .post('/updateVote')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({ answerId: 6, vote: 'up' })
+        .expect({'up': 3, 'down': 1})
+        .expect(200, done);
+    });
+
+  });
+
   context('/getTagSuggestion', function () {
     it('should give list of matching tags', function (done) {
       const { sessions } = app.locals;

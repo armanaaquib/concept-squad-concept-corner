@@ -271,18 +271,31 @@ class DataStore {
 
   updateVote(username, answerId, vote) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.updateVote, [vote, username, answerId], (err) => {
-        err && reject(err);
-        resolve(true);
-      });
+      this.db.run(queries.updateVote, 
+        [vote, username, answerId], async(err) => {
+          err && reject(err);
+          const votes = await this.getVotesOfAnswer(answerId);
+          resolve(votes);
+        });
     });
   }
 
   addVote(username, answerId, vote) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.addVote, [username, answerId, vote], (err) => {
+      this.db.run(queries.addVote, [username, answerId, vote], async(err) => {
         err && reject(err);
-        resolve(true);
+        const votes = await this.getVotesOfAnswer(answerId);
+        resolve(votes);
+      });
+    });
+  }
+
+  deleteVote(username, answerId){
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.deleteVote, [username, answerId], async(err) => {
+        err && reject(err);
+        const votes = await this.getVotesOfAnswer(answerId);
+        resolve(votes);
       });
     });
   }

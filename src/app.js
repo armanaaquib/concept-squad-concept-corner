@@ -6,7 +6,6 @@ const config = require('../config');
 
 const handlers = require('./handlers');
 const DataStore = require('../database/dataStore');
-const { ensureLogin } = require('./handlers');
 
 const app = express();
 
@@ -49,11 +48,12 @@ app.get(
 app.post('/postQuestion', handlers.ensureLogin, handlers.postQuestion);
 app.post('/postAnswer', handlers.ensureLogin, handlers.postAnswer);
 app.post('/markAccepted', handlers.ensureLogin, handlers.markAccepted);
-app.get('/getVote/:answerId', ensureLogin, handlers.getVote);
 app.post(
   '/addQuestionComment',
   handlers.ensureLogin,
   handlers.addQuestionComment
 );
+app.get('/getVote/:answerId', handlers.ensureLogin, handlers.getVote);
+app.post('/updateVote', handlers.ensureLogin, handlers.updateVote);
 
 module.exports = app;

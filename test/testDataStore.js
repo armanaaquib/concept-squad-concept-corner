@@ -1,5 +1,5 @@
 const { assert } = require('chai');
-const { fake, stub } = require('sinon');
+const { fake, stub} = require('sinon');
 
 const DataStore = require('../database/dataStore.js');
 
@@ -704,10 +704,11 @@ describe('DataStore', function () {
   context('updateVote', function () {
     it('should update vote', function (done) {
       dbClient['run'] = fake.yields(null);
-
-      dataStore.updateVote('michel', 1, 'up').then((status) => {
-        assert.ok(status);
+      dataStore.getVotesOfAnswer = stub().returns(Promise.resolve({'up': 2, 'down': 1}));
+      dataStore.updateVote('michel', 1, 'up').then((votes) => {
+        assert.deepStrictEqual(votes, {'up': 2, 'down': 1});
         assert.ok(dbClient.run.calledOnce);
+        assert.deepStrictEqual(dataStore.getVotesOfAnswer.args[0][0], 1);
         assert.deepStrictEqual(dbClient.run.args[0][1], ['up', 'michel', 1]);
         done();
       });
@@ -725,11 +726,12 @@ describe('DataStore', function () {
   context('addVote', function () {
     it('should add vote', function (done) {
       dbClient['run'] = fake.yields(null);
-
-      dataStore.addVote('michel', 1, 'up').then((status) => {
-        assert.ok(status);
+      dataStore.getVotesOfAnswer = stub().returns(Promise.resolve({'up': 2, 'down': 1}));
+      dataStore.addVote('michel', 1, 'up').then((votes) => {
+        assert.deepStrictEqual(votes, {'up': 2, 'down': 1});
         assert.ok(dbClient.run.calledOnce);
         assert.deepStrictEqual(dbClient.run.args[0][1], ['michel', 1, 'up']);
+        assert.deepStrictEqual(dataStore.getVotesOfAnswer.args[0][0], 1);
         done();
       });
     });
@@ -768,6 +770,25 @@ describe('DataStore', function () {
 
       dataStore.addQuestionComment('michel', 1, 'comment').catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
+  context('deleteVote', function () {
+    it('should delete vote', function (done) {
+      dbClient['run'] = fake.yields(null);
+      dataStore.getVotesOfAnswer = stub().returns(Promise.resolve({'up': 2, 'down': 1}));
+      dataStore.deleteVote('michel', 1, ).then((votes) => {
+        assert.deepStrictEqual(votes, {'up': 2, 'down': 1});
+        assert.ok(dbClient.run.calledOnce);
+        assert.deepStrictEqual(dbClient.run.args[0][1], ['michel', 1]);
+        assert.deepStrictEqual(dataStore.getVotesOfAnswer.args[0][0], 1);
+
+        done();
+      });
+    });
+
+    it('should give err if query is wrong', function (done) {
+      dbClient['run'] = fake.yields({ message: 'syntax error' });
+      dataStore.deleteVote('michel', 1 ).catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+        done();
       });
     });
   });

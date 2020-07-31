@@ -68,8 +68,37 @@ const markAccepted = (answer) => {
   });
 };
 
+const updateVote = (answerId, vote) => {
+  fetch('/updateVote', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({answerId, vote})
+  }).then(res => {
+    if(res.status === 200){
+      return res.json();
+    }
+  }).then(votes => {
+    updateVotes(answerId);
+    $(`#a-${answerId} .up`).siblings('.count').text(votes.up);
+    $(`#a-${answerId} .down`).siblings('.count').text(votes.down);
+  });
+};
+
+const addListener = (answerId) => {
+  const thumbsUp = $(`.reactions #a-${answerId} .up`);
+  const thumbsDown = $(`.reactions #a-${answerId} .down`);
+  thumbsUp.addClass('animated-icon');
+  thumbsDown.addClass('animated-icon');
+  thumbsUp.on('click', updateVote.bind({}, answerId, 'up'));
+  thumbsDown.on('click', updateVote.bind({}, answerId, 'down'));
+};
+
 const updateVotes = (answerId) => {
   fetch(`/getVote/${answerId}`).then(res => res.json()).then((result) => {
+    $(`#a-${answerId} .up`).css('color', 'rgb(150,150,150)');
+    $(`#a-${answerId} .down`).css('color', 'rgb(150,150,150)');
     if(result.vote){
       $(`#a-${answerId} .${result.vote}`).css('color', '#3d8af7');
     }

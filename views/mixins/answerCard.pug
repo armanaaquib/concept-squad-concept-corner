@@ -1,4 +1,4 @@
-mixin answerCard(answer, isAuthor)
+mixin answerCard(answer, isAuthor, user)
 	.col-12.answer-card
 		.col-12.answer
 			.col-11.a-detail
@@ -9,10 +9,10 @@ mixin answerCard(answer, isAuthor)
 		.col-12.reactions
 			.col-4(id=`a-${answer.answerId}`)
 				.col-3
-					i.up.material-icons.animated-icon thumb_up
+					i.up.material-icons  thumb_up
 					.count #{answer.upVote}
 				.col-3
-					i.down.material-icons.animated-icon thumb_down
+					i.down.material-icons thumb_down
 					.count #{answer.downVote}
 				if isAuthor
 					.col-3.unchecked-answer
@@ -21,7 +21,9 @@ mixin answerCard(answer, isAuthor)
 					if answer.accepted 
 						.col-3.checked-answer
 							i.material-icons check_circle
-	
+	if user
+		script.
+			addListener(!{answer.answerId})
 	script.
 		date = !{JSON.stringify(answer.time)};
 		id = !{JSON.stringify(`date-${answer.answerId}`)};

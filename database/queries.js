@@ -138,7 +138,7 @@ module.exports = {
   UPDATE
     answer_votes
   SET
-    vote = ?;
+    vote = ?
   WHERE
     username = ? AND answer_id = ?;
   `,
@@ -147,4 +147,11 @@ module.exports = {
     answer_votes(username, answer_id, vote)
     values (?, ?, ?);
   `,
+  deleteVote: `
+  DELETE
+  FROM
+    answer_votes
+  WHERE 
+    username = ? AND answer_id = ?;
+  `
 };
