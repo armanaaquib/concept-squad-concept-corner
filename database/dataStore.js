@@ -286,6 +286,19 @@ class DataStore {
       });
     });
   }
+
+  addQuestionComment(userName, questionId, comment) {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        queries.addQuestionComment,
+        [userName, questionId, comment],
+        function (err) {
+          err && reject(err);
+          resolve(this.lastID);
+        }
+      );
+    });
+  }
 }
 
 module.exports = DataStore;

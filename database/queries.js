@@ -16,6 +16,12 @@ module.exports = {
   answers( username, question_id, answer, time )
   values(?, ?, ?,datetime('now'));
   `,
+
+  addQuestionComment: `
+  INSERT INTO 
+  question_comments( username, question_id, comment, time )
+  values(?, ?, ?,datetime('now'));
+  `,
   updateAnswerCount: `
       update questions set no_of_answers=no_of_answers+1 where question_id = ?;
   `,

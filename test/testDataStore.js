@@ -742,4 +742,33 @@ describe('DataStore', function () {
       });
     });
   });
+
+  context('addQuestionComment', function () {
+    it('should add comment of the question', async function () {
+      let callCount = 0;
+      dbClient['run'] = function (query, params, callback) {
+        callback && callback.call({ lastID: 1 }, null);
+        callCount++;
+        return dbClient;
+      };
+      const commentId = await dataStore.addQuestionComment(
+        'michel',
+        1,
+        'comment'
+      );
+      assert.strictEqual(commentId, 1);
+      assert.strictEqual(callCount, 1);
+    });
+
+    it('should reject error if query is not valid', function () {
+      dbClient['run'] = function (query, params, callback) {
+        callback && callback({ message: 'syntax error' });
+        return dbClient;
+      };
+
+      dataStore.addQuestionComment('michel', 1, 'comment').catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+      });
+    });
+  });
 });

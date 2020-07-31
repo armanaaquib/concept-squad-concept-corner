@@ -57,8 +57,8 @@ CREATE TABLE question_comments (
 	question_id integer,
 	comment text,
 	time datetime,
-	FOREIGN KEY(username) REFERENCES user_tbl(username),
-	FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
+	FOREIGN KEY(username) REFERENCES users(username),
+	FOREIGN KEY(question_id) REFERENCES questions(question_id)
 );
 
 CREATE TABLE question_tag (
