@@ -256,4 +256,20 @@ describe('handlers', function () {
         .expect(200, done);
     });
   });
+
+  context('/addQuestionComment', function () {
+    it('should add comment to the question', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel' };
+      request(app)
+        .post('/addQuestionComment')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({ questionId: 1, comment: 'answer' })
+        .expect({ questionId: 1 })
+        .expect(200, done);
+    });
+  });
 });

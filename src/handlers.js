@@ -150,6 +150,15 @@ const getTagSuggestion = (req, res) => {
   });
 };
 
+const addQuestionComment = (req, res) => {
+  const { questionId, comment } = req.body;
+  const { username } = req.session.user;
+  const { dataStore } = req.app.locals;
+  dataStore
+    .addQuestionComment(username, questionId, comment)
+    .then(() => res.json({ questionId }));
+};
+
 module.exports = {
   serveHomePage,
   servePostQuestionPage,
@@ -163,4 +172,5 @@ module.exports = {
   markAccepted,
   getTagSuggestion,
   getVote,
+  addQuestionComment,
 };
