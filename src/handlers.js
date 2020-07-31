@@ -173,7 +173,7 @@ const addQuestionComment = (req, res) => {
   const { dataStore } = req.app.locals;
   dataStore
     .addQuestionComment(username, questionId, comment)
-    .then(() => res.json({ questionId }));
+    .then((commentId) => res.json({ commentId }));
 };
 
 const logout = (req, res) => {

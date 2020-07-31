@@ -72,18 +72,20 @@ const updateVote = (answerId, vote) => {
   fetch('/updateVote', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({answerId, vote})
-  }).then(res => {
-    if(res.status === 200){
-      return res.json();
-    }
-  }).then(votes => {
-    updateVotes(answerId);
-    $(`#a-${answerId} .up`).siblings('.count').text(votes.up);
-    $(`#a-${answerId} .down`).siblings('.count').text(votes.down);
-  });
+    body: JSON.stringify({ answerId, vote }),
+  })
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      }
+    })
+    .then((votes) => {
+      updateVotes(answerId);
+      $(`#a-${answerId} .up`).siblings('.count').text(votes.up);
+      $(`#a-${answerId} .down`).siblings('.count').text(votes.down);
+    });
 };
 
 const addListener = (answerId) => {
@@ -96,11 +98,42 @@ const addListener = (answerId) => {
 };
 
 const updateVotes = (answerId) => {
-  fetch(`/getVote/${answerId}`).then(res => res.json()).then((result) => {
-    $(`#a-${answerId} .up`).css('color', 'rgb(150,150,150)');
-    $(`#a-${answerId} .down`).css('color', 'rgb(150,150,150)');
-    if(result.vote){
-      $(`#a-${answerId} .${result.vote}`).css('color', '#3d8af7');
-    }
+  fetch(`/getVote/${answerId}`)
+    .then((res) => res.json())
+    .then((result) => {
+      $(`#a-${answerId} .up`).css('color', 'rgb(150,150,150)');
+      $(`#a-${answerId} .down`).css('color', 'rgb(150,150,150)');
+      if (result.vote) {
+        $(`#a-${answerId} .${result.vote}`).css('color', '#3d8af7');
+      }
+      fetch(`/getVote/${answerId}`)
+        .then((res) => res.json())
+        .then((result) => {
+          if (result.vote) {
+            $(`#a-${answerId} .${result.vote}`).css('color', '#3d8af7');
+          }
+        });
+    });
+};
+
+const showQuestionCommentContainer = () => {
+  document.querySelector('.post-question-comment-container').style.display =
+    'flex';
+  document.querySelector('.btn-add-question-comment').style.display = 'none';
+};
+
+const addQuestionComment = (questionId) => {
+  const comment = $('#comment-text').val().trim();
+  fetch('/addQuestionComment', {
+    method: 'POST',
+    body: JSON.stringify({
+      questionId,
+      comment,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then(async (commentId) => {
+    const comment = await fetch(`/comment/:${commentId}`);
   });
 };

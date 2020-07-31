@@ -40,6 +40,15 @@ const wrapAnswer = (row) => {
   };
 };
 
+const wrapQuestionComments = (row) => {
+  return {
+    username: row.username,
+    commentId: row.comment_id,
+    comment: row.comment,
+    time: new Date(row.time),
+  };
+};
+
 class DataStore {
   constructor(db) {
     this.db = db;
@@ -310,6 +319,17 @@ class DataStore {
           resolve(this.lastID);
         }
       );
+    });
+  }
+
+  getCommentsOfQuestion(questionId) {
+    return new Promise((resolve, reject) => {
+      this.db.all(queries.getCommentsOfQuestions, [questionId], (err, rows) => {
+        err && reject(err);
+
+        const comments = rows.map(wrapQuestionComments);
+        resolve(comments);
+      });
     });
   }
 }

@@ -311,7 +311,7 @@ describe('handlers', function () {
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
         .send({ questionId: 1, comment: 'answer' })
-        .expect({ questionId: 1 })
+        .expect({ commentId: 1 })
         .expect(200, done);
     });
   });

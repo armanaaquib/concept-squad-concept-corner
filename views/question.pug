@@ -31,6 +31,17 @@ block container
 					.col-6.user
 						.username #{question.username}
 						.date(id=`${question.questionId}date`)
+				if user
+					.btn
+						button.btn-add-question-comment(onclick="showQuestionCommentContainer()") Add comment
+					.col-9.post-question-comment-container
+						.col-10.comment-box
+							textarea#comment-text(name="")
+							.btn.add-comment-btn
+								input#h_qId(type="hidden",value=question.questionId)
+								button#post-comment-btn.primary-btn(type='button' onclick='addQuestionComment('+ question.questionId+')') Add comment
+								a(href=`/question/${question.questionId}`)
+								button.cancel-btn(type='button') Cancel
 			.col-10.noOfAnswers 
 				.col-11 #{answers.length} Answer(s)
 			if answers.length

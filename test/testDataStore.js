@@ -1,5 +1,5 @@
 const { assert } = require('chai');
-const { fake, stub} = require('sinon');
+const { fake, stub } = require('sinon');
 
 const DataStore = require('../database/dataStore.js');
 
@@ -704,9 +704,11 @@ describe('DataStore', function () {
   context('updateVote', function () {
     it('should update vote', function (done) {
       dbClient['run'] = fake.yields(null);
-      dataStore.getVotesOfAnswer = stub().returns(Promise.resolve({'up': 2, 'down': 1}));
+      dataStore.getVotesOfAnswer = stub().returns(
+        Promise.resolve({ up: 2, down: 1 })
+      );
       dataStore.updateVote('michel', 1, 'up').then((votes) => {
-        assert.deepStrictEqual(votes, {'up': 2, 'down': 1});
+        assert.deepStrictEqual(votes, { up: 2, down: 1 });
         assert.ok(dbClient.run.calledOnce);
         assert.deepStrictEqual(dataStore.getVotesOfAnswer.args[0][0], 1);
         assert.deepStrictEqual(dbClient.run.args[0][1], ['up', 'michel', 1]);
@@ -726,9 +728,11 @@ describe('DataStore', function () {
   context('addVote', function () {
     it('should add vote', function (done) {
       dbClient['run'] = fake.yields(null);
-      dataStore.getVotesOfAnswer = stub().returns(Promise.resolve({'up': 2, 'down': 1}));
+      dataStore.getVotesOfAnswer = stub().returns(
+        Promise.resolve({ up: 2, down: 1 })
+      );
       dataStore.addVote('michel', 1, 'up').then((votes) => {
-        assert.deepStrictEqual(votes, {'up': 2, 'down': 1});
+        assert.deepStrictEqual(votes, { up: 2, down: 1 });
         assert.ok(dbClient.run.calledOnce);
         assert.deepStrictEqual(dbClient.run.args[0][1], ['michel', 1, 'up']);
         assert.deepStrictEqual(dataStore.getVotesOfAnswer.args[0][0], 1);
@@ -767,7 +771,7 @@ describe('DataStore', function () {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };
-    
+
       dataStore.addQuestionComment('michel', 1, 'comment').catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
@@ -776,9 +780,11 @@ describe('DataStore', function () {
   context('deleteVote', function () {
     it('should delete vote', function (done) {
       dbClient['run'] = fake.yields(null);
-      dataStore.getVotesOfAnswer = stub().returns(Promise.resolve({'up': 2, 'down': 1}));
-      dataStore.deleteVote('michel', 1, ).then((votes) => {
-        assert.deepStrictEqual(votes, {'up': 2, 'down': 1});
+      dataStore.getVotesOfAnswer = stub().returns(
+        Promise.resolve({ up: 2, down: 1 })
+      );
+      dataStore.deleteVote('michel', 1).then((votes) => {
+        assert.deepStrictEqual(votes, { up: 2, down: 1 });
         assert.ok(dbClient.run.calledOnce);
         assert.deepStrictEqual(dbClient.run.args[0][1], ['michel', 1]);
         assert.deepStrictEqual(dataStore.getVotesOfAnswer.args[0][0], 1);
@@ -789,9 +795,45 @@ describe('DataStore', function () {
 
     it('should give err if query is wrong', function (done) {
       dbClient['run'] = fake.yields({ message: 'syntax error' });
-      dataStore.deleteVote('michel', 1 ).catch((err) => {
+      dataStore.deleteVote('michel', 1).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
         done();
+      });
+    });
+  });
+
+  context('getCommentsOfQuestion', function () {
+    it('should get all comments of the question', async function () {
+      const comments = [
+        {
+          username: 'michel',
+          comment_id: 1,
+          comment: 'comment1',
+          time: new Date('2020-07-21 11:24:35'),
+        },
+      ];
+      dbClient['all'] = fake.yields(null, comments);
+      const actualComments = await dataStore.getCommentsOfQuestion(10);
+      const expectedComments = [
+        {
+          username: 'michel',
+          commentId: 1,
+          comment: 'comment1',
+          time: new Date('2020-07-21 11:24:35'),
+        },
+      ];
+      assert.deepStrictEqual(actualComments, expectedComments);
+      assert.deepStrictEqual(dbClient['all'].args[0][1], [10]);
+    });
+
+    it('should reject error if query is not valid', function () {
+      dbClient['all'] = function (query, params, callback) {
+        callback && callback({ message: 'syntax error' });
+        return dbClient;
+      };
+
+      dataStore.getCommentsOfQuestion(10).catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
   });

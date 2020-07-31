@@ -153,5 +153,14 @@ module.exports = {
     answer_votes
   WHERE 
     username = ? AND answer_id = ?;
-  `
+  `,
+
+  getCommentsOfQuestions: `
+  SELECT 
+    (comment, comment_id, time, username) 
+  FROM 
+    question_comments 
+  WHERE
+    question_id = ?
+`,
 };
