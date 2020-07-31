@@ -184,6 +184,14 @@ const logout = (req, res) => {
   res.redirect('/');
 };
 
+const serveProfilePage = (req, res) => {
+  const { dataStore } = req.app.locals;
+  const { username } = req.params;
+  dataStore.getUser(username).then((user) => {
+    res.render('profile', { user });
+  });
+};
+
 module.exports = {
   serveHomePage,
   servePostQuestionPage,
@@ -200,4 +208,5 @@ module.exports = {
   addQuestionComment,
   updateVote,
   logout,
+  serveProfilePage,
 };

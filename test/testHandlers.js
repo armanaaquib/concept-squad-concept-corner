@@ -329,4 +329,13 @@ describe('handlers', function () {
         .expect(302, done);
     });
   });
+
+  context('/profile/:username', function () {
+    it('should serve user profile page', function (done) {
+      request(app)
+        .get('/profile/michel')
+        .expect(/michel/)
+        .expect(200, done);
+    });
+  });
 });

@@ -38,6 +38,7 @@ app.get('/question/:questionId', handlers.serveQuestionPage);
 app.post('/signUp', handlers.signUp);
 app.get('/confirmUser', handlers.confirmUser);
 app.get('/hasUser/:username', handlers.hasUser);
+app.get('/profile/:username', handlers.serveProfilePage);
 
 app.get('/postQuestion', handlers.ensureLogin, handlers.servePostQuestionPage);
 app.get(
