@@ -4,7 +4,8 @@ mixin answerCard(answer, isAuthor, user)
 			.col-11.a-detail
 				.col-12.description(id=`desc-${answer.answerId}`)
 				.col-12.user
-					.username #{answer.username}
+					.username
+						a.user-profile-link(href=`/profile/${question.username}`) #{question.username}
 					.date(id=`date-${answer.answerId}`)
 		.col-12.reactions
 			.col-4(id=`a-${answer.answerId}`)

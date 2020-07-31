@@ -303,3 +303,22 @@ body a {
 .desc * {
   border: none !important;
 }
+
+.user-profile-link {
+  color: #696969;
+}
+
+.user-profile-link:after {
+  content: '';
+  display: block;
+  margin: auto;
+  height: 2px;
+  width: 0px;
+  background: transparent;
+  transition: width 0.5s ease, background-color 0.5s ease;
+}
+
+.user-profile-link:hover:after {
+  width: 100%;
+  background: rgb(0, 195, 255);
+}
