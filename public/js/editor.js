@@ -61,12 +61,12 @@ const getCancelButton = function () {
   </path></svg>`;
 };
 
-const getRemainingTags = function() {
+const getRemainingTags = function () {
   const selectedTags = document.querySelector('.selected-tags');
   return 5 - selectedTags.childElementCount;
 };
 
-const updateRemainingTags = function() {
+const updateRemainingTags = function () {
   const remainigTags = document.querySelector('.remaining_tags');
   const remainigTagsCount = getRemainingTags();
   remainigTags.style.color = 'black';
@@ -76,7 +76,7 @@ const updateRemainingTags = function() {
   remainigTags.innerText = remainigTagsCount;
 };
 
-const removetag = function(tagToRemove) {
+const removetag = function (tagToRemove) {
   tagToRemove.parentElement.remove();
   updateRemainingTags();
 };
@@ -126,7 +126,7 @@ const showTagSuggestions = function (tags) {
     removeTagSuggestion();
   });
   const showSuggestionBox = document.querySelector('.suggestionTags');
-  const tagsToShow = tags.map(
+  const tagsToShow = tags.slice(0, 5).map(
     (tag) =>
       `<div class='s-tag' onclick="getSelectedSuggestion(this)">${tag}
       <input type="hidden" value="${tag}"></div>`

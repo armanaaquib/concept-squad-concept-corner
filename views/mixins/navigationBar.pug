@@ -16,3 +16,5 @@ mixin navigationBar(authHref,user)
 							img(src=user.profilePic|| '/images/avatar.png', href='/profile' alt="", srcset="")
 						.navLink
 							a(href='/profile') #{user.username}
+						.navLink
+							a.logout(href='/logout') Logout

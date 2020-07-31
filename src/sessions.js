@@ -4,12 +4,8 @@ class Sessions {
   }
 
   generateSessionId() {
-    const id1 = Date.now()
-      .toString(36)
-      .slice(0, 4);
-    const id2 = Math.random()
-      .toString(36)
-      .substr(2, 5);
+    const id1 = Date.now().toString(36).slice(0, 4);
+    const id2 = Math.random().toString(36).substr(2, 5);
     return id1 + id2;
   }
 
@@ -21,6 +17,10 @@ class Sessions {
     const sessionId = this.generateSessionId();
     this.sessionList[sessionId] = {};
     return sessionId;
+  }
+
+  removeSession(sessionId) {
+    return delete this.sessionList[sessionId];
   }
 }
 

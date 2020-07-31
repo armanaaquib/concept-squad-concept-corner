@@ -142,16 +142,16 @@ const getVote = (req, res) => {
   });
 };
 const updateVote = (req, res) => {
-  const {answerId, vote} = req.body;
-  const {username} = req.session.user;
-  const {dataStore} = req.app.locals;
-  dataStore.getVote(username, answerId).then( async(prevVote) => {
+  const { answerId, vote } = req.body;
+  const { username } = req.session.user;
+  const { dataStore } = req.app.locals;
+  dataStore.getVote(username, answerId).then(async (prevVote) => {
     let votes;
-    if(!prevVote){
+    if (!prevVote) {
       votes = await dataStore.addVote(username, answerId, vote);
-    } else if(vote === prevVote ){
+    } else if (vote === prevVote) {
       votes = await dataStore.deleteVote(username, answerId);
-    }else{
+    } else {
       votes = await dataStore.updateVote(username, answerId, vote);
     }
     res.json(votes);
@@ -176,6 +176,14 @@ const addQuestionComment = (req, res) => {
     .then(() => res.json({ questionId }));
 };
 
+const logout = (req, res) => {
+  const { sId } = req.cookies;
+  const { sessions } = req.app.locals;
+  sessions.removeSession(sId);
+  res.clearCookie('sId');
+  res.redirect('/');
+};
+
 module.exports = {
   serveHomePage,
   servePostQuestionPage,
@@ -190,5 +198,6 @@ module.exports = {
   getTagSuggestion,
   getVote,
   addQuestionComment,
-  updateVote
+  updateVote,
+  logout,
 };

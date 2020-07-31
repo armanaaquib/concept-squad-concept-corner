@@ -231,7 +231,7 @@ describe('handlers', function () {
     });
   });
 
-  context('/updateVote', function(){
+  context('/updateVote', function () {
     it('should return total votes for given answer after change of vote status', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
@@ -242,7 +242,7 @@ describe('handlers', function () {
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
         .send({ answerId: 5, vote: 'up' })
-        .expect({'up': 3, 'down': 0})
+        .expect({ up: 3, down: 0 })
         .expect(200, done);
     });
     it('should return total votes for given answer after user has removed vote', function (done) {
@@ -255,7 +255,7 @@ describe('handlers', function () {
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
         .send({ answerId: 1, vote: 'down' })
-        .expect({'up': 2, 'down': 0})
+        .expect({ up: 2, down: 0 })
         .expect(200, done);
     });
 
@@ -269,10 +269,9 @@ describe('handlers', function () {
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
         .send({ answerId: 6, vote: 'up' })
-        .expect({'up': 3, 'down': 1})
+        .expect({ up: 3, down: 1 })
         .expect(200, done);
     });
-
   });
 
   context('/getTagSuggestion', function () {
@@ -314,6 +313,20 @@ describe('handlers', function () {
         .send({ questionId: 1, comment: 'answer' })
         .expect({ questionId: 1 })
         .expect(200, done);
+    });
+  });
+
+  context('/logout', function () {
+    it('should logout and redirect to /', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel' };
+      request(app)
+        .get('/logout')
+        .set('Cookie', `sId=${sessionId}`)
+        .expect('location', '/')
+        .expect(302, done);
     });
   });
 });
