@@ -70,7 +70,7 @@ block container
 		script.
 			date = !{JSON.stringify(question.time)};
 			id = !{JSON.stringify(`${question.questionId}date`)};
-			document.getElementById(id).innerText = getDate(date);
+			document.getElementById(id).innerText = moment(date).fromNow();
 			showDescription(!{question.description}, 'q-desc');
 			getAllQuestionComment(!{question.questionId})
 			

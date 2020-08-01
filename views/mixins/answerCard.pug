@@ -28,6 +28,6 @@ mixin answerCard(answer, isAuthor, user)
 	script.
 		date = !{JSON.stringify(answer.time)};
 		id = !{JSON.stringify(`date-${answer.answerId}`)};
-		document.getElementById(id).innerText = getDate(date);
+		document.getElementById(id).innerText = moment(date).fromNow();
 		showDescription(!{answer.answer}, !{JSON.stringify(`desc-${answer.answerId}`)})
 		updateVotes(!{answer.answerId})

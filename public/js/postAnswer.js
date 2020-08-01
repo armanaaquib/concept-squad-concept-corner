@@ -162,7 +162,8 @@ const createComment = function(comment){
   const user = $('<div>', {'class': 'user'});
   user.text(comment.username);
   const time = $('<div>', {'class': 'date'});
-  time.text(getDate(comment.time));
+  const nowMoment = moment(comment.time);
+  time.text(nowMoment.fromNow());
   newComment.text(comment.comment);
   newComment.append(['<div> - </div>', user, time]);
   commentSection.append(newComment);

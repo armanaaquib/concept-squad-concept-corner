@@ -28,4 +28,4 @@ mixin questionCard(question)
 				script.
 					date = !{JSON.stringify(question.time)};
 					id = !{JSON.stringify(`${question.questionId}date`)};
-					document.getElementById(id).innerText = getDate(date);
+					document.getElementById(id).innerText =moment(date).fromNow();
