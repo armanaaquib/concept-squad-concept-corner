@@ -24,7 +24,8 @@ const hasUser = function (req, res) {
 
 const servePostQuestionPage = (req, res) => {
   const cancelUrl = req.session.redirectURL || '/';
-  res.render('postQuestion', { cancelUrl, user: req.session.user, authHref: getAuthLink()});
+  res.render('postQuestion', 
+    { cancelUrl, user: req.session.user, authHref: getAuthLink()});
   res.end();
 };
 
