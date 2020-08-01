@@ -341,7 +341,7 @@ class DataStore {
 
   getComment(commentId) {
     return new Promise((resolve, reject) => {
-      this.db.getpq(queries.getComment, [commentId], (err, rows) => {
+      this.db.get(queries.getComment, [commentId], (err, rows) => {
         err && reject(err);
         if (!rows) {
           resolve([]);

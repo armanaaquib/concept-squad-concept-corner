@@ -223,3 +223,26 @@
   padding: 0.5rem;
   box-sizing: border-box;
 }
+.comments{
+  display: flex;
+  flex-flow: column;
+  margin-top: 3rem;
+  align-items: center;
+}
+.comment {
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+  border-collapse: collapse;
+  margin-top: -1px;
+  padding: 1rem;
+}
+.comment *{
+  margin: 0;
+  margin-left: 0.5rem;
+}
+.comment .user{
+  font-weight: 700;
+  color: #33b9e2;;
+} 

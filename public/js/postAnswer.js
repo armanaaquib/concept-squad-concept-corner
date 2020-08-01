@@ -125,7 +125,7 @@ const hideQuestionCommentContainer = () => {
   document.querySelector('.post-question-comment-container').style.display =
     'none';
   document.querySelector('#comment-text').value = '';
-  document.querySelector('.btn-add-question-comment').style.display = 'flex';
+  document.querySelector('.btn-add-question-comment').style.display = 'block';
 };
 
 const addQuestionComment = (questionId) => {
@@ -139,15 +139,41 @@ const addQuestionComment = (questionId) => {
     headers: {
       'Content-Type': 'application/json',
     },
-  })
-    .then((res) => res.json())
-    .then(async (commentId) => {
-      hideQuestionCommentContainer();
+  }).then((res) => {
+    if (res.status === 200) {
+      return res.json();
+    }
+   
+  }).then((commentId) => {
+    hideQuestionCommentContainer();
+    fetch(`/comment/${commentId}`).then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      }   
+    }).then((newComment) => {
+      createComment(newComment);
     });
+      
+  });
+};
+const createComment = function(comment){
+  const commentSection = $('#comments');
+  const newComment = $('<div>', {'class': 'col-9 comment'});
+  const user = $('<div>', {'class': 'user'});
+  user.text(comment.username);
+  const time = $('<div>', {'class': 'date'});
+  time.text(getDate(comment.time));
+  newComment.text(comment.comment);
+  newComment.append(['<div> - </div>', user, time]);
+  commentSection.append(newComment);
 };
 
 const getAllQuestionComment = (questionId) => {
   fetch(`/getCommentsOfQuestion/${questionId}`)
     .then((res) => res.json())
-    .then((comments) => {});
+    .then((comments) => {
+      comments.forEach(comment => {
+        createComment(comment);
+      });
+    });
 };

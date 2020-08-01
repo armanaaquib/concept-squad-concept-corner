@@ -157,7 +157,7 @@ module.exports = {
 
   getCommentsOfQuestion: `
   SELECT 
-  comment, comment_id, time, username 
+  comment, comment_id, time, username
   FROM 
   question_comments 
   WHERE
