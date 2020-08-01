@@ -310,7 +310,7 @@ describe('handlers', function () {
         .post('/addQuestionComment')
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
-        .send({ questionId: 1, comment: 'answer' })
+        .send({ questionId: 1, comment: 'comment' })
         .expect(200, done);
     });
   });
@@ -335,6 +335,35 @@ describe('handlers', function () {
         .get('/profile/michel')
         .expect(/michel/)
         .expect(200, done);
+    });
+  });
+
+  context('/getCommentsOfQuestion', function () {
+    it('should give list of comments of the question id', function (done) {
+      request(app)
+        .get('/getCommentsOfQuestion/67')
+        .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
+        .expect(200, done);
+    });
+
+    it('should give empty object when the question does not have any comments', function (done) {
+      request(app)
+        .get('/getCommentsOfQuestion/89')
+        .expect([])
+        .expect(200, done);
+    });
+  });
+
+  context('/comment', function () {
+    it('should give details of comment ', function (done) {
+      request(app)
+        .get('/comment/1')
+        .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
+        .expect(200, done);
+    });
+
+    it('should give empty object comment does not exist', function (done) {
+      request(app).get('/comment/89').expect([]).expect(200, done);
     });
   });
 });

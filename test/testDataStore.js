@@ -837,4 +837,35 @@ describe('DataStore', function () {
       });
     });
   });
+
+  context('getComment', function () {
+    it('should get comments of the question', async function () {
+      const comment = {
+        username: 'michel',
+        comment_id: 1,
+        comment: 'comment1',
+        time: new Date('2020-07-21 11:24:35'),
+      };
+      dbClient['get'] = fake.yields(null, comment);
+      const actualComment = await dataStore.getComment(1);
+      const expectedComment = {
+        username: 'michel',
+        commentId: 1,
+        comment: 'comment1',
+        time: new Date('2020-07-21 11:24:35'),
+      };
+      assert.deepStrictEqual(actualComment, expectedComment);
+    });
+
+    it('should reject error if query is not valid', function () {
+      dbClient['get'] = function (query, params, callback) {
+        callback && callback({ message: 'syntax error' });
+        return dbClient;
+      };
+
+      dataStore.getComment(10).catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+      });
+    });
+  });
 });

@@ -189,3 +189,5 @@ VALUES
   ('bryce', 6, 'up');
   
 INSERT INTO tags (tag_name) VALUES ('java'),('nav'),('node');
+
+INSERT INTO question_comments (question_id, username, comment, time) VALUES(67, 'michel','comment1','2020-07-22 11:30:35');
