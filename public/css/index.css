@@ -194,6 +194,7 @@ body a {
   background-color: white;
   height: 3rem;
   width: 8rem;
+
   border: 1px solid #3d8af7;
   color: #3d8af7;
   font-weight: 900;
@@ -252,6 +253,7 @@ body a {
 .tags {
   margin-top: 1rem;
   display: flex;
+
 }
 
 .tag {
@@ -306,20 +308,12 @@ body a {
 }
 
 .user-profile-link {
-  color: #696969;
+ color: #33b9e2;
+
 }
 
-.user-profile-link:after {
-  content: '';
-  display: block;
-  margin: auto;
-  height: 2px;
-  width: 0px;
-  background: transparent;
-  transition: width 0.5s ease, background-color 0.5s ease;
-}
 
-.user-profile-link:hover:after {
-  width: 100%;
-  background: rgb(0, 195, 255);
+.user-profile-link:hover {
+  font-weight: 800;
+  color: #57d3f9;
 }

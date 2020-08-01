@@ -27,7 +27,9 @@
 
 .q-detail {
   display: flex;
+  padding-left: 2rem;
   align-items: center;
+  width: 90%;
   margin-top: 1rem;
   color: #696969;
 }
@@ -82,6 +84,9 @@
 }
 .a-detail .user {
   align-self: flex-end;
+  display: flex;
+  flex-flow: column;
+
 }
 
 .a-detail .description {
@@ -206,6 +211,10 @@
   flex-direction: column;
   justify-content: space-between;
   margin-top: 0;
+
+}
+.btn-add-question-comment{
+  margin: 0 auto;
 }
 .comment-box {
   display: flex;
@@ -230,7 +239,7 @@
   align-items: center;
 }
 .comment {
-  display: flex;
+  display: inline;
   width: 100%;
   border-top: 1px solid #e8e8e8;
   border-bottom: 1px solid #e8e8e8;
@@ -246,3 +255,7 @@
   font-weight: 700;
   color: #33b9e2;;
 } 
+
+.tags{
+  padding-left: 2rem;
+}

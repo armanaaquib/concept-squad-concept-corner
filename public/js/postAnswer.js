@@ -159,13 +159,12 @@ const addQuestionComment = (questionId) => {
 const createComment = function(comment){
   const commentSection = $('#comments');
   const newComment = $('<div>', {'class': 'col-9 comment'});
-  const user = $('<div>', {'class': 'user'});
+  const user = $('<span>', {'class': 'user'});
   user.text(comment.username);
-  const time = $('<div>', {'class': 'date'});
-  const nowMoment = moment(comment.time);
-  time.text(nowMoment.fromNow());
-  newComment.text(comment.comment);
-  newComment.append(['<div> - </div>', user, time]);
+  const time = $('<span>', {'class': 'date'});
+  time.text(moment(comment.time / 1000).fromNow());
+  //newComment.text();
+  newComment.append([`<span>${comment.comment}<span> - </span>`, user, time]);
   commentSection.append(newComment);
 };
 

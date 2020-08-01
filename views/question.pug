@@ -36,10 +36,10 @@ block container
 				if user
 					.col-3.btn
 						button.btn-add-question-comment.primary-btn(onclick="showQuestionCommentContainer()") Add comment
-					.col-9.post-question-comment-container
-						.col-8.comment-box
-							textarea#comment-text(name="")
-							.btn.add-comment-btn
+					.col-12.post-question-comment-container
+						.col-9.comment-box
+							textarea.col-10#comment-text(name="")
+							.col-2.btn.add-comment-btn
 								input#h_qId(type="hidden",value=question.questionId)
 								button#post-comment-btn.primary-btn(type='button' onclick='addQuestionComment('+ question.questionId+')') Add comment
 								a(href=`/question/${question.questionId}`)

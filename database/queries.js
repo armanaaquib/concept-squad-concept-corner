@@ -1,8 +1,8 @@
 module.exports = {
   addQuestion: `
     INSERT INTO 
-      questions(username, title, description, view_count, time)
-    values(?, ?, ?, 0, datetime('now'));
+      questions(username, title, description, view_count)
+    values(?, ?, ?, 0);
   `,
 
   addUser: `
@@ -13,14 +13,14 @@ module.exports = {
   `,
   addAnswer: `
   INSERT INTO 
-  answers( username, question_id, answer, time )
-  values(?, ?, ?,datetime('now'));
+  answers( username, question_id, answer)
+  values(?, ?, ?);
   `,
 
   addQuestionComment: `
   INSERT INTO 
-  question_comments( username, question_id, comment, time )
-  values(?, ?, ?, datetime('now'));
+  question_comments( username, question_id, comment )
+  values(?, ?, ?);
   `,
   updateAnswerCount: `
       update questions set no_of_answers=no_of_answers+1 where question_id = ?;

@@ -3,10 +3,10 @@ mixin answerCard(answer, isAuthor, user)
 		.col-12.answer
 			.col-11.a-detail
 				.col-12.description(id=`desc-${answer.answerId}`)
-				.col-12.user
-					.username
-						a.user-profile-link(href=`/profile/${question.username}`) #{question.username}
-					.date(id=`date-${answer.answerId}`)
+				.col-9.user
+					.col-12.username
+						a.user-profile-link(href=`/profile/${answer.username}`) #{answer.username}
+					.col-12.date(id=`date-${answer.answerId}`)
 		.col-12.reactions
 			.col-4(id=`a-${answer.answerId}`)
 				.col-3
@@ -28,6 +28,6 @@ mixin answerCard(answer, isAuthor, user)
 	script.
 		date = !{JSON.stringify(answer.time)};
 		id = !{JSON.stringify(`date-${answer.answerId}`)};
-		document.getElementById(id).innerText = moment(date).fromNow();
+		document.getElementById(id).innerText = moment(date).utc().fromNow();
 		showDescription(!{answer.answer}, !{JSON.stringify(`desc-${answer.answerId}`)})
 		updateVotes(!{answer.answerId})
