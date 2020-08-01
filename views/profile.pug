@@ -1,3 +1,29 @@
 extends layout.pug
+block head
+  title Concept Corner | #{user.username}
+  link(rel="stylesheet", href="/css/profile.css")
+  link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN", crossorigin="anonymous")
+
 block container
-  p #{user.username}
+      .col-12
+        .profile-Box
+          .user-personal-info
+            img.profile-pic(src=user.profilePic|| '/images/avatar.png', alt="Profile Picture")
+            .name #{user.name}
+            .username #{user.username}
+          .user-detail
+            div
+              <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+              span.title #{user.title}
+            div
+              <i class="fa fa-briefcase" aria-hidden="true"></i>
+              span.company  #{user.company}
+            div
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+              span.location #{user.location}
+            div
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+              span.email #{user.email}
+            div
+              <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+              span.about #{user.aboutMe}

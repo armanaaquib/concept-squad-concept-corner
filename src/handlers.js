@@ -2,22 +2,22 @@ const formidable = require('formidable');
 const authUtils = require('./authUtils');
 const { getAuthLink } = require('../config');
 
-const serveHomePage = function (req, res) {
+const serveHomePage = function(req, res) {
   const { dataStore } = req.app.locals;
-  dataStore.getQuestions().then((questions) => {
+  dataStore.getQuestions().then(questions => {
     res.render('index', {
       user: req.session.user,
       questions,
-      authLink: getAuthLink(),
+      authLink: getAuthLink()
     });
     res.end();
   });
 };
 
-const hasUser = function (req, res) {
+const hasUser = function(req, res) {
   const { username } = req.params;
   const { dataStore } = req.app.locals;
-  dataStore.getUser(username).then((user) => {
+  dataStore.getUser(username).then(user => {
     res.json({ available: user ? false : true });
   });
 };
@@ -35,7 +35,7 @@ const postQuestion = (req, res) => {
   const { dataStore } = req.app.locals;
   dataStore
     .addQuestion({ username, title, description, tags })
-    .then((questionId) => {
+    .then(questionId => {
       res.json(questionId);
     });
 };
@@ -44,7 +44,7 @@ const serveQuestionPage = (req, res) => {
   const { questionId } = req.params;
   const { dataStore } = req.app.locals;
 
-  dataStore.getQuestion(questionId).then(async (question) => {
+  dataStore.getQuestion(questionId).then(async question => {
     if (!question) {
       serveErrorPage(res, 404, 'Question not found.');
       return;
@@ -54,7 +54,7 @@ const serveQuestionPage = (req, res) => {
       user: req.session.user,
       question,
       answers: answerList,
-      authLink: getAuthLink(),
+      authLink: getAuthLink()
     });
     res.end();
   });
@@ -72,7 +72,7 @@ const postAnswer = (req, res) => {
 const signUp = (req, res) => {
   const { dataStore } = req.app.locals;
   const form = new formidable.IncomingForm();
-  form.parse(req, function (err, userInfo) {
+  form.parse(req, function(err, userInfo) {
     if (err) {
       res.status(400);
       res.end();
@@ -81,7 +81,7 @@ const signUp = (req, res) => {
     dataStore.addUser(userInfo).then(() => {
       req.session.user = {
         username: userInfo.username,
-        profilePic: userInfo.profilePic,
+        profilePic: userInfo.profilePic
       };
       res.end();
     });
@@ -98,13 +98,13 @@ const confirmUser = (req, res) => {
   authUtils
     .getAccessToken(code)
     .then(authUtils.getUserDetail)
-    .then(async (userDetail) => {
+    .then(async userDetail => {
       const { login } = userDetail;
       const user = await dataStore.getRegisteredUser(login, 'github');
       if (user) {
         req.session.user = {
           username: user.username,
-          profilePic: user.profilePic,
+          profilePic: user.profilePic
         };
         res.redirect('/');
       } else {
@@ -137,7 +137,7 @@ const getVote = (req, res) => {
   const { answerId } = req.params;
   const { dataStore } = req.app.locals;
   const { username } = req.session.user;
-  dataStore.getVote(username, answerId).then((vote) => {
+  dataStore.getVote(username, answerId).then(vote => {
     res.json({ vote });
     res.end();
   });
@@ -146,7 +146,7 @@ const updateVote = (req, res) => {
   const { answerId, vote } = req.body;
   const { username } = req.session.user;
   const { dataStore } = req.app.locals;
-  dataStore.getVote(username, answerId).then(async (prevVote) => {
+  dataStore.getVote(username, answerId).then(async prevVote => {
     let votes;
     if (!prevVote) {
       votes = await dataStore.addVote(username, answerId, vote);
@@ -163,7 +163,7 @@ const updateVote = (req, res) => {
 const getTagSuggestion = (req, res) => {
   const { tagName } = req.params;
   const { dataStore } = req.app.locals;
-  dataStore.getTagSuggestion(tagName).then((matchingTags) => {
+  dataStore.getTagSuggestion(tagName).then(matchingTags => {
     res.json(matchingTags);
   });
 };
@@ -174,7 +174,7 @@ const addQuestionComment = (req, res) => {
   const { dataStore } = req.app.locals;
   dataStore
     .addQuestionComment(username, questionId, comment)
-    .then((commentId) => {
+    .then(commentId => {
       res.json(commentId);
     });
 };
@@ -190,15 +190,15 @@ const logout = (req, res) => {
 const serveProfilePage = (req, res) => {
   const { dataStore } = req.app.locals;
   const { username } = req.params;
-  dataStore.getUser(username).then((user) => {
-    res.render('profile', { user });
+  dataStore.getUser(username).then(user => {
+    res.render('profile', { user, authHref: getAuthLink() });
   });
 };
 
 const getCommentsOfQuestion = (req, res) => {
   const { questionId } = req.params;
   const { dataStore } = req.app.locals;
-  dataStore.getCommentsOfQuestion(questionId).then((comments) => {
+  dataStore.getCommentsOfQuestion(questionId).then(comments => {
     res.json(comments);
   });
 };
@@ -206,7 +206,7 @@ const getCommentsOfQuestion = (req, res) => {
 const getComment = (req, res) => {
   const { commentId } = req.params;
   const { dataStore } = req.app.locals;
-  dataStore.getComment(commentId).then((comment) => {
+  dataStore.getComment(commentId).then(comment => {
     res.json(comment);
   });
 };
@@ -229,5 +229,5 @@ module.exports = {
   logout,
   serveProfilePage,
   getCommentsOfQuestion,
-  getComment,
+  getComment
 };

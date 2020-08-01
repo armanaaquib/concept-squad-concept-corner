@@ -1,0 +1,40 @@
+.profile-Box {
+  position: absolute;
+  height: 15em;
+  width: 35em;
+  left: 25em;
+  top: 13em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 6em 4em;
+  box-shadow: 1px 1px 10px 1px grey;
+}
+
+.user-personal-info {
+  width: 50%;
+}
+.user-detail {
+  width: 50%;
+}
+
+.profile-pic {
+  height: 10em;
+  height: 10em;
+}
+.name {
+  font-size: 1.4em;
+  margin-top: 5px;
+}
+.username {
+  color: #606060;
+  margin-top: 10px;
+}
+
+.fa {
+  height: 3em;
+  width: 2em;
+}
+.user-detail div {
+  display: flex;
+}
