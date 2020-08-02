@@ -12,42 +12,42 @@ block container
 		.col
 			.col-8.header
 				h2.header-text Confirm your details
-			form.col-8.confirm-page-form(action="javascript:void(0)" method="POST" onsubmit='confirmAndSignUp(event, ' + JSON.stringify(userDetail) + ')')
+			form.col-8.confirm-page-form(action="javascript:void(0)" method="POST" onsubmit='signUp(event, ' + JSON.stringify(userDetail) + ')')
 				.col-4
 					.col-7.profile
-						input.upload-image(type="file", accept='image/*' name="uploadImage", onchange='readUrl(event)')
+						input.upload-image(type="file", accept='image/*' name="uploadImage", onchange='readImage(this)')
 						img.uploaded-image(src=userDetail['avatar_url']||'/images/avatar.png', alt="",data-url='' srcset="")
-						button.primary-btn.btn-uploadPic(type='button', onclick='callEvent()') Upload picture
+						button.primary-btn.btn-uploadPic(type='button', onclick='selectImage()') Upload picture
 				.col-6.details#details
 					.inputBox
-						input(type="text", name="username",value="" id='username'  onkeyup='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text", name="username",value="" id='username'  onkeyup='checkUserName(this)' onfocus='addContentActive(this)',onblur='checkContent(this)')
 						label(for="username") Username
 							span.required *
 						#userNameMessage
 					.inputBox
-						input(type="text",name="name",value=userDetail.name id='name' onchange='addContentActive(event)', onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text",name="name",value=userDetail.name id='name' onchange='addContentActive(this)', onfocus='addContentActive(this)',onblur='checkContent(this)')
 						label(for="name") Name
 							span.required *
 						br
 					.inputBox
-						input(type="text",name="emailId",value=userDetail.email, onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text",name="emailId",value=userDetail.email, onfocus='addContentActive(this)',onblur='checkContent(this)')
 						label(for="emailId") Email ID
 
 						br
 					.inputBox
-						input(type="text", name="title",value="", onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text", name="title",value="", onfocus='addContentActive(this)',onblur='checkContent(this)')
 						label(for="title") Title
 						br
 					.inputBox
-						input(type="text",name="company",value=userDetail.company, onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text",name="company",value=userDetail.company, onfocus='addContentActive(this)',onblur='checkContent(this)')
 						label(for="company") Company
 						br
 					.inputBox
-						input(type="text",name="location", value= userDetail.location, onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text",name="location", value=userDetail.location, onfocus='addContentActive(this)',onblur='checkContent(this)')
 						label(for="location") Location
 						br
 					.inputBox
-						textarea(name="aboutMe" onfocus='addContentActive(event)',onblur='checkContent()') #{userDetail.bio}
+						textarea(name="aboutMe" onfocus='addContentActive(this)',onblur='checkContent(this)') #{userDetail.bio}
 						label(for="aboutMe") About me
 						br
 					script.
@@ -57,4 +57,4 @@ block container
 						a(href='/')
 							button.cancel-btn(type='button') Cancel
 	script.
-		readImage()
+		convertToDataURI()

@@ -1,31 +1,11 @@
-const querySelectorAll = query => document.querySelectorAll(query);
-
-const querySelector = query => document.querySelector(query);
-
-const createElement = (elementName, classList) => {
-  const element = document.createElement(elementName);
-  classList.forEach(className => element.classList.add(className));
-  return element;
-};
-
-const createElementWithText = (elementName, classList, text) => {
-  const element = createElement(elementName, classList);
-  element.innerText = text;
-  return element;
-};
-
-const appendChildren = (parent, children) => {
-  children.forEach(child => parent.appendChild(child));
-};
-
-const addContentActive = function(event) {
-  const box = event.target.closest('.inputBox');
+const addContentActive = function (inputField) {
+  const box = inputField.parentElement;
   box.classList.add('content_active');
 };
 
-const checkContent = function() {
-  const box = event.target.closest('.inputBox');
-  const input = event.target.value;
+const checkContent = function (inputField) {
+  const box = inputField.parentElement;
+  const input = inputField.value;
   if (!input || input === '') {
     box.classList.remove('content_active');
   } else {
@@ -33,26 +13,36 @@ const checkContent = function() {
   }
 };
 
-const addContentActiveToAll = function() {
-  querySelectorAll('.inputBox input').forEach(inputField => inputField.focus());
-  querySelectorAll('.inputBox textarea').forEach(inputField =>
+const addContentActiveToAll = function () {
+  querySelectorAll('.inputBox input').forEach((inputField) =>
+    inputField.focus()
+  );
+  querySelectorAll('.inputBox textarea').forEach((inputField) =>
     inputField.focus()
   );
 };
 
-const readUrl = function(event) {
-  const reader = new FileReader();
-  reader.onload = function(img) {
-    querySelector('.uploaded-image').setAttribute('src', img.target.result);
-  };
-  event && reader.readAsDataURL(event.target.files[0]);
+const getDataURI = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function (progressEvent) {
+      resolve(progressEvent.target.result);
+    };
+    reader.readAsDataURL(file);
+  });
 };
 
-const callEvent = function() {
+const readImage = function (fileUpload) {
+  getDataURI(fileUpload.files[0]).then((URI) => {
+    querySelector('.uploaded-image').setAttribute('src', URI);
+  });
+};
+
+const selectImage = function () {
   querySelector('.upload-image').click();
 };
 
-const getDate = function(dateString) {
+const getDate = function (dateString) {
   const date = new Date(dateString).toUTCString();
   const [, newDate] = date.split(',');
   const [day, month, year, time] = newDate.trim(' ').split(' ');

@@ -1,4 +1,4 @@
-const validateFields = function() {
+const validateFields = function () {
   let isValid = true;
   const name = querySelector('#name');
   const username = querySelector('#username');
@@ -13,7 +13,7 @@ const validateFields = function() {
   return isValid;
 };
 
-const confirmAndSignUp = async function(event, userDetails) {
+const signUp = function (event, userDetails) {
   event.preventDefault();
   if (!validateFields()) {
     return;
@@ -22,16 +22,18 @@ const confirmAndSignUp = async function(event, userDetails) {
   detailsToAdd.append('authLogin', userDetails.login);
   detailsToAdd.append('authSource', userDetails.authSource);
   detailsToAdd.append('profilePic', querySelector('.uploaded-image').src);
-  const response = await fetch('/signUp', {
+
+  fetch('/signUp', {
     method: 'POST',
-    body: detailsToAdd
+    body: detailsToAdd,
+  }).then((res) => {
+    if (res.status === 200) {
+      window.location = '/';
+    }
   });
-  if (response.status === 200) {
-    window.location = '/';
-  }
 };
 
-const checkUserName = function(userNameField) {
+const checkUserName = function (userNameField) {
   const username = userNameField.value;
   const userNameMessage = querySelector('#userNameMessage');
   const confirmBtn = querySelector('#confirmBtn');
@@ -40,8 +42,8 @@ const checkUserName = function(userNameField) {
     return;
   }
   fetch(`/hasUser/${username}`)
-    .then(res => res.json())
-    .then(status => {
+    .then((res) => res.json())
+    .then((status) => {
       if (status.available) {
         confirmBtn.removeAttribute('disabled');
         userNameMessage.innerText = 'Username is available';
@@ -56,6 +58,14 @@ const checkUserName = function(userNameField) {
     });
 };
 
-const readImage = () => {
-  querySelector('.upload-image').onchange();
+const convertToDataURI = () => {
+  const url = querySelector('.uploaded-image').getAttribute('src');
+  fetch(url)
+    .then((res) => res.blob())
+    .then((data) => {
+      const file = new File([data], 'test.jpg', { type: 'image/jpeg' });
+      getDataURI(file).then((URI) => {
+        querySelector('.uploaded-image').src = URI;
+      });
+    });
 };

@@ -14,7 +14,7 @@ block container
 				hr
 			.col-8.question
 				.col-12.inputBox
-					input#title(type="text", name="title",value=""  onfocus='addContentActive(event)',onblur='checkContent()')
+					input#title(type="text", name="title",value=""  onfocus='addContentActive(this)',onblur='checkContent(event)')
 					label(for="username") Heading
 						span.required *
 				.errorMsg#errorTitle
