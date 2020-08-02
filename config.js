@@ -2,7 +2,7 @@ require('dotenv').config();
 const { env } = process;
 
 const getDBFilePath = () => {
-  const fileName = env.CONCEPT_CORNER_DB;
+  const fileName = env.CONCEPT_CORNER_DB || 'raw-concept-corner.db';
   return `./store/${fileName}`;
 };
 
