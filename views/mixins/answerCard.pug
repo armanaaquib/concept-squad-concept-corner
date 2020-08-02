@@ -24,10 +24,10 @@ mixin answerCard(answer, isAuthor, user)
 							i.material-icons check_circle
 	if user
 		script.
-			addListener(!{answer.answerId})
+			attachListenerVoteIcons(!{answer.answerId})
 	script.
 		date = !{JSON.stringify(answer.time)};
 		id = !{JSON.stringify(`date-${answer.answerId}`)};
 		document.getElementById(id).innerText = moment(date).utc().fromNow();
 		showDescription(!{answer.answer}, !{JSON.stringify(`desc-${answer.answerId}`)})
-		updateVotes(!{answer.answerId})
+		updateVoteIcons(!{answer.answerId})

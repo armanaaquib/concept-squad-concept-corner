@@ -109,8 +109,8 @@ describe('handlers', function () {
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
         .send({ questionId: 1, answer: 'answer' })
-        .expect('location', '/question/1')
-        .expect(302, done);
+        .expect({ answerId: 6 })
+        .expect(200, done);
     });
   });
 

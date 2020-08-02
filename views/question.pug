@@ -1,6 +1,5 @@
 extends layout.pug
 include mixins/answerCard
-//- - var isAuthor = user && user.username == question.username && question.isAnswerAccepted == false
 block head
 	title Concept Corner | #{question.title}
 	link(href="https://cdn.quilljs.com/1.3.6/quill.snow.css", rel="stylesheet")
@@ -8,7 +7,7 @@ block head
 	link(rel="stylesheet", href="/css/question.css")
 	script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js")
 	script(src="https://cdn.quilljs.com/1.3.6/quill.js")
-	script(src='/js/postAnswer.js')
+	script(src='/js/question.js')
 
 block container
 	div.row
