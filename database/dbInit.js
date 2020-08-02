@@ -1,26 +1,12 @@
-//const sqlite = require('sqlite3').verbose();
+/*eslint-disable no-unused-vars */
+
 const { getDBFilePath } = require('../config');
-
-//const schema = require('./schema');
-
 const throwError = (err) => {
   if (err) {
     throw err;
   }
 };
 
-//const createTables = () => {
-//const db = new sqlite.Database(getDBFilePath(), throwError);
-//db.run(schema.users, throwError);
-//db.run(schema.questions, throwError);
-//db.run(schema.answers, throwError);
-//db.run(schema.tags, throwError);
-//db.run(schema.question_tag, throwError);
-//db.run(schema.question_comments, throwError);
-//db.close(throwError);
-//};
-
-//createTables();
 const { Sequelize, DataTypes, Op} = require('sequelize');
 const conceptCornerDb = new Sequelize({
   dialect: 'sqlite',
@@ -28,25 +14,25 @@ const conceptCornerDb = new Sequelize({
   storage: getDBFilePath()
 });
 conceptCornerDb.authenticate().catch(throwError);
+
 const Users = conceptCornerDb.define('users', {
   username: {
     type: DataTypes.STRING,
     unique: true,
     primaryKey: true
   },
-  authProvider: {
+  'auth_source': {
     type: DataTypes.STRING,
   },
-  authLogin: {
+  'auth_login': {
     type: DataTypes.STRING
   },
   name: {
     type: DataTypes.STRING,
-    unique: true
+    allowNull: false
   },
-  emailId: {
-    type: DataTypes.STRING,
-    unique: true
+  email: {
+    type: DataTypes.STRING
   },
   title: {
     type: DataTypes.STRING
@@ -57,30 +43,202 @@ const Users = conceptCornerDb.define('users', {
   location: {
     type: DataTypes.STRING
   },
-  aboutMe: {
+  about_me: {
+    type: DataTypes.STRING
+  },
+  profile_pic: {
     type: DataTypes.STRING
   }
 }, {timestamps: false});
+
+const Questions = conceptCornerDb.define('questions', {
+  question_id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  }, 
+  description: {
+    type: DataTypes.STRING
+  },
+  username: {
+    type: DataTypes.STRING,
+    references: {
+      model: Users,
+      key: 'username'
+    }
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  view_count: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  is_answer_accepted: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  no_of_answers: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  }
+}, {updatedAt: false});
+
+const Answers = conceptCornerDb.define('answers', {
+  answer_id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  }, 
+  answer: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  question_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Questions,
+      key: 'question_id'
+    }
+  },
+  username: {
+    type: DataTypes.STRING,
+    references: {
+      model: Users,
+      key: 'username'
+    }
+  },
+  accepted: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  }
+}, {updatedAt: false});
+
+const Tags = conceptCornerDb.define('tags', {
+  tag_id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  }, 
+  tag_name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+}, {timestamps: false});
+
+const question_tag = conceptCornerDb.define('question_tag', {
+  tag_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Tags,
+      key: 'tag_id'
+    }
+  }, 
+  question_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Questions,
+      key: 'question_id'
+    }
+  }, 
+}, {updatedAt: false});
+
+const QuestionComments = conceptCornerDb.define('question_comments', {
+  comment_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  }, 
+  question_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Questions,
+      key: 'question_id'
+    }
+  },
+  comment: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  username: {
+    type: DataTypes.STRING,
+    references: {
+      model: Users,
+      key: 'username'
+    }
+  }
+}, {updatedAt: false});
+
+const Answer_comments = conceptCornerDb.define('answer_comments', {
+  comment_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  }, 
+  answer_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Answers,
+      key: 'answer_id'
+    }
+  },
+  comment: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }, 
+  username: {
+    type: DataTypes.STRING,
+    references: {
+      model: Users,
+      key: 'username'
+    }
+  }
+}, {updatedAt: false});
+
+const Answer_votes = conceptCornerDb.define('answer_votes', {
+  answer_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Answers,
+      key: 'answer_id'
+    }
+  },
+  vote: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }, 
+  username: {
+    type: DataTypes.STRING,
+    references: {
+      model: Users,
+      key: 'username'
+    }
+  }
+}, {timestamps: false}); 
+
 const createTables = async function(){
   await conceptCornerDb.sync({force: true});
   await Users.bulkCreate([{
-    username: 'michal', name: 'michel shwan', title: 'developer', authLogin: 'michal', authProvider: 'github'
-  }, {
-    username: 'bryce', name: 'bryce shwan', title: 'developer', authLogin: 'bryce12', authProvider: 'github'
+    username: 'aas', 
+    name: 'michal shwan', 
+    title: 'developer', 
+    auth_login: 'michal', 
+    auth_source: 'github'
+  //}, {
+  //username: 'bryce12', 
+  //name: 'bryce shwan', 
+  //title: 'developer', 
+  //auth_login: 'bryce12', 
+  //auth_source: 'github'
+  //
   }]);
-};
-
-const userDml = async function(){
-  const users = await Users.findAll();
-  users.forEach((user) => {
-    console.log(user.toJSON());
-  });
 };
 
 const getUser = async function(key){
   const user = await Users.findOne(
     {attributes:
-    ['username', 'name', 'emailId'],
+    ['username', 'name', 'email'],
     where: {
       username: {
         [Op.eq]: key
@@ -89,23 +247,22 @@ const getUser = async function(key){
     }, );
   return user.toJSON();
 };
-const getRegisteredUser = async function (authProvider, authLogin) {
+const getRegisteredUser = async function (authSource, authLogin) {
   const registeredUser = await Users.findOne(
-    {attributes: ['name', 'username', 'emailId'], where: {
+    {attributes: ['name', 'username', 'email'], where: {
       [Op.and]: {
-        authLogin: authLogin,
-        authProvider: authProvider
+        auth_login: authLogin,
+        auth_source: authSource
       }
     }},);
   return registeredUser.toJSON();
 };
+
 const main = async function() {
   await createTables();
-  await userDml();
-  console.log(await getUser('michal'));
-  console.log(await getRegisteredUser('github', 'michal'));
-  console.log(await getRegisteredUser('github', 'bryce12'));
-  
+  const user = await getUser('michel');
+  await getRegisteredUser('github', 'michel');
+  await getRegisteredUser('github', 'bryce');
 };
 
 main();

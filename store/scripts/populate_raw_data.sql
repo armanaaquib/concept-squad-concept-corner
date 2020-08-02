@@ -94,7 +94,7 @@ insert into
     description,
     view_count,
     is_answer_accepted,
-    time
+    createdAt
   )
 VALUES
   (
@@ -183,7 +183,7 @@ values
 
 --insert question_tags
 insert into
-  question_tag(question_id, tag_id)
+  question_tag( tag_id,question_id)
 VALUES
   (1, 1),
   (1, 3),
@@ -226,7 +226,7 @@ insert into
     question_id,
     answer,
     accepted,
-    time
+    createdAt
   )
 VALUES
   (
@@ -306,7 +306,7 @@ COMMIT;
 
 --insert answer_comments
 insert into
-  answer_comments(username, answer_id, comment, time)
+  answer_comments(username, answer_id, comment, createdAt)
 VALUES
   (
     'bryce',
@@ -335,7 +335,7 @@ VALUES
 
 --insert question_comments
 insert into
-  question_comments(username, question_id, comment, time)
+  question_comments(username, question_id, comment, createdAt)
 VALUES
   (
     'bryce',
