@@ -2,68 +2,72 @@ const showDescription = (description, id) => {
   const quill = new Quill(`#${id}`, {
     modules: {
       syntax: true,
-      toolbar: false,
+      toolbar: false
     },
     readOnly: true,
-    theme: 'snow',
+    theme: 'snow'
   });
 
   quill.setContents(JSON.parse(description));
 };
-const postAnswer = function (editor) {
+const postAnswer = function(editor) {
   const questionId = document.getElementById('h_qId').value;
   fetch('/postAnswer', {
     method: 'POST',
     body: JSON.stringify({
       questionId,
-      answer: JSON.stringify(JSON.stringify(editor.getContents())),
+      answer: JSON.stringify(JSON.stringify(editor.getContents()))
     }),
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   }).then(() => {
     window.location = `/question/${questionId}`;
   });
 };
 
-const showPostAnswerEditor = function () {
+const showPostAnswerEditor = function() {
   const postAnswerEditor = new Quill('#editor-postAnswer', {
     modules: {
       syntax: true,
       toolbar: [
         [{ size: ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
-        ['code-block'],
-      ],
+        ['code-block']
+      ]
     },
     placeholder: 'description...',
-    theme: 'snow',
+    theme: 'snow'
   });
   hljs.configure({
-    languages: ['javascript', 'ruby', 'python'],
+    languages: ['javascript', 'ruby', 'python']
   });
   const postAnswerBtn = document.getElementById('postAnswer-btn');
   postAnswerBtn.onclick = postAnswer.bind(null, postAnswerEditor);
 };
 
-const markAccepted = (answer) => {
+const markAccepted = answer => {
   fetch('/markAccepted', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       questionId: answer.questionId,
-      answerId: answer.answerId,
-    }),
-  }).then((res) => {
+      answerId: answer.answerId
+    })
+  }).then(res => {
     if (res.status === 200) {
-      $('.reactions .unchecked-answer').remove();
+      querySelectorAll('.reactions .unchecked-answer').forEach(element =>
+        element.remove()
+      );
       const checkedAnswer = document.createElement('div');
       checkedAnswer.classList.add('col-3');
       checkedAnswer.classList.add('checked-answer');
       checkedAnswer.innerHTML = '<i class="material-icons">check_circle</i>';
-      $(`.reactions #a-${answer.answerId}`).append(checkedAnswer);
+      querySelector(`.reactions #a-${answer.answerId}`).appendChild(
+        checkedAnswer
+      );
     }
   });
 };
@@ -72,106 +76,105 @@ const updateVote = (answerId, vote) => {
   fetch('/updateVote', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ answerId, vote }),
+    body: JSON.stringify({ answerId, vote })
   })
-    .then((res) => {
+    .then(res => {
       if (res.status === 200) {
         return res.json();
       }
     })
-    .then((votes) => {
+    .then(votes => {
       updateVotes(answerId);
-      $(`#a-${answerId} .up`).siblings('.count').text(votes.up);
-      $(`#a-${answerId} .down`).siblings('.count').text(votes.down);
+      querySelector(`#a-${answerId} .up`).nextSibling.innerText = votes.up;
+      querySelector(`#a-${answerId} .down`).nextSibling.innerText = votes.down;
     });
 };
 
-const addListener = (answerId) => {
-  const thumbsUp = $(`.reactions #a-${answerId} .up`);
-  const thumbsDown = $(`.reactions #a-${answerId} .down`);
-  thumbsUp.addClass('animated-icon');
-  thumbsDown.addClass('animated-icon');
-  thumbsUp.on('click', updateVote.bind({}, answerId, 'up'));
-  thumbsDown.on('click', updateVote.bind({}, answerId, 'down'));
+const addListener = answerId => {
+  const thumbsUp = querySelector(`.reactions #a-${answerId} .up`);
+  const thumbsDown = querySelector(`.reactions #a-${answerId} .down`);
+  thumbsUp.classList.add('animated-icon');
+  thumbsDown.classList.add('animated-icon');
+  thumbsUp.onclick = updateVote.bind({}, answerId, 'up');
+  thumbsDown.onclick = updateVote.bind({}, answerId, 'down');
 };
 
-const updateVotes = (answerId) => {
+const updateVotes = answerId => {
   fetch(`/getVote/${answerId}`)
-    .then((res) => res.json())
-    .then((result) => {
-      $(`#a-${answerId} .up`).css('color', 'rgb(150,150,150)');
-      $(`#a-${answerId} .down`).css('color', 'rgb(150,150,150)');
+    .then(res => res.json())
+    .then(result => {
+      querySelector(`#a-${answerId} .up`).style.color = '#969696';
+      querySelector(`#a-${answerId} .down`).style.color = '#969696';
       if (result.vote) {
-        $(`#a-${answerId} .${result.vote}`).css('color', '#3d8af7');
+        querySelector(`#a-${answerId} .${result.vote}`).style.color = '#3d8af7';
       }
-      fetch(`/getVote/${answerId}`)
-        .then((res) => res.json())
-        .then((result) => {
-          if (result.vote) {
-            $(`#a-${answerId} .${result.vote}`).css('color', '#3d8af7');
-          }
-        });
     });
 };
 
 const showQuestionCommentContainer = () => {
-  document.querySelector('.post-question-comment-container').style.display =
-    'flex';
-  document.querySelector('.btn-add-question-comment').style.display = 'none';
-};
-const hideQuestionCommentContainer = () => {
-  document.querySelector('.post-question-comment-container').style.display =
-    'none';
-  document.querySelector('#comment-text').value = '';
-  document.querySelector('.btn-add-question-comment').style.display = 'block';
+  querySelector('.post-question-comment-container').style.display = 'flex';
+  querySelector('.btn-add-question-comment').style.display = 'none';
 };
 
-const addQuestionComment = (questionId) => {
-  const comment = $('#comment-text').val().trim();
+const hideQuestionCommentContainer = () => {
+  querySelector('.post-question-comment-container').style.display = 'none';
+  querySelector('#comment-text').value = '';
+  querySelector('.btn-add-question-comment').style.display = 'block';
+};
+
+const addQuestionComment = questionId => {
+  const comment = querySelector('#comment-text').value.trim();
+
   fetch('/addQuestionComment', {
     method: 'POST',
     body: JSON.stringify({
       questionId,
-      comment,
+      comment
     }),
     headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then((res) => {
-    if (res.status === 200) {
-      return res.json();
+      'Content-Type': 'application/json'
     }
-   
-  }).then((commentId) => {
-    hideQuestionCommentContainer();
-    fetch(`/comment/${commentId}`).then((res) => {
+  })
+    .then(res => {
       if (res.status === 200) {
         return res.json();
-      }   
-    }).then((newComment) => {
-      createComment(newComment);
+      }
+    })
+    .then(commentId => {
+      hideQuestionCommentContainer();
+      fetch(`/comment/${commentId}`)
+        .then(res => {
+          if (res.status === 200) {
+            return res.json();
+          }
+        })
+        .then(newComment => {
+          createComment(newComment);
+        });
     });
-      
-  });
-};
-const createComment = function(comment){
-  const commentSection = $('#comments');
-  const newComment = $('<div>', {'class': 'col-9 comment'});
-  const user = $('<span>', {'class': 'user'});
-  user.text(comment.username);
-  const time = $('<span>', {'class': 'date'});
-  time.text(moment(comment.time / 1000).fromNow());
-  //newComment.text();
-  newComment.append([`<span>${comment.comment}<span> - </span>`, user, time]);
-  commentSection.append(newComment);
 };
 
-const getAllQuestionComment = (questionId) => {
+const createComment = function(comment) {
+  const commentSection = querySelector('#comments');
+  const newComment = createElement('div', ['col-9', 'comment']);
+  const user = createElementWithText('span', ['user'], comment.username);
+  const time = createElementWithText(
+    'span',
+    ['date'],
+    moment(comment.time / 1000).fromNow()
+  );
+  const commentContent = createElementWithText('span', [], comment.comment);
+  const seperator = createElementWithText('span', [], '-');
+  appendChildren(newComment, [commentContent, seperator, user, time]);
+  commentSection.appendChild(newComment);
+};
+
+const getAllQuestionComment = questionId => {
   fetch(`/getCommentsOfQuestion/${questionId}`)
-    .then((res) => res.json())
-    .then((comments) => {
+    .then(res => res.json())
+    .then(comments => {
       comments.forEach(comment => {
         createComment(comment);
       });

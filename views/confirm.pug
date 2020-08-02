@@ -20,7 +20,7 @@ block container
 						button.primary-btn.btn-uploadPic(type='button', onclick='callEvent()') Upload picture
 				.col-6.details#details
 					.inputBox
-						input(type="text", name="username",value="" id='username'  onchange='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
+						input(type="text", name="username",value="" id='username'  onkeyup='checkUserName(this)' onfocus='addContentActive(event)',onblur='checkContent()')
 						label(for="username") Username
 							span.required *
 						#userNameMessage

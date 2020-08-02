@@ -1,7 +1,7 @@
 const validateFields = function() {
   let isValid = true;
-  const name = document.getElementById('name');
-  const username = document.getElementById('username');
+  const name = querySelector('#name');
+  const username = querySelector('#username');
   if (name.value.length < 1) {
     name.classList.add('requiredFieldError');
     isValid = false;
@@ -18,10 +18,10 @@ const confirmAndSignUp = async function(event, userDetails) {
   if (!validateFields()) {
     return;
   }
-  const detailsToAdd = new FormData($('.confirm-page-form')[0]);
+  const detailsToAdd = new FormData(querySelector('.confirm-page-form'));
   detailsToAdd.append('authLogin', userDetails.login);
   detailsToAdd.append('authSource', userDetails.authSource);
-  detailsToAdd.append('profilePic', $('.uploaded-image')[0].src);
+  detailsToAdd.append('profilePic', querySelector('.uploaded-image').src);
   const response = await fetch('/signUp', {
     method: 'POST',
     body: detailsToAdd
@@ -33,8 +33,8 @@ const confirmAndSignUp = async function(event, userDetails) {
 
 const checkUserName = function(userNameField) {
   const username = userNameField.value;
-  const userNameMessage = document.querySelector('#userNameMessage');
-  const confirmBtn = $('#confirmBtn');
+  const userNameMessage = querySelector('#userNameMessage');
+  const confirmBtn = querySelector('#confirmBtn');
   if (username.length < 2) {
     userNameMessage.innerText = '';
     return;
@@ -43,12 +43,12 @@ const checkUserName = function(userNameField) {
     .then(res => res.json())
     .then(status => {
       if (status.available) {
-        confirmBtn.removeAttr('disabled');
+        confirmBtn.removeAttribute('disabled');
         userNameMessage.innerText = 'Username is available';
         userNameMessage.classList.remove('failure');
         userNameMessage.classList.add('success');
       } else {
-        confirmBtn.attr('disabled', true);
+        confirmBtn.setAttribute('disabled', true);
         userNameMessage.innerText = 'Username is not available';
         userNameMessage.classList.remove('success');
         userNameMessage.classList.add('failure');
@@ -57,5 +57,5 @@ const checkUserName = function(userNameField) {
 };
 
 const readImage = () => {
-  $('.upload-image').trigger('onchange');
+  querySelector('.upload-image').onchange();
 };
