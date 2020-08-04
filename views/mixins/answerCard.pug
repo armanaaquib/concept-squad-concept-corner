@@ -7,6 +7,7 @@ mixin answerCard(answer, isAuthor, user)
 					.col-12.username
 						a.user-profile-link(href=`/profile/${answer.username}`) #{answer.username}
 					.col-12.date(id=`date-${answer.answerId}`)
+			.col-12.comments(id=`comment-${answer.answerId}`)
 		.col-12.reactions
 			.col-4(id=`a-${answer.answerId}`)
 				.col-3
@@ -31,3 +32,4 @@ mixin answerCard(answer, isAuthor, user)
 		document.getElementById(id).innerText = moment(date).utc().fromNow();
 		showDescription(!{answer.answer}, !{JSON.stringify(`desc-${answer.answerId}`)})
 		updateVoteIcons(!{answer.answerId})
+		showAnswerComments(!{answer.answerId})
