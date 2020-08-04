@@ -113,7 +113,7 @@ const removeLastTag = function(tagField) {
   }
   const selectedTags = Array.from(selectedTagsHTML);
   const tagToRemove = selectedTags[selectedTags.length - 1];
-  tagField.value = tagToRemove.innerText;
+  tagField.value = tagToRemove.firstElementChild.innerText;
   tagToRemove.remove();
   updateRemainingTags();
 };

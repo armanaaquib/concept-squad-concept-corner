@@ -188,5 +188,13 @@ module.exports = {
     question_tag
   WHERE
     question_id = ?;
+  `,
+  getCommentsOfAnwer: `
+  SELECT 
+    comment, comment_id, time, username
+  FROM 
+    answer_comments 
+  WHERE
+    answer_id = ?;
   `
 };

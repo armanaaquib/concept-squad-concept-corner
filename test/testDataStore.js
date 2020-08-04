@@ -904,6 +904,42 @@ describe('DataStore', function() {
     });
   });
 
+  context('getCommentsOfAnswer', function() {
+    it('should get all comments of the answer', async function() {
+      const comments = [
+        {
+          username: 'michel',
+          comment_id: 1,
+          comment: 'comment1',
+          time: new Date('2020-07-21 11:24:35')
+        }
+      ];
+      dbClient['all'] = fake.yields(null, comments);
+      const actualComments = await dataStore.getCommentsOfAnswer(10);
+      const expectedComments = [
+        {
+          username: 'michel',
+          commentId: 1,
+          comment: 'comment1',
+          time: new Date('2020-07-21 11:24:35')
+        }
+      ];
+      assert.deepStrictEqual(actualComments, expectedComments);
+      assert.deepStrictEqual(dbClient['all'].args[0][1], [10]);
+    });
+
+    it('should reject error if query is not valid', function() {
+      dbClient['all'] = function(query, params, callback) {
+        callback && callback({ message: 'syntax error' });
+        return dbClient;
+      };
+
+      dataStore.getCommentsOfAnswer(10).catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+      });
+    });
+  });
+
   context('getComment', function() {
     it('should get comments of the question', async function() {
       const comment = {

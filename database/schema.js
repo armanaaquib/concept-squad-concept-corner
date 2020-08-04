@@ -65,4 +65,13 @@ module.exports = {
 		FOREIGN KEY(username) REFERENCES users(username),
 		FOREIGN KEY(question_id) REFERENCES questions(question_id)
 	);`,
+  answer_comments: `CREATE TABLE answer_comments (
+		comment_id integer PRIMARY KEY AUTOINCREMENT,
+		username varchar,
+		answer_id integer,
+		comment text,
+		time datetime DEFAULT (datetime('now', 'localtime')),
+		FOREIGN KEY(username) REFERENCES users(username),
+		FOREIGN KEY(answer_id) REFERENCES answers(answer_id)
+	);`
 };

@@ -40,7 +40,7 @@ const wrapAnswer = (row) => {
   };
 };
 
-const wrapQuestionComments = (row) => {
+const wrapComment = (row) => {
   return {
     username: row.username,
     commentId: row.comment_id,
@@ -364,7 +364,21 @@ class DataStore {
           resolve([]);
         }
         let comments = rows || [];
-        comments = comments.map(wrapQuestionComments);
+        comments = comments.map(wrapComment);
+        resolve(comments);
+      });
+    });
+  }
+
+  getCommentsOfAnswer(answerId) {
+    return new Promise((resolve, reject) => {
+      this.db.all(queries.getCommentsOfAnswer, [answerId], (err, rows) => {
+        err && reject(err);
+        if (!rows) {
+          resolve([]);
+        }
+        let comments = rows || [];
+        comments = comments.map(wrapComment);
         resolve(comments);
       });
     });
@@ -378,7 +392,7 @@ class DataStore {
           resolve([]);
         }
         let comment = rows || {};
-        comment = wrapQuestionComments(comment);
+        comment = wrapComment(comment);
         resolve(comment);
       });
     });
