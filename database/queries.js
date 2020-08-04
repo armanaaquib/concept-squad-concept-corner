@@ -189,7 +189,7 @@ module.exports = {
   WHERE
     question_id = ?;
   `,
-  getCommentsOfAnwer: `
+  getCommentsOfAnswer: `
   SELECT 
     comment, comment_id, time, username
   FROM 

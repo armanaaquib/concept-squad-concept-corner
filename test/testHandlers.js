@@ -345,7 +345,7 @@ describe('handlers', function() {
   context('/getCommentsOfQuestion', function() {
     it('should give list of comments of the question id', function(done) {
       request(app)
-        .get('/getCommentsOfQuestion/67')
+        .get('/getCommentsOfQuestion/1')
         .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
         .expect(200, done);
     });
@@ -353,6 +353,22 @@ describe('handlers', function() {
     it('should give empty object when the question does not have any comments', function(done) {
       request(app)
         .get('/getCommentsOfQuestion/89')
+        .expect([])
+        .expect(200, done);
+    });
+  });
+
+  context('/getCommentsOfAnswer', function() {
+    it('should give list of comments of the answer id', function(done) {
+      request(app)
+        .get('/getCommentsOfAnswer/1')
+        .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
+        .expect(200, done);
+    });
+
+    it('should give empty object when the question does not have any comments', function(done) {
+      request(app)
+        .get('/getCommentsOfAnswer/89')
         .expect([])
         .expect(200, done);
     });

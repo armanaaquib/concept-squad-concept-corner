@@ -206,6 +206,14 @@ const getCommentsOfQuestion = (req, res) => {
   });
 };
 
+const getCommentsOfAnswer = (req, res) => {
+  const { answerId } = req.params;
+  const { dataStore } = req.app.locals;
+  dataStore.getCommentsOfAnswer(answerId).then((comments) => {
+    res.json(comments);
+  });
+};
+
 const getComment = (req, res) => {
   const { commentId } = req.params;
   const { dataStore } = req.app.locals;
@@ -265,6 +273,7 @@ module.exports = {
   logout,
   serveProfilePage,
   getCommentsOfQuestion,
+  getCommentsOfAnswer,
   getComment,
   serveEditQuestion,
   updateQuestion
