@@ -28,7 +28,7 @@ const signUp = function (event, userDetails) {
     body: detailsToAdd,
   }).then((res) => {
     if (res.status === 200) {
-      window.location = '/';
+      window.location.href = '/';
     }
   });
 };
@@ -41,8 +41,9 @@ const checkUserName = function (userNameField) {
     userNameMessage.innerText = '';
     return;
   }
-  fetch(`/hasUser/${username}`)
-    .then((res) => res.json())
+
+  getReq(`/hasUser/${username}`)
+    .then(jsonParser)
     .then((status) => {
       if (status.available) {
         confirmBtn.removeAttribute('disabled');
@@ -60,7 +61,7 @@ const checkUserName = function (userNameField) {
 
 const convertToDataURI = () => {
   const url = querySelector('.uploaded-image').getAttribute('src');
-  fetch(url)
+  getReq(url)
     .then((res) => res.blob())
     .then((data) => {
       const file = new File([data], 'test.jpg', { type: 'image/jpeg' });

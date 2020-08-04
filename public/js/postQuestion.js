@@ -11,20 +11,15 @@ const postQuestion = (editor) => {
   }
   const title = querySelector('#title').value;
   const description = JSON.stringify(JSON.stringify(editor.getContents()));
-  fetch('/postQuestion', {
-    method: 'POST',
-    body: JSON.stringify({ title, description, tags: getSelectedTags() }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
+
+  postJSONReq('/postQuestion', {
+    title,
+    description,
+    tags: getSelectedTags(),
   })
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-    })
+    .then(jsonParser)
     .then((questionId) => {
-      window.location = `/question/${questionId}`;
+      window.location.href = `/question/${questionId}`;
     });
 };
 
@@ -142,9 +137,7 @@ const getTagSuggestion = function (tagField) {
     removeTagSuggestion();
     return;
   }
-  fetch(`/getTagSuggestion/${tagField.value}`)
-    .then((res) => res.json())
-    .then(showTagSuggestions);
+  getRequest(`/getTagSuggestion/${tagField.value}`).then(showTagSuggestions);
 };
 
 const createTag = function (tagField) {

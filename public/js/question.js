@@ -13,21 +13,11 @@ const showDescription = (description, id) => {
 
 const postAnswer = function (editor) {
   const questionId = querySelector('#h_qId').value;
-  fetch('/postAnswer', {
-    method: 'POST',
-    body: JSON.stringify({
-      questionId,
-      answer: JSON.stringify(JSON.stringify(editor.getContents())),
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
+  postJSONReq('/postAnswer', {
+    questionId,
+    answer: JSON.stringify(JSON.stringify(editor.getContents())),
   })
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-    })
+    .then(jsonParser)
     .then(({ answerId }) => {
       window.location.href = `/question/${questionId}`;
     });
@@ -51,15 +41,9 @@ const showPostAnswerEditor = function () {
 };
 
 const markAccepted = (answer) => {
-  fetch('/markAccepted', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      questionId: answer.questionId,
-      answerId: answer.answerId,
-    }),
+  postJSONReq('/markAccepted', {
+    questionId: answer.questionId,
+    answerId: answer.answerId,
   }).then((res) => {
     if (res.status === 200) {
       querySelectorAll('.reactions .unchecked-answer').forEach((element) =>
@@ -77,18 +61,8 @@ const markAccepted = (answer) => {
 };
 
 const updateVote = (answerId, vote) => {
-  fetch('/updateVote', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ answerId, vote }),
-  })
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-    })
+  postJSONReq('/updateVote', { answerId, vote })
+    .then(jsonParser)
     .then((votes) => {
       updateVoteIcons(answerId);
       querySelector(`#a-${answerId} .up`).nextSibling.innerText = votes.up;
@@ -106,8 +80,8 @@ const attachListenerVoteIcons = (answerId) => {
 };
 
 const updateVoteIcons = (answerId) => {
-  fetch(`/getVote/${answerId}`)
-    .then((res) => res.json())
+  getReq(`/getVote/${answerId}`)
+    .then(jsonParser)
     .then((result) => {
       querySelector(`#a-${answerId} .up`).style.color = '#969696';
       querySelector(`#a-${answerId} .down`).style.color = '#969696';
@@ -138,45 +112,27 @@ const createComment = function (comment) {
     moment(comment.time / 1000).fromNow()
   );
   const commentContent = createElementWithText('span', [], comment.comment);
-  const seperator = createElementWithText('span', [], '-');
-  appendChildren(newComment, [commentContent, seperator, user, time]);
+  const separator = createElementWithText('span', [], '-');
+  appendChildren(newComment, [commentContent, separator, user, time]);
   commentSection.appendChild(newComment);
 };
 
 const addQuestionComment = (questionId) => {
   const comment = querySelector('#comment-text').value.trim();
-  fetch('/addQuestionComment', {
-    method: 'POST',
-    body: JSON.stringify({
-      questionId,
-      comment,
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
+  postJSONReq('/addQuestionComment', {
+    questionId,
+    comment,
   })
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-    })
+    .then(jsonParser)
     .then((commentId) => {
       hideQuestionCommentContainer();
-      fetch(`/comment/${commentId}`)
-        .then((res) => {
-          if (res.status === 200) {
-            return res.json();
-          }
-        })
-        .then((newComment) => {
-          createComment(newComment);
-        });
+      getReq(`/comment/${commentId}`).then(jsonParser).then(createComment);
     });
 };
 
 const getAllQuestionComment = (questionId) => {
-  fetch(`/getCommentsOfQuestion/${questionId}`)
-    .then((res) => res.json())
+  getReq(`/getCommentsOfQuestion/${questionId}`)
+    .then(jsonParser)
     .then((comments) => {
       comments.forEach((comment) => {
         createComment(comment);
