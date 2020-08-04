@@ -1,9 +1,9 @@
-const addContentActive = function (inputField) {
+const addContentActive = function(inputField) {
   const box = inputField.parentElement;
   box.classList.add('content_active');
 };
 
-const checkContent = function (inputField) {
+const checkContent = function(inputField) {
   const box = inputField.parentElement;
   const input = inputField.value;
   if (!input || input === '') {
@@ -13,7 +13,7 @@ const checkContent = function (inputField) {
   }
 };
 
-const addContentActiveToAll = function () {
+const addContentActiveToAll = function() {
   querySelectorAll('.inputBox input').forEach((inputField) =>
     inputField.focus()
   );
@@ -25,24 +25,24 @@ const addContentActiveToAll = function () {
 const getDataURI = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = function (progressEvent) {
+    reader.onload = function(progressEvent) {
       resolve(progressEvent.target.result);
     };
     reader.readAsDataURL(file);
   });
 };
 
-const readImage = function (fileUpload) {
+const readImage = function(fileUpload) {
   getDataURI(fileUpload.files[0]).then((URI) => {
     querySelector('.uploaded-image').setAttribute('src', URI);
   });
 };
 
-const selectImage = function () {
+const selectImage = function() {
   querySelector('.upload-image').click();
 };
 
-const getDate = function (dateString) {
+const getDate = function(dateString) {
   const date = new Date(dateString).toUTCString();
   const [, newDate] = date.split(',');
   const [day, month, year, time] = newDate.trim(' ').split(' ');

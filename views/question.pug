@@ -18,7 +18,12 @@ block container
 						.btn
 							button.primary-btn Post Question
 			.col-9.question
-				.col-12.q-title #{question.title}
+				.col-12
+					.row.title-box
+						.q-title #{question.title}
+						if user && (user.username == question.username)
+							a(href=`/editQuestion/${question.questionId}`)
+								i.material-icons.edit-btn edit
 				.col-12#q-desc
 				.col-12.tags
 					if question.tags.length
@@ -72,4 +77,3 @@ block container
 			document.getElementById(id).innerText = moment(date).fromNow();
 			showDescription(!{question.description}, 'q-desc');
 			getAllQuestionComment(!{question.questionId})
-			

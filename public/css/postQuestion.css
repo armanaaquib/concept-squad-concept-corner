@@ -128,6 +128,10 @@
   border-bottom: 1px solid #d4d4d4;
 }
 
+.close-btn {
+  font-size: 1rem;
+}
+
 /* quill */
 .ql-snow .ql-editor pre.ql-syntax {
   background-color: #ebf5fb; /* <== change this color */

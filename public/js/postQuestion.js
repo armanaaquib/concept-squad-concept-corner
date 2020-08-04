@@ -15,7 +15,7 @@ const postQuestion = (editor) => {
   postJSONReq('/postQuestion', {
     title,
     description,
-    tags: getSelectedTags(),
+    tags: getSelectedTags()
   })
     .then(jsonParser)
     .then((questionId) => {
@@ -23,44 +23,68 @@ const postQuestion = (editor) => {
     });
 };
 
-const createEditor = () => {
+const updateQuestion = (questionId, editor) => {
+  if (!validateForm()) {
+    const errorTitle = querySelector('#errorTitle');
+    errorTitle.innerText = 'Please type question title';
+    return;
+  }
+  const title = querySelector('#title').value;
+  const description = JSON.stringify(JSON.stringify(editor.getContents()));
+
+  postJSONReq('/updateQuestion', {
+    questionId,
+    title,
+    description,
+    tags: getSelectedTags()
+  })
+    .then(jsonParser)
+    .then((questionId) => {
+      window.location.href = `/question/${questionId}`;
+    });
+};
+
+const createEditor = (description, questionId) => {
   const editor = new Quill('#editor-container', {
     modules: {
       syntax: true,
       toolbar: [
         [{ size: ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
-        ['code-block'],
-      ],
+        ['code-block']
+      ]
     },
     placeholder: 'description...',
-    theme: 'snow',
+    theme: 'snow'
   });
-  const postQuestionBtn = querySelector('#post-question-btn');
-  postQuestionBtn.onclick = postQuestion.bind(null, editor);
+  if (description) {
+    editor.setContents(JSON.parse(description));
+    setTagsFieldWidth();
+    const updateQuestionBtn = querySelector('#update-question-btn');
+    updateQuestionBtn.onclick = updateQuestion.bind(null, questionId, editor);
+  } else {
+    const postQuestionBtn = querySelector('#post-question-btn');
+    postQuestionBtn.onclick = postQuestion.bind(null, editor);
+  }
 };
 
-const getSelectedTags = function () {
-  const selectedTagsHTML = querySelectorAll('.selected-tag');
+const getSelectedTags = function() {
+  const selectedTagsHTML = querySelectorAll('.tag-text');
   const selectedTags = Array.from(selectedTagsHTML);
   return selectedTags.map((selectedTag) => selectedTag.innerText);
 };
 
 //user cancel icon
-const getCancelButton = function () {
-  return `<svg class="svg-icon iconClearSm pe-none" width="14" 
-            height="14" viewBox="0 0 14 14">
-  <path d="M12 3.41L10.59 2 7 5.59 3.41 2 2 3.41 5.59 7 2 10.59 
-  3.41 12 7 8.41 10.59 12 12 10.59 8.41 7z">
-  </path></svg>`;
+const getCancelButton = function() {
+  return '<i class="material-icons close-btn">close</i>';
 };
 
-const getRemainingTags = function () {
+const getRemainingTags = function() {
   const selectedTags = querySelector('.selected-tags');
   return 5 - selectedTags.childElementCount;
 };
 
-const updateRemainingTags = function () {
+const updateRemainingTags = function() {
   const remainingTags = querySelector('.remaining_tags');
   const remainingTagsCount = getRemainingTags();
   remainingTags.style.color = 'black';
@@ -70,19 +94,19 @@ const updateRemainingTags = function () {
   remainingTags.innerText = remainingTagsCount;
 };
 
-const removeTag = function (tagToRemove) {
+const removeTag = function(tagToRemove) {
   tagToRemove.parentElement.remove();
   updateRemainingTags();
 };
 
-const setTagsFieldWidth = function () {
+const setTagsFieldWidth = function() {
   const selectedTagsWidth = querySelector('.selected-tags').offsetWidth;
   const tagsBoxWidth = querySelector('.tagsBox').offsetWidth;
   const tagsField = querySelector('#tags');
   tagsField.style.width = tagsBoxWidth - selectedTagsWidth - 50;
 };
 
-const removeLastTag = function (tagField) {
+const removeLastTag = function(tagField) {
   const selectedTagsHTML = querySelectorAll('.selected-tag');
   if (selectedTagsHTML.length == 0) {
     return;
@@ -94,28 +118,29 @@ const removeLastTag = function (tagField) {
   updateRemainingTags();
 };
 
-const addTag = function (tag) {
+const addTag = function(tag) {
   const tagField = querySelector('#tags');
   if (tag.trim() === '' || getRemainingTags() < 1) {
     tagField.value = '';
     return;
   }
   const selectedTags = querySelector('.selected-tags');
-  const tagHtml = `<span class="selected-tag">${tag}<a class="removetag"
+  const tagHtml = `<span class="selected-tag"><span class="tag-text">
+    ${tag}</span><a class="removetag"
    onclick="removeTag(this)">${getCancelButton()}</a></span>`;
   selectedTags.innerHTML += tagHtml;
   updateRemainingTags();
   tagField.value = '';
 };
 
-const getSelectedSuggestion = function (selectedField) {
+const getSelectedSuggestion = function(selectedField) {
   const selectedTag = selectedField.firstElementChild.value;
   addTag(selectedTag);
   setTagsFieldWidth();
 };
 
-const showTagSuggestions = function (tags) {
-  document.addEventListener('click', function () {
+const showTagSuggestions = function(tags) {
+  document.addEventListener('click', function() {
     removeTagSuggestion();
   });
   const showSuggestionBox = querySelector('.suggestionTags');
@@ -127,20 +152,22 @@ const showTagSuggestions = function (tags) {
   showSuggestionBox.innerHTML = tagsToShow.join('');
 };
 
-const removeTagSuggestion = function () {
+const removeTagSuggestion = function() {
   const showSuggestionBox = querySelector('.suggestionTags');
   showSuggestionBox.innerHTML = '';
 };
 
-const getTagSuggestion = function (tagField) {
+const getTagSuggestion = function(tagField) {
   if (tagField.value.length < 1) {
     removeTagSuggestion();
     return;
   }
-  getRequest(`/getTagSuggestion/${tagField.value}`).then(showTagSuggestions);
+  getReq(`/getTagSuggestion/${tagField.value}`)
+    .then(jsonParser)
+    .then(showTagSuggestions);
 };
 
-const createTag = function (tagField) {
+const createTag = function(tagField) {
   if (window.event.keyCode == 8 && tagField.value == '') {
     removeLastTag(tagField);
   }

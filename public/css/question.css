@@ -16,7 +16,14 @@
   font-weight: 800;
   margin-bottom: 0rem;
   line-height: 2.5rem;
+  width: 90%;
 }
+
+.edit-btn {
+  font-size: 2.5rem;
+  color: black;
+}
+
 
 #q-desc {
   font-size: 15px;
@@ -86,7 +93,6 @@
   align-self: flex-end;
   display: flex;
   flex-flow: column;
-
 }
 
 .a-detail .description {
@@ -107,16 +113,20 @@
   font-size: 2rem;
   text-align: center;
 }
-.up,.down{
+.up,
+.down {
   color: #c2c2c2;
 }
 .animated-icon {
   cursor: pointer;
 }
 
-.animated-icon:active{
+.animated-icon:active {
   animation: animate 0.5s ease-out;
+}
 
+.title-box {
+  background-color: white;
 }
 
 .count {
@@ -211,9 +221,8 @@
   flex-direction: column;
   justify-content: space-between;
   margin-top: 0;
-
 }
-.btn-add-question-comment{
+.btn-add-question-comment {
   margin: 0 auto;
 }
 .comment-box {
@@ -232,7 +241,7 @@
   padding: 0.5rem;
   box-sizing: border-box;
 }
-.comments{
+.comments {
   display: flex;
   flex-flow: column;
   margin-top: 3rem;
@@ -247,15 +256,15 @@
   margin-top: -1px;
   padding: 1rem;
 }
-.comment *{
+.comment * {
   margin: 0;
   margin-left: 0.5rem;
 }
-.comment .user{
+.comment .user {
   font-weight: 700;
-  color: #33b9e2;;
-} 
+  color: #33b9e2;
+}
 
-.tags{
+.tags {
   padding-left: 2rem;
 }
