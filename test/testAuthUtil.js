@@ -23,7 +23,6 @@ describe('getAccessToken', function() {
         Accept: 'application/json'
       },
       body: JSON.stringify({
-        client_id: 'client-id',
         client_secret: 'client-secret',
         code: '123'
       })

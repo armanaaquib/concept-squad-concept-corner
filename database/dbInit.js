@@ -1,5 +1,5 @@
 const sqlite = require('sqlite3').verbose();
-const { getDBFilePath } = require('../config');
+const { getDBFilePath, } = require('../config');
 
 const schema = require('./schema');
 

@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: __dirname + '/.env'});
 const { env } = process;
 
 const getDBFilePath = () => {
@@ -7,8 +7,13 @@ const getDBFilePath = () => {
 };
 
 const getClientId = () => {
-  const clientId = env.CLIENT_ID;
+  const clientId = env.DB_CLIENT_ID;
   return clientId;
+};
+
+const getDBClient = () => {
+  const client = env.DB_CLIENT;
+  return client;
 };
 
 const getClientSecret = () => {
@@ -27,4 +32,5 @@ module.exports = {
   getClientId,
   getClientSecret,
   getAuthLink,
+  getDBClient
 };

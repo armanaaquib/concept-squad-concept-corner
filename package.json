@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "knex": "knex",
     "start": "node server.js",
     "create-tables": "rm -f ./store/concept-corner.db; node database/dbInit.js",
     "populate-raw-data": "rm -f store/raw-concept-corner.db; sqlite3 store/raw-concept-corner.db '.read store/scripts/create_schema.sql'; sqlite3 store/raw-concept-corner.db '.read store/scripts/populate_raw_data.sql';",
@@ -26,6 +27,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "formidable": "^1.2.2",
+    "knex": "^0.21.2",
     "pug": "^3.0.0",
     "sqlite3": "^5.0.0"
   },
