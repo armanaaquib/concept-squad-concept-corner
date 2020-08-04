@@ -170,4 +170,23 @@ module.exports = {
   question_comments 
   WHERE
   comment_id=?;`,
+
+  updateQuestion: `
+  UPDATE
+    questions
+  SET
+    title = ?,
+    description = ?,
+    last_modified = (datetime('now', 'localtime'))
+  WHERE
+    question_id = ?;
+  `,
+
+  deleteQuestionTag: `
+  DELETE
+  FROM 
+    question_tag
+  WHERE
+    question_id = ?;
+  `
 };
