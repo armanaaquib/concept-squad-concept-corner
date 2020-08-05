@@ -20,10 +20,12 @@ block container
 			.col-9.question
 				.col-12
 					.row.title-box
-						.q-title #{question.title}
 						if user && (user.username == question.username)
+							.q-title.col-11 #{question.title}
 							a(href=`/editQuestion/${question.questionId}`)
 								i.material-icons.edit-btn edit
+						else
+							.q-title.col-12 #{question.title}
 				.col-12#q-desc
 				.col-12.tags
 					if question.tags.length

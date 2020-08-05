@@ -2,19 +2,19 @@ const formidable = require('formidable');
 const authUtils = require('./authUtils');
 const { getAuthLink } = require('../config');
 
-const serveHomePage = function (req, res) {
+const serveHomePage = function(req, res) {
   const { dataStore } = req.app.locals;
   dataStore.getQuestions().then((questions) => {
     res.render('index', {
       user: req.session.user,
       questions,
-      authLink: getAuthLink(),
+      authLink: getAuthLink()
     });
     res.end();
   });
 };
 
-const hasUser = function (req, res) {
+const hasUser = function(req, res) {
   const { username } = req.params;
   const { dataStore } = req.app.locals;
   dataStore.getUser(username).then((user) => {
@@ -27,7 +27,7 @@ const servePostQuestionPage = (req, res) => {
   res.render('postQuestion', {
     cancelUrl,
     user: req.session.user,
-    authHref: getAuthLink(),
+    authHref: getAuthLink()
   });
   res.end();
 };
@@ -57,7 +57,7 @@ const serveQuestionPage = (req, res) => {
       user: req.session.user,
       question,
       answers: answerList,
-      authLink: getAuthLink(),
+      authLink: getAuthLink()
     });
   });
 };
@@ -74,7 +74,7 @@ const postAnswer = (req, res) => {
 const signUp = (req, res) => {
   const { dataStore } = req.app.locals;
   const form = new formidable.IncomingForm();
-  form.parse(req, function (err, userInfo) {
+  form.parse(req, function(err, userInfo) {
     if (err) {
       res.status(400);
       res.end();
@@ -83,7 +83,7 @@ const signUp = (req, res) => {
     dataStore.addUser(userInfo).then(() => {
       req.session.user = {
         username: userInfo.username,
-        profilePic: userInfo.profilePic,
+        profilePic: userInfo.profilePic
       };
       res.end();
     });
@@ -106,7 +106,7 @@ const confirmUser = (req, res) => {
       if (user) {
         req.session.user = {
           username: user.username,
-          profilePic: user.profilePic,
+          profilePic: user.profilePic
         };
         res.redirect('/');
       } else {
@@ -239,7 +239,7 @@ const serveEditQuestion = (req, res) => {
     if (question.username === username) {
       res.render('editQuestion', {
         question,
-        user: req.session.user,
+        user: req.session.user
       });
     } else {
       serveErrorPage(res, 403, 'Access Denied');
@@ -268,14 +268,26 @@ const deleteQuestionComment = (req, res) => {
   const comment = req.body;
   const { dataStore } = req.app.locals;
   const { username } = req.session.user;
-  if ( comment.username !== username) {
+  if (comment.username !== username) {
     serveErrorPage(res, 403, 'Access Denied');
     return;
-  } 
-  dataStore.deleteQuestionComment(comment.commentId)
-    .then((isDeleted) => {
-      res.json({isDeleted});
-    });
+  }
+  dataStore.deleteQuestionComment(comment.commentId).then((isDeleted) => {
+    res.json({ isDeleted });
+  });
+};
+
+const deleteAnswer = (req, res) => {
+  const answer = req.body;
+  const { dataStore } = req.app.locals;
+  const { username } = req.session.user;
+  if (answer.username !== username) {
+    serveErrorPage(res, 403, 'Access Denied');
+    return;
+  }
+  dataStore.deleteAnswer(answer.answerId).then((isDeleted) => {
+    res.json({ isDeleted });
+  });
 };
 
 module.exports = {
@@ -301,5 +313,6 @@ module.exports = {
   getComment,
   serveEditQuestion,
   updateQuestion,
-  deleteQuestionComment
+  deleteQuestionComment,
+  deleteAnswer
 };

@@ -9,7 +9,7 @@ const wrapUser = (row) => {
     title: row.title,
     aboutMe: row.about_me,
     company: row.company,
-    profilePic: row.profile_pic,
+    profilePic: row.profile_pic
   };
 };
 
@@ -24,7 +24,7 @@ const wrapQuestion = (row) => {
     lastModified: row.last_modified,
     views: row.view_count,
     noOfAnswers: row.no_of_answers,
-    isAnswerAccepted: row.is_answer_accepted === 1 ? true : false,
+    isAnswerAccepted: row.is_answer_accepted === 1 ? true : false
   };
 };
 
@@ -36,7 +36,7 @@ const wrapAnswer = (row) => {
     answer: row.answer,
     accepted: row.accepted === 1 ? true : false,
     time: new Date(row.time),
-    lastModified: row.last_modified,
+    lastModified: row.last_modified
   };
 };
 
@@ -45,7 +45,7 @@ const wrapComment = (row) => {
     username: row.username,
     commentId: row.comment_id,
     comment: row.comment,
-    time: new Date(row.time),
+    time: new Date(row.time)
   };
 };
 
@@ -68,7 +68,7 @@ class DataStore {
           user.title,
           user.aboutMe,
           user.company,
-          user.profilePic,
+          user.profilePic
         ],
         (err) => {
           err && reject(err);
@@ -115,7 +115,7 @@ class DataStore {
       this.db.run(
         queries.addQuestion,
         [question.username, question.title, question.description],
-        function (err) {
+        function(err) {
           if (err) {
             reject(err);
             return;
@@ -164,7 +164,7 @@ class DataStore {
 
   getTags(questionId) {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getQuestionTags, [questionId], function (err, rows) {
+      this.db.all(queries.getQuestionTags, [questionId], function(err, rows) {
         err && reject(err);
         resolve(rows.map((row) => row.tag_name));
       });
@@ -219,7 +219,7 @@ class DataStore {
       this.db.serialize(() => {
         this.db
           .run(queries.addAnswer, [username, questionId, answer])
-          .run(queries.updateAnswerCount, [questionId], function (err) {
+          .run(queries.updateAnswerCount, [questionId], function(err) {
             err && reject(err);
             resolve(this.lastID);
           });
@@ -291,7 +291,7 @@ class DataStore {
           resolve(rows.tag_id);
           return;
         }
-        this.db.run(queries.addTag, [tag], function (err) {
+        this.db.run(queries.addTag, [tag], function(err) {
           err && reject(err);
           resolve(this.lastID);
         });
@@ -348,7 +348,7 @@ class DataStore {
       this.db.run(
         queries.addQuestionComment,
         [username, questionId, comment],
-        function (err) {
+        function(err) {
           err && reject(err);
           resolve(this.lastID);
         }
@@ -389,7 +389,7 @@ class DataStore {
       this.db.run(
         queries.addAnswerComment,
         [username, answerId, comment],
-        function (err) {
+        function(err) {
           err && reject(err);
           resolve(this.lastID);
         }
@@ -411,11 +411,24 @@ class DataStore {
     });
   }
 
-  deleteQuestionComment(commentId){
+  deleteQuestionComment(commentId) {
     return new Promise((resolve, reject) => {
       this.db.run(queries.deleteQuestionComment, [commentId], (err) => {
         err && reject(err);
         resolve(true);
+      });
+    });
+  }
+
+  deleteAnswer(answerId) {
+    return new Promise((resolve, reject) => {
+      this.db.serialize(() => {
+        this.db
+          .run(queries.deleteAnswerComments, [answerId])
+          .run(queries.deleteAnswer, [answerId], function(err) {
+            err && reject(err);
+            resolve(true);
+          });
       });
     });
   }

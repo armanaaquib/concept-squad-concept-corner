@@ -38,8 +38,8 @@ CREATE TABLE answers (
 	accepted boolean DEFAULT 0,
 	time datetime DEFAULT (datetime('now', 'localtime')),
 	last_modified datetime,
-	FOREIGN KEY(username) REFERENCES user_tbl(username),
-	FOREIGN KEY(question_id) REFERENCES question_tbl(question_id)
+	FOREIGN KEY(username) REFERENCES users(username),
+	FOREIGN KEY(question_id) REFERENCES questions(question_id)
 );
 
 CREATE TABLE answer_comments (
@@ -48,7 +48,7 @@ CREATE TABLE answer_comments (
 	answer_id integer,
 	comment text,
 	time datetime,
-	FOREIGN KEY(username) REFERENCES user_tbl(username) FOREIGN KEY(answer_id) REFERENCES answer_tbl(answer_id)
+	FOREIGN KEY(username) REFERENCES users(username) FOREIGN KEY(answer_id) REFERENCES answers(answer_id)
 );
 
 CREATE TABLE question_comments (
@@ -64,14 +64,14 @@ CREATE TABLE question_comments (
 CREATE TABLE question_tag (
 	question_id integer,
 	tag_id integer,
-	FOREIGN KEY(question_id) REFERENCES question_tbl(question_id),
+	FOREIGN KEY(question_id) REFERENCES questions(question_id),
 	FOREIGN KEY(tag_id) REFERENCES tags(tag_id)
 );
 
 CREATE TABLE preferred_tags (
 	username varchar,
 	tag_id integer,
-	FOREIGN KEY(username) REFERENCES user_tbl(username),
+	FOREIGN KEY(username) REFERENCES users(username),
 	FOREIGN KEY(tag_id) REFERENCES tags(tag_id)
 );
 
