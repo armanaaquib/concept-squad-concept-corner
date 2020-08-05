@@ -1,3 +1,4 @@
+
 const addContentActive = function(inputField) {
   const box = inputField.parentElement;
   box.classList.add('content_active');
@@ -11,6 +12,29 @@ const checkContent = function(inputField) {
   } else {
     box.classList.add('content_active');
   }
+};
+const showPopUp = function(details){
+  createPopUp(details);
+};
+const destroyPopup = function(){
+  querySelector('.modal').remove();
+};
+
+const createPopUp = function(details){
+  const modal = createElement('div', ['modal']);
+  const {elementName, id, functionToCall} = details;
+  const text = `Do you really want to delete this ${elementName}`;
+  const popupBox = createElement('div', ['col-4', 'popup-box']);
+  const heading = createElementWithText('h2', ['col-12', 'popup-heading'], text);
+  const buttons = createElement('div', ['btn']);
+  const deleteButton = createElementWithText('button', ['danger-btn'], 'Delete');
+  deleteButton.addEventListener('click', functionToCall);
+  const cancelButton = createElementWithText('button', ['cancel-btn'], 'Cancel');
+  cancelButton.addEventListener('click', destroyPopup);
+  appendChildren(buttons, [deleteButton, cancelButton]);
+  appendChildren(popupBox, [heading, buttons]);
+  modal.append(popupBox);
+  querySelector('body').append(modal);
 };
 
 const addContentActiveToAll = function() {

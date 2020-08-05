@@ -133,7 +133,8 @@ const createComment = function(comment, username, commentBoxId) {
   appendChildren(newComment, [commentContent, separator, user, time]);
   if(username === comment.username ){
     const deleteIcon = createElementWithText('span', ['material-icons'], 'delete');
-    deleteIcon.addEventListener('click', deleteComment.bind(null, {commentId: comment.commentId, username}));
+    const details = {elementName: 'question comment', functionToCall: deleteComment.bind(null, {commentId: comment.commentId, username})};
+    deleteIcon.addEventListener('click', showPopUp.bind(null, details));
     appendChildren(newComment, [deleteIcon]);
   }
   commentSection.appendChild(newComment);
@@ -199,6 +200,7 @@ const deleteComment = function(comment, event){
     .then(status => {
       if(status && status.isDeleted){
         querySelector(`#comment-${comment.commentId}`).remove();
+        destroyPopup();
       }
     });
 };

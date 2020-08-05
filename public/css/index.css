@@ -311,7 +311,37 @@ body a {
  color: #33b9e2;
 
 }
+.modal{
+  display: flex;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  align-items: center;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+.popup-box{
+  display: flex;
+  margin: 0 auto;
+  background: white;
+  z-index: 100;
+  padding: 16px;
+  flex-wrap: wrap;
+  min-height: 200px;
+  position: relative;
+  box-sizing: border-box;
+  box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+}
 
+.danger-btn{
+  background-color:#f04b4c;
+  color: white;
+  border: 1px solid #f04b4c;
+  height: 3rem;
+  width: 8rem;
+  cursor: pointer;
+  font-weight: 900
+}
 
 .user-profile-link:hover {
   font-weight: 800;
