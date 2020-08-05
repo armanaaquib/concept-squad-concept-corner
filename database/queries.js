@@ -13,18 +13,18 @@ module.exports = {
   `,
   addAnswer: `
   INSERT INTO 
-  answers( username, question_id, answer)
+    answers( username, question_id, answer)
   values(?, ?, ?);
   `,
 
-  addQuestionComment: `
-  INSERT INTO 
-  question_comments( username, question_id, comment )
-  values(?, ?, ?);
-  `,
   updateAnswerCount: `
-      update questions set no_of_answers=no_of_answers+1 where question_id = ?;
+  UPDATE 
+    questions 
+  SET no_of_answers = no_of_answers + 1 
+  WHERE 
+    question_id = ?;
   `,
+
   getUser: `
       SELECT
         username, name, email, location, title, about_me, company, profile_pic 
@@ -76,6 +76,7 @@ module.exports = {
     questions
   WHERE question_id = ?;
 `,
+
   acceptAnswer: `
   UPDATE 
     answers 
@@ -84,6 +85,7 @@ module.exports = {
   WHERE
     answer_id = ?
   `,
+
   setAnswerAccepted: `
   UPDATE 
     questions
@@ -92,22 +94,45 @@ module.exports = {
   WHERE
     question_id = ?
   `,
+
   addTag: `
-  insert into tags(tag_name) values(?);
+  INSERT INTO 
+    tags(tag_name) 
+    values(?);
   `,
+
   addQuestionTag: `
-  insert into question_tag(question_id,tag_id) values(?,?);
+  INSERT INTO 
+    question_tag(question_id, tag_id) 
+    values(?, ?);
   `,
+
   getTags: `
-    select distinct * from tags;
+    SELECT DISTINCT 
+      * 
+    FROM 
+      tags;
   `,
+
   getTagId: `
-   select tag_id from tags where tag_name = ?;
+  SELECT 
+    tag_id 
+  FROM 
+    tags 
+  WHERE 
+    tag_name = ?;
   `,
+
   getQuestionTags: `
-    select tags.tag_name from question_tag as qt 
-    join tags on qt.tag_id=tags.tag_id where qt.question_id = ?;
+  SELECT 
+    tags.tag_name 
+  FROM 
+    question_tag AS qt 
+  JOIN tags ON qt.tag_id = tags.tag_id 
+  WHERE 
+    qt.question_id = ?;
   `,
+
   getVotesOfAnswer: `
   SELECT 
     vote, count(*) as vote_count
@@ -118,6 +143,7 @@ module.exports = {
   GROUP BY
     vote;
   `,
+
   getVote: `
   SELECT 
     vote
@@ -126,6 +152,7 @@ module.exports = {
   WHERE
     username = ? and answer_id = ?;
   `,
+
   getTagSuggestion: `
   SELECT 
     tag_name 
@@ -134,6 +161,7 @@ module.exports = {
   WHERE 
     tag_name like ?;
   `,
+
   updateVote: `
   UPDATE
     answer_votes
@@ -142,11 +170,13 @@ module.exports = {
   WHERE
     username = ? AND answer_id = ?;
   `,
+
   addVote: `
   INSERT INTO
     answer_votes(username, answer_id, vote)
     values (?, ?, ?);
   `,
+
   deleteVote: `
   DELETE
   FROM
@@ -157,19 +187,26 @@ module.exports = {
 
   getCommentsOfQuestion: `
   SELECT 
-  comment, comment_id, time, username
+    comment, comment_id, time, username
   FROM 
-  question_comments 
+    question_comments 
   WHERE
-  question_id=?;
-`,
+    question_id=?;
+  `,
 
-  getComment: `SELECT 
-  comment, comment_id, time, username
+  addQuestionComment: `
+  INSERT INTO 
+    question_comments( username, question_id, comment )
+    values(?, ?, ?);
+  `,
+
+  getComment: `
+  SELECT 
+    comment, comment_id, time, username
   FROM 
-  question_comments 
+    question_comments 
   WHERE
-  comment_id=?;`,
+    comment_id=?;`,
 
   updateQuestion: `
   UPDATE
@@ -189,6 +226,7 @@ module.exports = {
   WHERE
     question_id = ?;
   `,
+
   getCommentsOfAnswer: `
   SELECT 
     comment, comment_id, time, username
@@ -196,5 +234,11 @@ module.exports = {
     answer_comments 
   WHERE
     answer_id = ?;
-  `
+  `,
+
+  addAnswerComment: `
+  INSERT INTO 
+    answer_comments( username, answer_id, comment )
+    values(?, ?, ?);
+  `,
 };
