@@ -75,5 +75,8 @@ app.post(
 );
 app.post('/deleteAnswer', handlers.ensureLogin, handlers.deleteAnswer);
 app.post('/deleteQuestion', handlers.ensureLogin, handlers.deleteQuestion);
+app.post('/deleteAnswerComment', 
+  handlers.ensureLogin, 
+  handlers.deleteAnswerComment);
 
 module.exports = app;

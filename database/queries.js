@@ -249,6 +249,13 @@ module.exports = {
   WHERE 
     comment_id = ?;`,
 
+  deleteAnswerComment: `
+  DELETE
+  FROM
+    answer_comments
+  WHERE 
+    comment_id = ?;`,
+
   deleteAnswer: `
   DELETE 
   FROM 

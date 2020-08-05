@@ -420,6 +420,15 @@ class DataStore {
     });
   }
 
+  deleteAnswerComment(commentId){
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.deleteAnswerComment, [commentId], (err) => {
+        err && reject(err);
+        resolve(true);
+      });
+    });
+  }
+
   deleteAnswer(answerId) {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
