@@ -191,9 +191,8 @@ class DataStore {
     return new Promise((resolve, reject) => {
       this.db.all(queries.getQuestions, async (err, rows) => {
         err && reject(err);
-        const result = rows || [];
         const questions = [];
-        for (const row of result) {
+        for (const row of rows) {
           const question = wrapQuestion(row);
           question['tags'] = await this.getTags(question.questionId);
           questions.push(question);

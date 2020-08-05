@@ -1,3 +1,4 @@
+
 const showDescription = (description, id) => {
   const quill = new Quill(`#${id}`, {
     modules: {
@@ -119,19 +120,27 @@ const hideAnswerCommentContainer = (answerId) => {
 const createComment = function(comment, username, commentBoxId) {
   const commentSection = querySelector(commentBoxId || '#comments');
   const newComment = createElement('div', ['col-9', 'comment']);
+  newComment.id = `comment-${comment.commentId}`;
   const user = createElementWithText('span', ['user'], comment.username);
   const time = createElementWithText(
     'span',
     ['date'],
     moment(comment.time / 1000).fromNow()
   );
+
   const commentContent = createElementWithText('span', [], comment.comment);
   const separator = createElementWithText('span', [], '-');
   appendChildren(newComment, [commentContent, separator, user, time]);
+  if(username === comment.username ){
+    const deleteIcon = createElementWithText('span', ['material-icons'], 'delete');
+    deleteIcon.addEventListener('click', deleteComment.bind(null, {commentId: comment.commentId, username}));
+    appendChildren(newComment, [deleteIcon]);
+  }
   commentSection.appendChild(newComment);
 };
 
-const addQuestionComment = (questionId) => {
+const addQuestionComment = ({questionId, user}) => {
+  const {username} = user || {};
   const comment = querySelector('#comment-text').value.trim();
   postJSONReq('/addQuestionComment', {
     questionId,
@@ -140,7 +149,9 @@ const addQuestionComment = (questionId) => {
     .then(jsonParser)
     .then((commentId) => {
       hideQuestionCommentContainer();
-      getReq(`/comment/${commentId}`).then(jsonParser).then(createComment);
+      getReq(`/comment/${commentId}`).then(jsonParser).then((comment) => {
+        createComment(comment, username);
+      });
     });
 };
 
@@ -162,7 +173,6 @@ const addAnswerComment = (answerId) => {
 };
 
 const getAllQuestionComment = (questionId, user) => {
-  x;
   const {username} = user || {};
   getReq(`/getCommentsOfQuestion/${questionId}`)
     .then(jsonParser)
@@ -180,5 +190,15 @@ const showAnswerComments = (answerId) => {
       comments.forEach((comment) => {
         createComment(comment, `#comment-${answerId}`);
       });
+    });
+};
+
+const deleteComment = function(comment, event){
+  postJSONReq('/deleteQuestionComment', comment)
+    .then(jsonParser)
+    .then(status => {
+      if(status && status.isDeleted){
+        querySelector(`#comment-${comment.commentId}`).remove();
+      }
     });
 };

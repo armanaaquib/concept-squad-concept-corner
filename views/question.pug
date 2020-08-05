@@ -45,7 +45,7 @@ block container
 							textarea.col-10#comment-text(name="")
 							.col-2.btn.add-comment-btn
 								input#h_qId(type="hidden",value=question.questionId)
-								button#post-comment-btn.primary-btn(type='button' onclick='addQuestionComment('+ question.questionId+')') Add comment
+								button#post-comment-btn.primary-btn(type='button' onclick='addQuestionComment('+ JSON.stringify({questionId:question.questionId, user})+ ')') Add comment
 								a(href=`/question/${question.questionId}`)
 								button.cancel-btn(type='button' onclick= 'hideQuestionCommentContainer()') Cancel
 			.col-10.noOfAnswers 

@@ -90,12 +90,8 @@
       "files": ["public/js/*.js"],
       "rules": {
         "no-undef": "off",
-        "no-unused-vars": "off"
-      }
-    },
-    {
-      "files": ["public/js/htmlUtils.js"],
-      "rules": {
+        "no-unused-vars": "off",
+        "max-statements":"off",
         "max-len": "warn"
       }
     }
