@@ -1,22 +1,21 @@
-
 const showDescription = (description, id) => {
   const quill = new Quill(`#${id}`, {
     modules: {
       syntax: true,
-      toolbar: false,
+      toolbar: false
     },
     readOnly: true,
-    theme: 'snow',
+    theme: 'snow'
   });
 
   quill.setContents(JSON.parse(description));
 };
 
-const postAnswer = function (editor) {
+const postAnswer = function(editor) {
   const questionId = querySelector('#h_qId').value;
   postJSONReq('/postAnswer', {
     questionId,
-    answer: JSON.stringify(JSON.stringify(editor.getContents())),
+    answer: JSON.stringify(JSON.stringify(editor.getContents()))
   })
     .then(jsonParser)
     .then(({ answerId }) => {
@@ -24,18 +23,18 @@ const postAnswer = function (editor) {
     });
 };
 
-const showPostAnswerEditor = function () {
+const showPostAnswerEditor = function() {
   const postAnswerEditor = new Quill('#editor-postAnswer', {
     modules: {
       syntax: true,
       toolbar: [
         [{ size: ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
-        ['code-block'],
-      ],
+        ['code-block']
+      ]
     },
     placeholder: 'description...',
-    theme: 'snow',
+    theme: 'snow'
   });
   const postAnswerBtn = querySelector('#postAnswer-btn');
   postAnswerBtn.onclick = postAnswer.bind(null, postAnswerEditor);
@@ -44,7 +43,7 @@ const showPostAnswerEditor = function () {
 const markAccepted = (answer) => {
   postJSONReq('/markAccepted', {
     questionId: answer.questionId,
-    answerId: answer.answerId,
+    answerId: answer.answerId
   }).then((res) => {
     if (res.status === 200) {
       querySelectorAll('.reactions .unchecked-answer').forEach((element) =>
@@ -131,28 +130,40 @@ const createComment = function(comment, username, commentBoxId) {
   const commentContent = createElementWithText('span', [], comment.comment);
   const separator = createElementWithText('span', [], '-');
   appendChildren(newComment, [commentContent, separator, user, time]);
-  if(username === comment.username ){
-    const deleteIcon = createElementWithText('span', ['material-icons'], 'delete');
-    const details = {elementName: 'question comment', functionToCall: deleteComment.bind(null, {commentId: comment.commentId, username})};
+  if (username === comment.username) {
+    const deleteIcon = createElementWithText(
+      'span',
+      ['material-icons'],
+      'delete'
+    );
+    const details = {
+      elementName: 'question comment',
+      functionToCall: deleteComment.bind(null, {
+        commentId: comment.commentId,
+        username
+      })
+    };
     deleteIcon.addEventListener('click', showPopUp.bind(null, details));
     appendChildren(newComment, [deleteIcon]);
   }
   commentSection.appendChild(newComment);
 };
 
-const addQuestionComment = ({questionId, user}) => {
-  const {username} = user || {};
+const addQuestionComment = ({ questionId, user }) => {
+  const { username } = user || {};
   const comment = querySelector('#comment-text').value.trim();
   postJSONReq('/addQuestionComment', {
     questionId,
-    comment,
+    comment
   })
     .then(jsonParser)
     .then((commentId) => {
       hideQuestionCommentContainer();
-      getReq(`/comment/${commentId}`).then(jsonParser).then((comment) => {
-        createComment(comment, username);
-      });
+      getReq(`/comment/${commentId}`)
+        .then(jsonParser)
+        .then((comment) => {
+          createComment(comment, username);
+        });
     });
 };
 
@@ -163,7 +174,7 @@ const addAnswerComment = (answerId) => {
 
   postJSONReq('/addAnswerComment', {
     answerId,
-    comment,
+    comment
   })
     .then(jsonParser)
     .then((commentId) => {
@@ -174,7 +185,7 @@ const addAnswerComment = (answerId) => {
 };
 
 const getAllQuestionComment = (questionId, user) => {
-  const {username} = user || {};
+  const { username } = user || {};
   getReq(`/getCommentsOfQuestion/${questionId}`)
     .then(jsonParser)
     .then((comments) => {
@@ -189,18 +200,40 @@ const showAnswerComments = (answerId) => {
     .then(jsonParser)
     .then((comments) => {
       comments.forEach((comment) => {
-        createComment(comment, `#comment-${answerId}`);
+        createComment(comment, undefined, `#comment-${answerId}`);
       });
     });
 };
 
-const deleteComment = function(comment, event){
+const deleteComment = function(comment, event) {
   postJSONReq('/deleteQuestionComment', comment)
     .then(jsonParser)
-    .then(status => {
-      if(status && status.isDeleted){
+    .then((status) => {
+      if (status && status.isDeleted) {
         querySelector(`#comment-${comment.commentId}`).remove();
         destroyPopup();
       }
     });
+};
+
+const deleteAnswer = function(answer) {
+  postJSONReq('/deleteAnswer', answer)
+    .then(jsonParser)
+    .then((status) => {
+      if (status && status.isDeleted) {
+        querySelector(`#answer-${answer.answerId}`).remove();
+        const noOfAnswerField = querySelector('#no-of-answers');
+        const noOfAnswer = parseInt(noOfAnswerField.innerText.split(' ')[0]);
+        noOfAnswerField.innerText = `${noOfAnswer - 1} Answer(s)`;
+        destroyPopup();
+      }
+    });
+};
+
+const confirmDeleteAnswer = function(answer) {
+  const details = {
+    elementName: 'answer',
+    functionToCall: deleteAnswer.bind(null, answer)
+  };
+  showPopUp(details);
 };

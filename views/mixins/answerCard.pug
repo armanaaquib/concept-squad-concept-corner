@@ -1,5 +1,7 @@
 mixin answerCard(answer, isAuthor, user)
 	.col-12.answer-card(id=`answer-${answer.answerId}`)
+		if user.username == answer.username
+			i.material-icons.delete-answer-icon(onclick="confirmDeleteAnswer("+JSON.stringify(answer)+")") delete
 		.col-12.answer
 			.col-11.a-detail
 				.col-12.description(id=`desc-${answer.answerId}`)

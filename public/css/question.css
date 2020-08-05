@@ -65,6 +65,7 @@
   background: white;
   border: 0.1px solid #e7e7e7;
   margin-top: 4rem;
+  position: relative;
 }
 .answer {
   background: white;
@@ -271,4 +272,16 @@
 
 .tags {
   padding-left: 2rem;
+}
+
+.delete-answer-icon {
+  position: absolute;
+  right: 0.8rem;
+  top: 0.5rem;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.delete-answer-icon:hover {
+  color: red;
 }

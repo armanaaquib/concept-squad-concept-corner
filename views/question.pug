@@ -51,7 +51,7 @@ block container
 								a(href=`/question/${question.questionId}`)
 								button.cancel-btn(type='button' onclick= 'hideQuestionCommentContainer()') Cancel
 			.col-10.noOfAnswers 
-				.col-11 #{answers.length} Answer(s)
+				.col-11#no-of-answers #{answers.length} Answer(s)
 			if answers.length
 			- var isAuthor = user && ((user.username == question.username) && (question.isAnswerAccepted == false))
 				.col-9.answers
