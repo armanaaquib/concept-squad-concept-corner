@@ -2,20 +2,20 @@ const showDescription = (description, id) => {
   const quill = new Quill(`#${id}`, {
     modules: {
       syntax: true,
-      toolbar: false
+      toolbar: false,
     },
     readOnly: true,
-    theme: 'snow'
+    theme: 'snow',
   });
 
   quill.setContents(JSON.parse(description));
 };
 
-const postAnswer = function(editor) {
+const postAnswer = function (editor) {
   const questionId = querySelector('#h_qId').value;
   postJSONReq('/postAnswer', {
     questionId,
-    answer: JSON.stringify(JSON.stringify(editor.getContents()))
+    answer: JSON.stringify(JSON.stringify(editor.getContents())),
   })
     .then(jsonParser)
     .then(({ answerId }) => {
@@ -23,18 +23,18 @@ const postAnswer = function(editor) {
     });
 };
 
-const showPostAnswerEditor = function() {
+const showPostAnswerEditor = function () {
   const postAnswerEditor = new Quill('#editor-postAnswer', {
     modules: {
       syntax: true,
       toolbar: [
         [{ size: ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
-        ['code-block']
-      ]
+        ['code-block'],
+      ],
     },
     placeholder: 'description...',
-    theme: 'snow'
+    theme: 'snow',
   });
   const postAnswerBtn = querySelector('#postAnswer-btn');
   postAnswerBtn.onclick = postAnswer.bind(null, postAnswerEditor);
@@ -43,7 +43,7 @@ const showPostAnswerEditor = function() {
 const markAccepted = (answer) => {
   postJSONReq('/markAccepted', {
     questionId: answer.questionId,
-    answerId: answer.answerId
+    answerId: answer.answerId,
   }).then((res) => {
     if (res.status === 200) {
       querySelectorAll('.reactions .unchecked-answer').forEach((element) =>
@@ -96,13 +96,27 @@ const showQuestionCommentContainer = () => {
   querySelector('.btn-add-question-comment').style.display = 'none';
 };
 
+const showAnswerCommentContainer = (answerId) => {
+  querySelector(`#answer-${answerId} .post-comment-container`).style.display =
+    'flex';
+  querySelector(`#answer-${answerId} .post-comment-btn`).style.display = 'none';
+};
+
 const hideQuestionCommentContainer = () => {
   querySelector('.post-question-comment-container').style.display = 'none';
   querySelector('#comment-text').value = '';
   querySelector('.btn-add-question-comment').style.display = 'block';
 };
 
-const createComment = function(comment, commentBoxId) {
+const hideAnswerCommentContainer = (answerId) => {
+  querySelector(`#answer-${answerId} .post-comment-container`).style.display =
+    'none';
+  querySelector(`#answer-${answerId} #comment-text`).value = '';
+  querySelector(`#answer-${answerId} .post-comment-btn`).style.display =
+    'block';
+};
+
+const createComment = function (comment, commentBoxId) {
   const commentSection = querySelector(commentBoxId || '#comments');
   const newComment = createElement('div', ['col-9', 'comment']);
   const user = createElementWithText('span', ['user'], comment.username);
@@ -121,14 +135,29 @@ const addQuestionComment = (questionId) => {
   const comment = querySelector('#comment-text').value.trim();
   postJSONReq('/addQuestionComment', {
     questionId,
-    comment
+    comment,
   })
     .then(jsonParser)
     .then((commentId) => {
       hideQuestionCommentContainer();
-      getReq(`/comment/${commentId}`)
-        .then(jsonParser)
-        .then(createComment);
+      getReq(`/comment/${commentId}`).then(jsonParser).then(createComment);
+    });
+};
+
+const addAnswerComment = (answerId) => {
+  const comment = querySelector(
+    `#answer-${answerId} #comment-text`
+  ).value.trim();
+
+  postJSONReq('/addAnswerComment', {
+    answerId,
+    comment,
+  })
+    .then(jsonParser)
+    .then((commentId) => {
+      hideAnswerCommentContainer(answerId);
+      querySelector(`#comment-${answerId}`).innerHTML = '';
+      showAnswerComments(answerId);
     });
 };
 

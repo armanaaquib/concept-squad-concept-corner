@@ -1,5 +1,5 @@
 mixin answerCard(answer, isAuthor, user)
-	.col-12.answer-card
+	.col-12.answer-card(id=`answer-${answer.answerId}`)
 		.col-12.answer
 			.col-11.a-detail
 				.col-12.description(id=`desc-${answer.answerId}`)
@@ -8,6 +8,17 @@ mixin answerCard(answer, isAuthor, user)
 						a.user-profile-link(href=`/profile/${answer.username}`) #{answer.username}
 					.col-12.date(id=`date-${answer.answerId}`)
 			.col-12.comments(id=`comment-${answer.answerId}`)
+			if user
+					.col-3.btn
+						button.post-comment-btn.primary-btn(onclick="showAnswerCommentContainer("+ answer.answerId +")") Add comment
+					.col-12.post-comment-container
+						.col-9.comment-box
+							textarea.col-10#comment-text(name="")
+							.col-2.btn.add-comment-btn
+								input#h_qId(type="hidden",value=question.questionId)
+								button#post-comment-btn.primary-btn(type='button' onclick='addAnswerComment('+ answer.answerId+')') Add comment
+								a(href=`/question/${question.questionId}`)
+								button.cancel-btn(type='button' onclick= "hideAnswerCommentContainer("+ answer.answerId +")") Cancel
 		.col-12.reactions
 			.col-4(id=`a-${answer.answerId}`)
 				.col-3
