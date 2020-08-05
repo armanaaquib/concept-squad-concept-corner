@@ -68,5 +68,9 @@ app.get(
   handlers.ensureLogin,
   handlers.serveEditQuestion
 );
+app.post('/deleteQuestionComment', 
+  handlers.ensureLogin, 
+  handlers.deleteQuestionComment
+);
 
 module.exports = app;

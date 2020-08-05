@@ -1000,4 +1000,25 @@ describe('DataStore', function () {
       });
     });
   });
+
+  context('deleteQuestionComment', function () {
+    it('should delete comment of given comment id', function (done) {
+      dbClient['run'] = fake.yields(null);
+      dataStore.deleteQuestionComment(1).then((isDeleted) => {
+        assert.ok(isDeleted);
+        assert.ok(dbClient.run.calledOnce);
+        assert.deepStrictEqual(dbClient.run.args[0][1], [1]);
+        done();
+      });
+    });
+
+    it('should give err if query is wrong', function (done) {
+      dbClient['run'] = fake.yields({ message: 'syntax error' });
+      dataStore.deleteQuestionComment(1).catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+        done();
+      });
+    });
+  });
+
 });

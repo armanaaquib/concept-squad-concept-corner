@@ -459,4 +459,40 @@ describe('handlers', function () {
         .expect(403, done);
     });
   });
+
+  context('/deleteQuestionComment', function () {
+    it('should delete question comment and redirect to question page', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel', profilePic: null };
+      request(app)
+        .post('/deleteQuestionComment')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({
+          commentId: 1,
+          username: 'michel',
+        })
+        .expect(JSON.stringify({isDeleted: true}))
+        .expect(200, done);
+    });
+
+    it('should give access denied if user is not author', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'ram', profilePic: null };
+      request(app)
+        .post('/deleteQuestionComment')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({
+          commentId: 10,
+          username: 'michel',
+        })
+        .expect(403, done);
+    });
+  });
+
 });

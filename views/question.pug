@@ -76,4 +76,4 @@ block container
 			id = !{JSON.stringify(`${question.questionId}date`)};
 			document.getElementById(id).innerText = moment(date).fromNow();
 			showDescription(!{question.description}, 'q-desc');
-			getAllQuestionComment(!{question.questionId})
+			getAllQuestionComment(!{question.questionId}, !{JSON.stringify(user)})

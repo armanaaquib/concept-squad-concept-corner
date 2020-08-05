@@ -191,8 +191,9 @@ class DataStore {
     return new Promise((resolve, reject) => {
       this.db.all(queries.getQuestions, async (err, rows) => {
         err && reject(err);
+        const result = rows || [];
         const questions = [];
-        for (const row of rows) {
+        for (const row of result) {
           const question = wrapQuestion(row);
           question['tags'] = await this.getTags(question.questionId);
           questions.push(question);
@@ -407,6 +408,15 @@ class DataStore {
         let comment = rows || {};
         comment = wrapComment(comment);
         resolve(comment);
+      });
+    });
+  }
+
+  deleteQuestionComment(commentId){
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.deleteQuestionComment, [commentId], (err) => {
+        err && reject(err);
+        resolve(true);
       });
     });
   }

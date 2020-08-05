@@ -241,4 +241,11 @@ module.exports = {
     answer_comments( username, answer_id, comment )
     values(?, ?, ?);
   `,
+
+  deleteQuestionComment: `
+  DELETE
+  FROM
+    question_comments
+  WHERE 
+    comment_id = ?;`
 };

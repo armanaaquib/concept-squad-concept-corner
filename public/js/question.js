@@ -116,7 +116,7 @@ const hideAnswerCommentContainer = (answerId) => {
     'block';
 };
 
-const createComment = function (comment, commentBoxId) {
+const createComment = function(comment, username, commentBoxId) {
   const commentSection = querySelector(commentBoxId || '#comments');
   const newComment = createElement('div', ['col-9', 'comment']);
   const user = createElementWithText('span', ['user'], comment.username);
@@ -161,12 +161,14 @@ const addAnswerComment = (answerId) => {
     });
 };
 
-const getAllQuestionComment = (questionId) => {
+const getAllQuestionComment = (questionId, user) => {
+  x;
+  const {username} = user || {};
   getReq(`/getCommentsOfQuestion/${questionId}`)
     .then(jsonParser)
     .then((comments) => {
       comments.forEach((comment) => {
-        createComment(comment);
+        createComment(comment, username);
       });
     });
 };

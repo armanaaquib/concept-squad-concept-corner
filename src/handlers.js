@@ -264,6 +264,20 @@ const updateQuestion = (req, res) => {
   });
 };
 
+const deleteQuestionComment = (req, res) => {
+  const comment = req.body;
+  const { dataStore } = req.app.locals;
+  const { username } = req.session.user;
+  if ( comment.username !== username) {
+    serveErrorPage(res, 403, 'Access Denied');
+    return;
+  } 
+  dataStore.deleteQuestionComment(comment.commentId)
+    .then((isDeleted) => {
+      res.json({isDeleted});
+    });
+};
+
 module.exports = {
   serveHomePage,
   servePostQuestionPage,
@@ -287,4 +301,5 @@ module.exports = {
   getComment,
   serveEditQuestion,
   updateQuestion,
+  deleteQuestionComment
 };
