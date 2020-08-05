@@ -424,7 +424,7 @@ class DataStore {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
         this.db
-          .run(queries.deleteAnswerComments, [answerId])
+          .run('PRAGMA foreign_keys = ON;')
           .run(queries.deleteAnswer, [answerId], function(err) {
             err && reject(err);
             resolve(true);

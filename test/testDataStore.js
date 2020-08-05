@@ -1028,7 +1028,9 @@ describe('DataStore', function() {
         callback();
       };
       dbClient['run'] = function(query, params, callback) {
-        assert.strictEqual(params[0], 1);
+        if (params) {
+          assert.strictEqual(params[0], 1);
+        }
         callCount++;
         callback && callback(null);
         return dbClient;
