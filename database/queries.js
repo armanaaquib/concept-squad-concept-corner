@@ -248,12 +248,19 @@ module.exports = {
     question_comments
   WHERE 
     comment_id = ?;`,
-    
+
   deleteAnswer: `
   DELETE 
   FROM 
     answers 
   WHERE 
     answer_id = ?;
+  `,
+  deleteQuestion: `
+  DELETE 
+  FROM 
+    questions 
+  WHERE 
+    question_id = ?;
   `
 };

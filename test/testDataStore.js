@@ -1056,4 +1056,40 @@ describe('DataStore', function() {
       });
     });
   });
+
+  context('deleteQuestion', function() {
+    it('should delete Question of given question id', function(done) {
+      let callCount = 0;
+      dbClient['serialize'] = function(callback) {
+        callback();
+      };
+      dbClient['run'] = function(query, params, callback) {
+        if (params) {
+          assert.strictEqual(params[0], 1);
+        }
+        callCount++;
+        callback && callback(null);
+        return dbClient;
+      };
+      dataStore.deleteQuestion(1).then((isDeleted) => {
+        assert.ok(isDeleted);
+        assert.strictEqual(callCount, 2);
+        done();
+      });
+    });
+
+    it('should give err if query is wrong', function(done) {
+      dbClient['serialize'] = function(callback) {
+        callback();
+      };
+      dbClient['run'] = function(query, params, callback) {
+        callback && callback({ message: 'syntax error' });
+        return dbClient;
+      };
+      dataStore.deleteQuestion(1).catch((err) => {
+        assert.deepStrictEqual(err, { message: 'syntax error' });
+        done();
+      });
+    });
+  });
 });

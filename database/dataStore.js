@@ -432,6 +432,19 @@ class DataStore {
       });
     });
   }
+
+  deleteQuestion(questionId) {
+    return new Promise((resolve, reject) => {
+      this.db.serialize(() => {
+        this.db
+          .run('PRAGMA foreign_keys = ON;')
+          .run(queries.deleteQuestion, [questionId], function(err) {
+            err && reject(err);
+            resolve(true);
+          });
+      });
+    });
+  }
 }
 
 module.exports = DataStore;
