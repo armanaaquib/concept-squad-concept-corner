@@ -18,9 +18,19 @@
   line-height: 2.5rem;
 }
 
-.edit-btn {
+.edit-btn,
+.delete-btn {
   font-size: 2.5rem;
   color: black;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  color: red;
+}
+
+.edit-btn:hover {
+  color: #3d8af7;
 }
 
 #q-desc {

@@ -298,7 +298,7 @@ const deleteQuestion = (req, res) => {
     serveErrorPage(res, 403, 'Access Denied');
     return;
   }
-  dataStore.deleteQuestion(question.answerId).then((isDeleted) => {
+  dataStore.deleteQuestion(question.questionId).then((isDeleted) => {
     res.json({ isDeleted });
   });
 };

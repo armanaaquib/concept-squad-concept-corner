@@ -237,3 +237,21 @@ const confirmDeleteAnswer = function(answer) {
   };
   showPopUp(details);
 };
+
+const deleteQuestion = function(question) {
+  postJSONReq('/deleteQuestion', question)
+    .then(jsonParser)
+    .then((status) => {
+      if (status && status.isDeleted) {
+        window.location.href = '/';
+      }
+    });
+};
+
+const confirmDeleteQuestion = function(question) {
+  const details = {
+    elementName: 'question',
+    functionToCall: deleteQuestion.bind(null, question)
+  };
+  showPopUp(details);
+};
