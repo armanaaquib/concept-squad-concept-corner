@@ -1,6 +1,6 @@
 mixin answerCard(answer, isAuthor, user)
 	.col-12.answer-card(id=`answer-${answer.answerId}`)
-		if user.username == answer.username
+		if user && user.username == answer.username
 			i.material-icons.delete-answer-icon(onclick="confirmDeleteAnswer("+JSON.stringify(answer)+")") delete
 		.col-12.answer
 			.col-11.a-detail
@@ -18,7 +18,7 @@ mixin answerCard(answer, isAuthor, user)
 							textarea.col-10#comment-text(name="")
 							.col-2.btn.add-comment-btn
 								input#h_qId(type="hidden",value=question.questionId)
-								button#post-comment-btn.primary-btn(type='button' onclick='addAnswerComment('+ answer.answerId+')') Add comment
+								button#post-comment-btn.primary-btn(type='button' onclick='addAnswerComment('+ JSON.stringify({answerId:answer.answerId, user})+ ')') Add comment
 								a(href=`/question/${question.questionId}`)
 								button.cancel-btn(type='button' onclick= "hideAnswerCommentContainer("+ answer.answerId +")") Cancel
 		.col-12.reactions
@@ -45,4 +45,4 @@ mixin answerCard(answer, isAuthor, user)
 		document.getElementById(id).innerText = moment(date).utc().fromNow();
 		showDescription(!{answer.answer}, !{JSON.stringify(`desc-${answer.answerId}`)})
 		updateVoteIcons(!{answer.answerId})
-		showAnswerComments(!{answer.answerId})
+		showAnswerComments(!{answer.answerId}, !{JSON.stringify(user)})

@@ -22,11 +22,11 @@ const destroyPopup = function(){
 
 const createPopUp = function(details){
   const modal = createElement('div', ['modal']);
-  const {elementName, id, functionToCall} = details;
-  const text = `Do you really want to delete this ${elementName}`;
+  const {elementName, functionToCall} = details;
+  const text = `Do you really want to delete this ${elementName} ?`;
   const popupBox = createElement('div', ['col-4', 'popup-box']);
-  const heading = createElementWithText('h2', ['col-12', 'popup-heading'], text);
-  const buttons = createElement('div', ['btn']);
+  const heading = createElementWithText('h3', ['col-11', 'popup-heading'], text);
+  const buttons = createElement('div', ['col-10', 'btn', 'popup-btn']);
   const deleteButton = createElementWithText('button', ['danger-btn'], 'Delete');
   deleteButton.addEventListener('click', functionToCall);
   const cancelButton = createElementWithText('button', ['cancel-btn'], 'Cancel');

@@ -116,33 +116,25 @@ const hideAnswerCommentContainer = (answerId) => {
     'block';
 };
 
-const createComment = function(comment, username, commentBoxId) {
+const createComment = function(comment, username, commentBoxId, details) {
   const commentSection = querySelector(commentBoxId || '#comments');
   const newComment = createElement('div', ['col-9', 'comment']);
-  newComment.id = `comment-${comment.commentId}`;
+  newComment.id = `${details.idPrefix}-${comment.commentId}`;
   const user = createElementWithText('span', ['user'], comment.username);
   const time = createElementWithText(
     'span',
     ['date'],
     moment(comment.time / 1000).fromNow()
   );
-
   const commentContent = createElementWithText('span', [], comment.comment);
   const separator = createElementWithText('span', [], '-');
   appendChildren(newComment, [commentContent, separator, user, time]);
   if (username === comment.username) {
     const deleteIcon = createElementWithText(
       'span',
-      ['material-icons'],
+      ['material-icons', 'delete-icon'],
       'delete'
     );
-    const details = {
-      elementName: 'question comment',
-      functionToCall: deleteComment.bind(null, {
-        commentId: comment.commentId,
-        username
-      })
-    };
     deleteIcon.addEventListener('click', showPopUp.bind(null, details));
     appendChildren(newComment, [deleteIcon]);
   }
@@ -162,12 +154,20 @@ const addQuestionComment = ({ questionId, user }) => {
       getReq(`/comment/${commentId}`)
         .then(jsonParser)
         .then((comment) => {
-          createComment(comment, username);
+          const details = {
+            idPrefix: 'question-comment',
+            elementName: 'question comment',
+            functionToCall: deleteComment.bind(null, {
+              commentId: comment.commentId,
+              username
+            })
+          };
+          createComment(comment, username, '#comments', details);
         });
     });
 };
 
-const addAnswerComment = (answerId) => {
+const addAnswerComment = ({answerId, user}) => {
   const comment = querySelector(
     `#answer-${answerId} #comment-text`
   ).value.trim();
@@ -180,7 +180,7 @@ const addAnswerComment = (answerId) => {
     .then((commentId) => {
       hideAnswerCommentContainer(answerId);
       querySelector(`#comment-${answerId}`).innerHTML = '';
-      showAnswerComments(answerId);
+      showAnswerComments(answerId, user);
     });
 };
 
@@ -190,17 +190,35 @@ const getAllQuestionComment = (questionId, user) => {
     .then(jsonParser)
     .then((comments) => {
       comments.forEach((comment) => {
-        createComment(comment, username);
+        const details = {
+          idPrefix: 'question-comment',
+          elementName: 'question comment',
+          functionToCall: deleteComment.bind(null, {
+            commentId: comment.commentId,
+            username
+          })
+        };
+        createComment(comment, username, '#comments', details);
       });
     });
 };
 
-const showAnswerComments = (answerId) => {
+const showAnswerComments = (answerId, user) => {
+  const {username} = user || {};
   getReq(`/getCommentsOfAnswer/${answerId}`)
     .then(jsonParser)
     .then((comments) => {
       comments.forEach((comment) => {
-        createComment(comment, undefined, `#comment-${answerId}`);
+        const details = {
+          idPrefix: 'answer-comment',
+          elementName: 'answer comment',
+          functionToCall: deleteAnswerComment.bind(null, {
+            commentId: comment.commentId,
+            username
+          })
+        };
+        
+        createComment(comment, username, `#comment-${answerId}`, details);
       });
     });
 };
@@ -210,7 +228,18 @@ const deleteComment = function(comment, event) {
     .then(jsonParser)
     .then((status) => {
       if (status && status.isDeleted) {
-        querySelector(`#comment-${comment.commentId}`).remove();
+        querySelector(`#question-comment-${comment.commentId}`).remove();
+        destroyPopup();
+      }
+    });
+};
+
+const deleteAnswerComment = function(comment, event) {
+  postJSONReq('/deleteAnswerComment', comment)
+    .then(jsonParser)
+    .then((status) => {
+      if (status && status.isDeleted) {
+        querySelector(`#answer-comment-${comment.commentId}`).remove();
         destroyPopup();
       }
     });

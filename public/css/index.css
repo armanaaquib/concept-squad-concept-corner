@@ -321,17 +321,31 @@ body a {
   height: 100%;
   background: #21212185;
 }
+.popup-heading{
+  font-size: 1.1rem;
+  margin:  0 auto;
+}
+.popup-btn{
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
 .popup-box{
   display: flex;
   margin: 0 auto;
+  align-items: center;
   background: white;
   z-index: 100;
   padding: 16px;
+  border-radius: 5px;
+  -webkit-tap-highlight-color: white;
   flex-wrap: wrap;
   min-height: 200px;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+  box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgb(0 0 0 / 45%);
+}
+.popup-btn{
+  margin: 0 auto;
 }
 
 .danger-btn{
@@ -347,4 +361,14 @@ body a {
 .user-profile-link:hover {
   font-weight: 800;
   color: #57d3f9;
+}
+
+.delete-icon{
+  color:  rgb(150, 150, 150);
+  cursor: pointer;
+  position: relative;
+  top: 0.25rem;
+}
+.delete-icon:hover {
+  color: #f04b4c;
 }
