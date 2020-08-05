@@ -54,9 +54,11 @@ app.post(
   handlers.ensureLogin,
   handlers.addQuestionComment
 );
-app.get('/getVote/:answerId', handlers.ensureLogin, handlers.getVote);
+app.post('/addAnswerComment', handlers.ensureLogin, handlers.addAnswerComment);
 app.post('/updateVote', handlers.ensureLogin, handlers.updateVote);
 app.post('/updateQuestion', handlers.ensureLogin, handlers.updateQuestion);
+
+app.get('/getVote/:answerId', handlers.ensureLogin, handlers.getVote);
 app.get('/logout', handlers.ensureLogin, handlers.logout);
 app.get('/getCommentsOfQuestion/:questionId', handlers.getCommentsOfQuestion);
 app.get('/getCommentsOfAnswer/:answerId', handlers.getCommentsOfAnswer);
