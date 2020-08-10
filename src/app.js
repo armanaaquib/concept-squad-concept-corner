@@ -1,6 +1,8 @@
 const express = require('express');
 const sessions = require('./sessions');
 const cookieParser = require('cookie-parser');
+const knex = require('knex');
+const knexFile = require('../knexfile').development;
 const sqlite = require('sqlite3').verbose();
 const config = require('../config');
 const answerRouter = require('./answerRoutes');
@@ -12,7 +14,8 @@ const DataStore = require('../database/dataStore');
 const app = express();
 
 const db = new sqlite.Database(config.getDBFilePath());
-app.locals.dataStore = new DataStore(db);
+const newdb = knex(knexFile);
+app.locals.dataStore = new DataStore(db, newdb);
 app.locals.sessions = sessions;
 
 app.set('view engine', 'pug');

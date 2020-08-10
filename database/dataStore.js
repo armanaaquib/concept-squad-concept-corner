@@ -50,8 +50,9 @@ const wrapComment = (row) => {
 };
 
 class DataStore {
-  constructor(db) {
+  constructor(db, newdb) {
     this.db = db;
+    this.newdb = newdb;
   }
 
   addUser(user) {
@@ -420,7 +421,7 @@ class DataStore {
     });
   }
 
-  deleteAnswerComment(commentId){
+  deleteAnswerComment(commentId) {
     return new Promise((resolve, reject) => {
       this.db.run(queries.deleteAnswerComment, [commentId], (err) => {
         err && reject(err);

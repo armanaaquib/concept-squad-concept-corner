@@ -9,7 +9,8 @@
     "populate-raw-data": "rm -f store/raw-concept-corner.db; sqlite3 store/raw-concept-corner.db '.read store/scripts/create_schema.sql'; sqlite3 store/raw-concept-corner.db '.read store/scripts/populate_raw_data.sql';",
     "populate-test-data": "rm -f store/test-concept-corner.db; sqlite3 store/test-concept-corner.db '.read store/scripts/create_schema.sql'; sqlite3 store/test-concept-corner.db '.read store/scripts/populate_test_data.sql';",
     "test": "export CONCEPT_SECRET_KEY='secretkey'; npm run populate-test-data; export CONCEPT_CORNER_DB='test-concept-corner.db'; nyc mocha --recursive",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "knex": "knex"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "formidable": "^1.2.2",
+    "knex": "^0.21.3",
     "pug": "^3.0.0",
     "sqlite3": "^5.0.0"
   },
