@@ -43,14 +43,12 @@ app.post('/signUp', handlers.signUp);
 app.get('/confirmUser', handlers.confirmUser);
 app.get('/hasUser/:username', handlers.hasUser);
 app.get('/profile/:username', handlers.serveProfilePage);
-
-app.get('/postQuestion', handlers.ensureLogin, handlers.servePostQuestionPage);
 app.get(
   '/getTagSuggestion/:tagName',
   handlers.ensureLogin,
   handlers.getTagSuggestion
 );
-app.post('/postQuestion', handlers.ensureLogin, handlers.postQuestion);
+
 app.post(
   '/addQuestionComment',
   handlers.ensureLogin,

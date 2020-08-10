@@ -18,38 +18,75 @@ describe('/question', function () {
     });
   });
 
-  context('/deleteQuestion', function () {
-    it('should delete question comment', function (done) {
+  it('should give access denied if user is not author', function (done) {
+    const { sessions } = app.locals;
+    const sessionId = sessions.createSession();
+    const session = sessions.getSession(sessionId);
+    session.user = { username: 'ram', profilePic: null };
+    request(app)
+      .post('/deleteQuestion')
+      .set('Cookie', `sId=${sessionId}`)
+      .set('Content-Type', 'application/json')
+      .send({
+        questionId: 2,
+        username: 'michel',
+      })
+      .expect(403, done);
+  });
+});
+context('/post', function () {
+  context('GET', function () {
+    it('should redirect to / if user is not logged in', function (done) {
+      request(app)
+        .get('/question/post')
+        .expect('location', '/')
+        .expect(302, done);
+    });
+
+    it('should serve postQuestion page if user is logged in', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
       session.user = { username: 'michel', profilePic: null };
       request(app)
-        .post('/deleteQuestion')
+        .get('/question/post')
         .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({
-          questionId: 1,
-          username: 'michel',
-        })
-        .expect(JSON.stringify({ isDeleted: true }))
+        .expect(/Concept Corner | Post Question/)
         .expect(200, done);
     });
-
-    it('should give access denied if user is not author', function (done) {
+  });
+  context('POST', function () {
+    it('should add Question and redirect to question page', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
-      session.user = { username: 'ram', profilePic: null };
+      session.user = { username: 'michel', profilePic: null };
       request(app)
-        .post('/deleteQuestion')
+        .post('/question/post')
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
-        .send({
-          questionId: 2,
-          username: 'michel',
-        })
-        .expect(403, done);
+        .send({ title: 'title', description: 'desc', tags: ['node', 'java'] })
+        .expect(JSON.stringify(6))
+        .expect(200, done);
     });
+  });
+});
+
+context('/deleteQuestion', function () {
+  it('should delete question comment', function (done) {
+    const { sessions } = app.locals;
+    const sessionId = sessions.createSession();
+    const session = sessions.getSession(sessionId);
+    session.user = { username: 'michel', profilePic: null };
+    request(app)
+      .post('/deleteQuestion')
+      .set('Cookie', `sId=${sessionId}`)
+      .set('Content-Type', 'application/json')
+      .send({
+        questionId: 1,
+        username: 'michel',
+      })
+      .expect(JSON.stringify({ isDeleted: true }))
+      .expect(200, done);
   });
 });

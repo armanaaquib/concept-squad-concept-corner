@@ -43,45 +43,6 @@ describe('handlers', function () {
     });
   });
 
-  context('/postQuestion', function () {
-    context('GET', function () {
-      it('should redirect to / if user is not logged in', function (done) {
-        request(app)
-          .get('/postQuestion')
-          .expect('location', '/')
-          .expect(302, done);
-      });
-
-      it('should serve postQuestion page if user is logged in', function (done) {
-        const { sessions } = app.locals;
-        const sessionId = sessions.createSession();
-        const session = sessions.getSession(sessionId);
-        session.user = { username: 'michel', profilePic: null };
-        request(app)
-          .get('/postQuestion')
-          .set('Cookie', `sId=${sessionId}`)
-          .expect(/Concept Corner | Post Question/)
-          .expect(200, done);
-      });
-    });
-
-    context('POST', function () {
-      it('should add Question and redirect to question page', function (done) {
-        const { sessions } = app.locals;
-        const sessionId = sessions.createSession();
-        const session = sessions.getSession(sessionId);
-        session.user = { username: 'michel', profilePic: null };
-        request(app)
-          .post('/postQuestion')
-          .set('Cookie', `sId=${sessionId}`)
-          .set('Content-Type', 'application/json')
-          .send({ title: 'title', description: 'desc', tags: ['node', 'java'] })
-          .expect(JSON.stringify(6))
-          .expect(200, done);
-      });
-    });
-  });
-
   context('/signUp', function () {
     it('should signUp user and redirect to home page', function (done) {
       request(app)

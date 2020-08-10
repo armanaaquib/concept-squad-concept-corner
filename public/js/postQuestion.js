@@ -12,10 +12,10 @@ const postQuestion = (editor) => {
   const title = querySelector('#title').value;
   const description = JSON.stringify(JSON.stringify(editor.getContents()));
 
-  postJSONReq('/postQuestion', {
+  postJSONReq('/question/post', {
     title,
     description,
-    tags: getSelectedTags()
+    tags: getSelectedTags(),
   })
     .then(jsonParser)
     .then((questionId) => {
@@ -36,7 +36,7 @@ const updateQuestion = (questionId, editor) => {
     questionId,
     title,
     description,
-    tags: getSelectedTags()
+    tags: getSelectedTags(),
   })
     .then(jsonParser)
     .then((questionId) => {
@@ -51,11 +51,11 @@ const createEditor = (description, questionId) => {
       toolbar: [
         [{ size: ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
-        ['code-block']
-      ]
+        ['code-block'],
+      ],
     },
     placeholder: 'description...',
-    theme: 'snow'
+    theme: 'snow',
   });
   if (description) {
     editor.setContents(JSON.parse(description));
@@ -68,23 +68,23 @@ const createEditor = (description, questionId) => {
   }
 };
 
-const getSelectedTags = function() {
+const getSelectedTags = function () {
   const selectedTagsHTML = querySelectorAll('.tag-text');
   const selectedTags = Array.from(selectedTagsHTML);
   return selectedTags.map((selectedTag) => selectedTag.innerText);
 };
 
 //user cancel icon
-const getCancelButton = function() {
+const getCancelButton = function () {
   return '<i class="material-icons close-btn">close</i>';
 };
 
-const getRemainingTags = function() {
+const getRemainingTags = function () {
   const selectedTags = querySelector('.selected-tags');
   return 5 - selectedTags.childElementCount;
 };
 
-const updateRemainingTags = function() {
+const updateRemainingTags = function () {
   const remainingTags = querySelector('.remaining_tags');
   const remainingTagsCount = getRemainingTags();
   remainingTags.style.color = 'black';
@@ -94,19 +94,19 @@ const updateRemainingTags = function() {
   remainingTags.innerText = remainingTagsCount;
 };
 
-const removeTag = function(tagToRemove) {
+const removeTag = function (tagToRemove) {
   tagToRemove.parentElement.remove();
   updateRemainingTags();
 };
 
-const setTagsFieldWidth = function() {
+const setTagsFieldWidth = function () {
   const selectedTagsWidth = querySelector('.selected-tags').offsetWidth;
   const tagsBoxWidth = querySelector('.tagsBox').offsetWidth;
   const tagsField = querySelector('#tags');
   tagsField.style.width = tagsBoxWidth - selectedTagsWidth - 50;
 };
 
-const removeLastTag = function(tagField) {
+const removeLastTag = function (tagField) {
   const selectedTagsHTML = querySelectorAll('.selected-tag');
   if (selectedTagsHTML.length == 0) {
     return;
@@ -118,7 +118,7 @@ const removeLastTag = function(tagField) {
   updateRemainingTags();
 };
 
-const addTag = function(tag) {
+const addTag = function (tag) {
   const tagField = querySelector('#tags');
   if (tag.trim() === '' || getRemainingTags() < 1) {
     tagField.value = '';
@@ -133,14 +133,14 @@ const addTag = function(tag) {
   tagField.value = '';
 };
 
-const getSelectedSuggestion = function(selectedField) {
+const getSelectedSuggestion = function (selectedField) {
   const selectedTag = selectedField.firstElementChild.value;
   addTag(selectedTag);
   setTagsFieldWidth();
 };
 
-const showTagSuggestions = function(tags) {
-  document.addEventListener('click', function() {
+const showTagSuggestions = function (tags) {
+  document.addEventListener('click', function () {
     removeTagSuggestion();
   });
   const showSuggestionBox = querySelector('.suggestionTags');
@@ -152,12 +152,12 @@ const showTagSuggestions = function(tags) {
   showSuggestionBox.innerHTML = tagsToShow.join('');
 };
 
-const removeTagSuggestion = function() {
+const removeTagSuggestion = function () {
   const showSuggestionBox = querySelector('.suggestionTags');
   showSuggestionBox.innerHTML = '';
 };
 
-const getTagSuggestion = function(tagField) {
+const getTagSuggestion = function (tagField) {
   if (tagField.value.length < 1) {
     removeTagSuggestion();
     return;
@@ -167,7 +167,7 @@ const getTagSuggestion = function(tagField) {
     .then(showTagSuggestions);
 };
 
-const createTag = function(tagField) {
+const createTag = function (tagField) {
   if (window.event.keyCode == 8 && tagField.value == '') {
     removeLastTag(tagField);
   }
