@@ -144,7 +144,7 @@ const createComment = function (comment, username, commentBoxId, details) {
 const addQuestionComment = ({ questionId, user }) => {
   const { username } = user || {};
   const comment = querySelector('#comment-text').value.trim();
-  postJSONReq('/addQuestionComment', {
+  postJSONReq('/question/addComment', {
     questionId,
     comment,
   })
@@ -186,7 +186,7 @@ const addAnswerComment = ({ answerId, user }) => {
 
 const getAllQuestionComment = (questionId, user) => {
   const { username } = user || {};
-  getReq(`/getCommentsOfQuestion/${questionId}`)
+  getReq(`/question/comments/${questionId}`)
     .then(jsonParser)
     .then((comments) => {
       comments.forEach((comment) => {

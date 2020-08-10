@@ -145,21 +145,6 @@ describe('handlers', function () {
     });
   });
 
-  context('/addQuestionComment', function () {
-    it('should add comment to the question', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel' };
-      request(app)
-        .post('/addQuestionComment')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({ questionId: 1, comment: 'comment' })
-        .expect(200, done);
-    });
-  });
-
   context('/logout', function () {
     it('should logout and redirect to /', function (done) {
       const { sessions } = app.locals;
@@ -183,22 +168,6 @@ describe('handlers', function () {
     });
   });
 
-  context('/getCommentsOfQuestion', function () {
-    it('should give list of comments of the question id', function (done) {
-      request(app)
-        .get('/getCommentsOfQuestion/1')
-        .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
-        .expect(200, done);
-    });
-
-    it('should give empty object when the question does not have any comments', function (done) {
-      request(app)
-        .get('/getCommentsOfQuestion/89')
-        .expect([])
-        .expect(200, done);
-    });
-  });
-
   context('/comment', function () {
     it('should give details of comment ', function (done) {
       request(app)
@@ -209,70 +178,6 @@ describe('handlers', function () {
 
     it('should give empty object comment does not exist', function (done) {
       request(app).get('/comment/89').expect([]).expect(200, done);
-    });
-  });
-
-  context('/editQuestion', function () {
-    it('should give access dinied if user is not author', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'ram', profilePic: null };
-      request(app)
-        .get('/editQuestion/1')
-        .set('Cookie', `sId=${sessionId}`)
-        .expect(403, done);
-    });
-
-    it('should serve edit question page if user is author of question', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
-      request(app)
-        .get('/editQuestion/1')
-        .set('Cookie', `sId=${sessionId}`)
-        .expect(/Concept Corner | Update Question/)
-        .expect(200, done);
-    });
-  });
-
-  context('/updateQuestion', function () {
-    it('should update Question and redirect to question page', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
-      request(app)
-        .post('/updateQuestion')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({
-          questionId: 1,
-          title: 'updated title',
-          description: 'updated desc',
-          tags: ['node', 'javaScript'],
-        })
-        .expect(JSON.stringify(1))
-        .expect(200, done);
-    });
-
-    it('should give access denied if user is not author', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'ram', profilePic: null };
-      request(app)
-        .post('/updateQuestion')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({
-          questionId: 1,
-          title: 'updated title',
-          description: 'updated desc',
-          tags: ['node', 'javaScript'],
-        })
-        .expect(403, done);
     });
   });
 

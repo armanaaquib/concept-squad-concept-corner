@@ -33,5 +33,5 @@ module.exports = {
   getClientId,
   getClientSecret,
   getAuthLink,
-  getTestDBFilePath
+  getTestDBFilePath,
 };

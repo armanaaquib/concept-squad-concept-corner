@@ -22,7 +22,7 @@ block container
 					.row.title-box
 						if user && (user.username == question.username)
 							.q-title.col-11 #{question.title}
-							a(href=`/editQuestion/${question.questionId}`)
+							a(href=`/question/edit/${question.questionId}`)
 								i.material-icons.edit-btn edit
 							i.material-icons.delete-btn(onclick="confirmDeleteQuestion("+JSON.stringify(question)+")") delete
 						else

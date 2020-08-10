@@ -4,14 +4,14 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: getDBFilePath()
-    }
+      filename: getDBFilePath(),
+    },
   },
   test: {
     client: 'sqlite3',
     connection: {
-      filename: getTestDBFilePath()
-    }
+      filename: getTestDBFilePath(),
+    },
   },
 
   staging: {
@@ -19,15 +19,15 @@ module.exports = {
     connection: {
       database: 'my_db',
       user: 'username',
-      password: 'password'
+      password: 'password',
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations'
-    }
+      tableName: 'knex_migrations',
+    },
   },
 
   production: {
@@ -35,14 +35,14 @@ module.exports = {
     connection: {
       database: 'my_db',
       user: 'username',
-      password: 'password'
+      password: 'password',
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations'
-    }
-  }
+      tableName: 'knex_migrations',
+    },
+  },
 };

@@ -52,21 +52,9 @@ app.get(
   handlers.getTagSuggestion
 );
 
-app.post(
-  '/addQuestionComment',
-  handlers.ensureLogin,
-  handlers.addQuestionComment
-);
-app.post('/updateQuestion', handlers.ensureLogin, handlers.updateQuestion);
-
 app.get('/logout', handlers.ensureLogin, handlers.logout);
-app.get('/getCommentsOfQuestion/:questionId', handlers.getCommentsOfQuestion);
 app.get('/comment/:commentId', handlers.getComment);
-app.get(
-  '/editQuestion/:questionId',
-  handlers.ensureLogin,
-  handlers.serveEditQuestion
-);
+
 app.post(
   '/deleteQuestionComment',
   handlers.ensureLogin,

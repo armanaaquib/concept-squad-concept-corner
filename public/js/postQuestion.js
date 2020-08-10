@@ -32,7 +32,7 @@ const updateQuestion = (questionId, editor) => {
   const title = querySelector('#title').value;
   const description = JSON.stringify(JSON.stringify(editor.getContents()));
 
-  postJSONReq('/updateQuestion', {
+  postJSONReq('/question/update', {
     questionId,
     title,
     description,
