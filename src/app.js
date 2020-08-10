@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const sqlite = require('sqlite3').verbose();
 const config = require('../config');
 const answerRouter = require('./answerRoutes');
+const questionRouter = require('./questionRoutes');
 
 const handlers = require('./handlers');
 const DataStore = require('../database/dataStore');
@@ -34,9 +35,9 @@ app.use((req, res, next) => {
 });
 
 app.use('/answer', answerRouter);
+app.use('/question', questionRouter);
 
 app.get('/', handlers.serveHomePage);
-app.get('/question/:questionId', handlers.serveQuestionPage);
 
 app.post('/signUp', handlers.signUp);
 app.get('/confirmUser', handlers.confirmUser);
