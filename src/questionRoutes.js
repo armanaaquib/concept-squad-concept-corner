@@ -11,12 +11,14 @@ const {
   serveEditQuestion,
   deleteQuestionComment,
   deleteQuestion,
+  getTagSuggestion,
 } = require('./handlers');
 
 questionRouter.get('/post', ensureLogin, servePostQuestionPage);
 questionRouter.get('/comments/:questionId', getCommentsOfQuestion);
-questionRouter.get('/:questionId', serveQuestionPage);
 questionRouter.get('/edit/:questionId', ensureLogin, serveEditQuestion);
+questionRouter.get('/tags/:tagName', ensureLogin, getTagSuggestion);
+questionRouter.get('/:questionId', serveQuestionPage);
 
 questionRouter.post('/post', ensureLogin, postQuestion);
 questionRouter.post('/update', ensureLogin, updateQuestion);

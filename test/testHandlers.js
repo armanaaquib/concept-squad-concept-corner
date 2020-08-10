@@ -119,32 +119,6 @@ describe('handlers', function () {
     });
   });
 
-  context('/getTagSuggestion', function () {
-    it('should give list of matching tags', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
-      request(app)
-        .get('/getTagSuggestion/a')
-        .set('Cookie', `sId=${sessionId}`)
-        .expect(['java', 'nav'])
-        .expect(200, done);
-    });
-
-    it('should give empty array if no matching tags present', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
-      request(app)
-        .get('/getTagSuggestion/z')
-        .set('Cookie', `sId=${sessionId}`)
-        .expect([])
-        .expect(200, done);
-    });
-  });
-
   context('/logout', function () {
     it('should logout and redirect to /', function (done) {
       const { sessions } = app.locals;

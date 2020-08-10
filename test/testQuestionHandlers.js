@@ -18,6 +18,32 @@ describe('/question', function () {
     });
   });
 
+  context('/tags/:tagName', function () {
+    it('should give list of matching tags', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel', profilePic: null };
+      request(app)
+        .get('/question/tags/a')
+        .set('Cookie', `sId=${sessionId}`)
+        .expect(['java', 'nav'])
+        .expect(200, done);
+    });
+
+    it('should give empty array if no matching tags present', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel', profilePic: null };
+      request(app)
+        .get('/question/tags/z')
+        .set('Cookie', `sId=${sessionId}`)
+        .expect([])
+        .expect(200, done);
+    });
+  });
+
   context('/post', function () {
     context('GET', function () {
       it('should redirect to / if user is not logged in', function (done) {

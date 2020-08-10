@@ -46,11 +46,6 @@ app.post('/signUp', handlers.signUp);
 app.get('/confirmUser', handlers.confirmUser);
 app.get('/hasUser/:username', handlers.hasUser);
 app.get('/profile/:username', handlers.serveProfilePage);
-app.get(
-  '/getTagSuggestion/:tagName',
-  handlers.ensureLogin,
-  handlers.getTagSuggestion
-);
 
 app.get('/logout', handlers.ensureLogin, handlers.logout);
 app.get('/comment/:commentId', handlers.getComment);

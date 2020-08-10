@@ -162,7 +162,7 @@ const getTagSuggestion = function (tagField) {
     removeTagSuggestion();
     return;
   }
-  getReq(`/getTagSuggestion/${tagField.value}`)
+  getReq(`/question/tags/${tagField.value}`)
     .then(jsonParser)
     .then(showTagSuggestions);
 };
