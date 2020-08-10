@@ -336,22 +336,6 @@ describe('handlers', function () {
     });
   });
 
-  context('/addAnswerComment', function () {
-    it('should add comment to the answer', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel' };
-      request(app)
-        .post('/addAnswerComment')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({ answerId: 1, comment: 'comment' })
-        .expect(JSON.stringify(2))
-        .expect(200, done);
-    });
-  });
-
   context('/comment', function () {
     it('should give details of comment ', function (done) {
       request(app)

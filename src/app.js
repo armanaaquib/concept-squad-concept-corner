@@ -55,7 +55,6 @@ app.post(
   handlers.ensureLogin,
   handlers.addQuestionComment
 );
-app.post('/addAnswerComment', handlers.ensureLogin, handlers.addAnswerComment);
 app.post('/updateVote', handlers.ensureLogin, handlers.updateVote);
 app.post('/updateQuestion', handlers.ensureLogin, handlers.updateQuestion);
 

@@ -32,4 +32,20 @@ describe('/answer', function () {
         .expect(200, done);
     });
   });
+
+  context('/addComment', function () {
+    it('should add comment to the answer', function (done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel' };
+      request(app)
+        .post('/answer/addComment')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({ answerId: 1, comment: 'comment' })
+        .expect(JSON.stringify(2))
+        .expect(200, done);
+    });
+  });
 });

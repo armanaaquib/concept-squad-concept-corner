@@ -172,7 +172,7 @@ const addAnswerComment = ({ answerId, user }) => {
     `#answer-${answerId} #comment-text`
   ).value.trim();
 
-  postJSONReq('/addAnswerComment', {
+  postJSONReq('/answer/addComment', {
     answerId,
     comment,
   })
