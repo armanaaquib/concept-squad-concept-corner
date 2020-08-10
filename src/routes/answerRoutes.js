@@ -1,7 +1,6 @@
 const express = require('express');
 const answerRouter = express.Router();
 const {
-  ensureLogin,
   postAnswer,
   markAccepted,
   addAnswerComment,
@@ -10,7 +9,9 @@ const {
   getCommentsOfAnswer,
   deleteAnswer,
   deleteAnswerComment,
-} = require('../handlers/handlers');
+} = require('../handlers/answerHandlers');
+
+const { ensureLogin } = require('../handlers/handlers');
 
 answerRouter.post('/post', ensureLogin, postAnswer);
 answerRouter.post('/markAccepted', ensureLogin, markAccepted);
