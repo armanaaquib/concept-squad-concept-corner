@@ -41,7 +41,7 @@ const showPostAnswerEditor = function () {
 };
 
 const markAccepted = (answer) => {
-  postJSONReq('/markAccepted', {
+  postJSONReq('/answer/markAccepted', {
     questionId: answer.questionId,
     answerId: answer.answerId,
   }).then((res) => {

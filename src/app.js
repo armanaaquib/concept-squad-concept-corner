@@ -50,7 +50,6 @@ app.get(
   handlers.getTagSuggestion
 );
 app.post('/postQuestion', handlers.ensureLogin, handlers.postQuestion);
-app.post('/markAccepted', handlers.ensureLogin, handlers.markAccepted);
 app.post(
   '/addQuestionComment',
   handlers.ensureLogin,
