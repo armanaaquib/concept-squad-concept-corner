@@ -5,11 +5,12 @@ const knex = require('knex');
 const knexFile = require('../knexfile').development;
 const sqlite = require('sqlite3').verbose();
 const config = require('../config');
-const answerRouter = require('./answerRoutes');
-const questionRouter = require('./questionRoutes');
-const userRouter = require('./userRoutes');
 
-const handlers = require('./handlers');
+const answerRouter = require('./routes/answerRoutes');
+const questionRouter = require('./routes/questionRoutes');
+const userRouter = require('./routes/userRoutes');
+
+const handlers = require('./handlers/handlers');
 const DataStore = require('../database/dataStore');
 
 const app = express();

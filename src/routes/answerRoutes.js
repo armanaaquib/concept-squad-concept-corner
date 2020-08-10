@@ -10,7 +10,7 @@ const {
   getCommentsOfAnswer,
   deleteAnswer,
   deleteAnswerComment,
-} = require('./handlers');
+} = require('../handlers/handlers');
 
 answerRouter.post('/post', ensureLogin, postAnswer);
 answerRouter.post('/markAccepted', ensureLogin, markAccepted);

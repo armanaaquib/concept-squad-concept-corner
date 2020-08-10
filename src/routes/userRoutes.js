@@ -7,7 +7,7 @@ const {
   serveProfilePage,
   logout,
   confirmUser,
-} = require('./handlers');
+} = require('../handlers/handlers');
 
 userRouter.get('/has/:username', hasUser);
 userRouter.get('/profile/:username', serveProfilePage);

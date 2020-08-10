@@ -1,7 +1,6 @@
 const express = require('express');
 const questionRouter = express.Router();
 const {
-  ensureLogin,
   serveQuestionPage,
   servePostQuestionPage,
   postQuestion,
@@ -12,7 +11,9 @@ const {
   deleteQuestionComment,
   deleteQuestion,
   getTagSuggestion,
-} = require('./handlers');
+} = require('../handlers/questionHandlers');
+
+const { ensureLogin } = require('../handlers/handlers');
 
 questionRouter.get('/post', ensureLogin, servePostQuestionPage);
 questionRouter.get('/comments/:questionId', getCommentsOfQuestion);
