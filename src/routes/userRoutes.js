@@ -1,13 +1,14 @@
 const express = require('express');
 const userRouter = express.Router();
 const {
-  ensureLogin,
   signUp,
   hasUser,
   serveProfilePage,
   logout,
   confirmUser,
-} = require('../handlers/handlers');
+} = require('../handlers/userHandlers');
+
+const { ensureLogin } = require('../handlers/handlers');
 
 userRouter.get('/has/:username', hasUser);
 userRouter.get('/profile/:username', serveProfilePage);
