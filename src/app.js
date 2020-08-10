@@ -55,13 +55,10 @@ app.post(
   handlers.ensureLogin,
   handlers.addQuestionComment
 );
-app.post('/updateVote', handlers.ensureLogin, handlers.updateVote);
 app.post('/updateQuestion', handlers.ensureLogin, handlers.updateQuestion);
 
-app.get('/getVote/:answerId', handlers.ensureLogin, handlers.getVote);
 app.get('/logout', handlers.ensureLogin, handlers.logout);
 app.get('/getCommentsOfQuestion/:questionId', handlers.getCommentsOfQuestion);
-app.get('/getCommentsOfAnswer/:answerId', handlers.getCommentsOfAnswer);
 app.get('/comment/:commentId', handlers.getComment);
 app.get(
   '/editQuestion/:questionId',
@@ -73,12 +70,6 @@ app.post(
   handlers.ensureLogin,
   handlers.deleteQuestionComment
 );
-app.post('/deleteAnswer', handlers.ensureLogin, handlers.deleteAnswer);
 app.post('/deleteQuestion', handlers.ensureLogin, handlers.deleteQuestion);
-app.post(
-  '/deleteAnswerComment',
-  handlers.ensureLogin,
-  handlers.deleteAnswerComment
-);
 
 module.exports = app;

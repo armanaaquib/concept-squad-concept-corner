@@ -61,7 +61,7 @@ const markAccepted = (answer) => {
 };
 
 const updateVote = (answerId, vote) => {
-  postJSONReq('/updateVote', { answerId, vote })
+  postJSONReq('/answer/updateVote', { answerId, vote })
     .then(jsonParser)
     .then((votes) => {
       updateVoteIcons(answerId);
@@ -80,7 +80,7 @@ const attachListenerVoteIcons = (answerId) => {
 };
 
 const updateVoteIcons = (answerId) => {
-  getReq(`/getVote/${answerId}`)
+  getReq(`/answer/userVote/${answerId}`)
     .then(jsonParser)
     .then((result) => {
       querySelector(`#a-${answerId} .up`).style.color = '#969696';
@@ -205,7 +205,7 @@ const getAllQuestionComment = (questionId, user) => {
 
 const showAnswerComments = (answerId, user) => {
   const { username } = user || {};
-  getReq(`/getCommentsOfAnswer/${answerId}`)
+  getReq(`/answer/comments/${answerId}`)
     .then(jsonParser)
     .then((comments) => {
       comments.forEach((comment) => {
@@ -235,7 +235,7 @@ const deleteComment = function (comment, event) {
 };
 
 const deleteAnswerComment = function (comment, event) {
-  postJSONReq('/deleteAnswerComment', comment)
+  postJSONReq('/answer/deleteComment', comment)
     .then(jsonParser)
     .then((status) => {
       if (status && status.isDeleted) {
@@ -246,7 +246,7 @@ const deleteAnswerComment = function (comment, event) {
 };
 
 const deleteAnswer = function (answer) {
-  postJSONReq('/deleteAnswer', answer)
+  postJSONReq('/answer/delete', answer)
     .then(jsonParser)
     .then((status) => {
       if (status && status.isDeleted) {

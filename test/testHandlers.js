@@ -174,75 +174,6 @@ describe('handlers', function () {
     });
   });
 
-  context('/getVote/:answerId', function () {
-    it('should return vote of user for given answer id if user has voted', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
-      request(app)
-        .get('/getVote/1')
-        .set('Cookie', `sId=${sessionId}`)
-        .expect({ vote: 'up' })
-        .expect(200, done);
-    });
-
-    it('should return vote undefine of user for given answer id if user has not voted', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'carlo', profilePic: null };
-      request(app)
-        .get('/getVote/1')
-        .set('Cookie', `sId=${sessionId}`)
-        .expect({})
-        .expect(200, done);
-    });
-  });
-
-  context('/updateVote', function () {
-    it('should return total votes for given answer after change of vote status', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
-      request(app)
-        .post('/updateVote')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({ answerId: 5, vote: 'up' })
-        .expect({ up: 3, down: 0 })
-        .expect(200, done);
-    });
-    it('should return total votes for given answer after user has removed vote', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'bryce', profilePic: null };
-      request(app)
-        .post('/updateVote')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({ answerId: 1, vote: 'down' })
-        .expect({ up: 2, down: 0 })
-        .expect(200, done);
-    });
-
-    it('should return total votes for given answer after user has voted first time ', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'carlo', profilePic: null };
-      request(app)
-        .post('/updateVote')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({ answerId: 6, vote: 'up' })
-        .expect({ up: 3, down: 1 })
-        .expect(200, done);
-    });
-  });
-
   context('/getTagSuggestion', function () {
     it('should give list of matching tags', function (done) {
       const { sessions } = app.locals;
@@ -320,19 +251,6 @@ describe('handlers', function () {
         .get('/getCommentsOfQuestion/89')
         .expect([])
         .expect(200, done);
-    });
-  });
-
-  context('/getCommentsOfAnswer', function () {
-    it('should give list of comments of the answer id', function (done) {
-      request(app)
-        .get('/getCommentsOfAnswer/1')
-        .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
-        .expect(200, done);
-    });
-
-    it('should give empty object when the question does not have any comments', function (done) {
-      request(app).get('/getCommentsOfAnswer/89').expect([]).expect(200, done);
     });
   });
 
@@ -438,76 +356,6 @@ describe('handlers', function () {
       session.user = { username: 'ram', profilePic: null };
       request(app)
         .post('/deleteQuestionComment')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({
-          commentId: 10,
-          username: 'michel',
-        })
-        .expect(403, done);
-    });
-  });
-
-  context('/deleteAnswer', function () {
-    it('should delete answer', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
-      request(app)
-        .post('/deleteAnswer')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({
-          answerId: 1,
-          username: 'michel',
-        })
-        .expect(JSON.stringify({ isDeleted: true }))
-        .expect(200, done);
-    });
-
-    it('should give access denied if user is not author', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'ram', profilePic: null };
-      request(app)
-        .post('/deleteAnswer')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({
-          commentId: 2,
-          username: 'michel',
-        })
-        .expect(403, done);
-    });
-  });
-
-  context('/deleteAnswerComment', function () {
-    it('should delete question comment and redirect to question page', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
-      request(app)
-        .post('/deleteAnswerComment')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({
-          commentId: 1,
-          username: 'michel',
-        })
-        .expect(JSON.stringify({ isDeleted: true }))
-        .expect(200, done);
-    });
-
-    it('should give access denied if user is not author', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'ram', profilePic: null };
-      request(app)
-        .post('/deleteAnswerComment')
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
         .send({
