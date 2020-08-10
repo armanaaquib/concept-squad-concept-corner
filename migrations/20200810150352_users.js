@@ -3,8 +3,8 @@ exports.up = function(knex) {
     table.string('username').primary();
     table.string('name').notNullable();
     table.string('email');
-    table.string('title');
-    table.string('company');
+    table.string('title').useNullAsDefault;
+    table.string('company').useNullAsDefault;
     table.string('location').useNullAsDefault;
     table.string('auth_login');
     table.string('about_me').useNullAsDefault;

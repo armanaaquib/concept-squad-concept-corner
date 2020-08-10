@@ -56,26 +56,25 @@ class DataStore {
   }
 
   addUser(user) {
+    const fields = {
+      name: user.name,
+      about_me: user.aboutMe,
+      auth_login: user.authLogin,
+      auth_source: user.authSource,
+      username: user.username,
+      title: user.title,
+      company: user.company,
+      location: user.location,
+      email: user.emailId,
+      profile_pic: user.profilePic
+    };
     return new Promise((resolve, reject) => {
-      this.db.run(
-        queries.addUser,
-        [
-          user.username,
-          user.authLogin,
-          user.authSource,
-          user.name,
-          user.emailId,
-          user.location,
-          user.title,
-          user.aboutMe,
-          user.company,
-          user.profilePic
-        ],
-        (err) => {
-          err && reject(err);
+      this.newdb('users')
+        .insert(fields)
+        .then(() => {
           resolve(true);
-        }
-      );
+        })
+        .catch(reject);
     });
   }
 
@@ -155,9 +154,9 @@ class DataStore {
           if (err) {
             reject(err);
           }
-          this.updateQuestionTag(question.questionId, question.tags).then(
-            resolve
-          );
+          this.updateQuestionTag(question.questionId, question.tags)
+            .then(resolve)
+            .catch(reject);
         }
       );
     });

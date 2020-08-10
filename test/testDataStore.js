@@ -1,18 +1,35 @@
 const { assert } = require('chai');
-const { fake, stub } = require('sinon');
+const { fake, stub, mock } = require('sinon');
 
 const DataStore = require('../database/dataStore.js');
 
 describe('DataStore', function() {
   let dataStore;
   let dbClient;
-  before(() => {
+  beforeEach(() => {
     dbClient = {};
     dataStore = new DataStore(dbClient);
   });
 
   context('addUser', function() {
     it('should add a user', async function() {
+      const newDbClient = stub().returns({
+        insert: mock()
+          .withArgs({
+            auth_login: 'ram',
+            username: 'ram',
+            auth_source: 'github',
+            name: 'Ram Lal',
+            email: 'ram@gmail.com',
+            location: 'India',
+            title: 'Developer',
+            about_me: 'Good person',
+            company: null,
+            profile_pic: null
+          })
+          .returns(Promise.resolve())
+      });
+      dataStore = new DataStore(null, newDbClient);
       dbClient['run'] = fake.yields(null);
       const status = await dataStore.addUser({
         username: 'ram',
@@ -26,24 +43,15 @@ describe('DataStore', function() {
         company: null,
         profilePic: null
       });
-      assert.ok(dbClient.run.calledOnce);
-      assert.deepStrictEqual(dbClient.run.args[0][1], [
-        'ram',
-        'ram',
-        'github',
-        'Ram Lal',
-        'ram@gmail.com',
-        'India',
-        'Developer',
-        'Good person',
-        null,
-        null
-      ]);
+      assert.ok(newDbClient.calledOnce);
       assert.ok(status);
     });
 
     it('should reject error if query is not valid', function() {
-      dbClient['run'] = fake.yields({ message: 'syntax error' });
+      const newDbClient = stub().returns({
+        insert: mock().returns(Promise.reject({ message: 'syntax error' }))
+      });
+      dataStore = new DataStore(null, newDbClient);
       dataStore.addUser({}).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
@@ -663,6 +671,8 @@ describe('DataStore', function() {
     });
 
     it('should reject error if run throws error', function() {
+      dbClient['get'] = fake.yields(null, { tag_id: 1 });
+
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.getTagId({}).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -671,11 +681,6 @@ describe('DataStore', function() {
   });
 
   context('addQuestionTag', function() {
-    before(() => {
-      dbClient = {};
-      dataStore = new DataStore(dbClient);
-    });
-
     it('should add question tags and give confirmation', function(done) {
       dbClient['get'] = fake.yields(null, { tag_id: 1 });
       dbClient['run'] = fake.yields(null);
@@ -686,6 +691,7 @@ describe('DataStore', function() {
     });
 
     it('should reject error if get throws error', function(done) {
+      dbClient['get'] = fake.yields(null, { tag_id: 1 });
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.addQuestionTag(10, ['node', 'java']).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -695,11 +701,6 @@ describe('DataStore', function() {
   });
 
   context('updateQuestionTag', function() {
-    before(() => {
-      dbClient = {};
-      dataStore = new DataStore(dbClient);
-    });
-
     it('should add question tags and give confirmation', function(done) {
       dbClient['run'] = fake.yields(null);
       dataStore['addQuestionTag'] = stub()
@@ -772,7 +773,6 @@ describe('DataStore', function() {
       dataStore.getVotesOfAnswer = stub().returns(
         Promise.resolve({ up: 2, down: 1 })
       );
-
       dataStore.updateVote('michel', 1, 'up').then((votes) => {
         assert.deepStrictEqual(votes, { up: 2, down: 1 });
         assert.ok(dbClient.run.calledOnce);
@@ -783,6 +783,7 @@ describe('DataStore', function() {
     });
 
     it('should give err if query is wrong', function(done) {
+      dataStore['getVotesOfAnswer'] = stub();
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.updateVote('michel', 1, 'up').catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -807,6 +808,7 @@ describe('DataStore', function() {
     });
 
     it('should give err if query is wrong', function(done) {
+      dataStore.getVotesOfAnswer = stub();
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.addVote('michel', 1, 'up').catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -861,6 +863,7 @@ describe('DataStore', function() {
     });
 
     it('should give err if query is wrong', function(done) {
+      dataStore.getVotesOfAnswer = stub();
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.deleteVote('michel', 1).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });

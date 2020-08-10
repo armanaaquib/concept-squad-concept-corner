@@ -4,14 +4,16 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: getDBFilePath(),
+      filename: getDBFilePath()
     },
+    useNullAsDefault: true
   },
   test: {
     client: 'sqlite3',
     connection: {
-      filename: getTestDBFilePath(),
+      filename: getTestDBFilePath()
     },
+    useNullAsDefault: true
   },
 
   staging: {
