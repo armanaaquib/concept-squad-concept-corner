@@ -224,7 +224,7 @@ const showAnswerComments = (answerId, user) => {
 };
 
 const deleteComment = function (comment, event) {
-  postJSONReq('/deleteQuestionComment', comment)
+  postJSONReq('/question/deleteComment', comment)
     .then(jsonParser)
     .then((status) => {
       if (status && status.isDeleted) {
@@ -268,7 +268,7 @@ const confirmDeleteAnswer = function (answer) {
 };
 
 const deleteQuestion = function (question) {
-  postJSONReq('/deleteQuestion', question)
+  postJSONReq('/question/delete', question)
     .then(jsonParser)
     .then((status) => {
       if (status && status.isDeleted) {

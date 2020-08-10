@@ -55,11 +55,4 @@ app.get(
 app.get('/logout', handlers.ensureLogin, handlers.logout);
 app.get('/comment/:commentId', handlers.getComment);
 
-app.post(
-  '/deleteQuestionComment',
-  handlers.ensureLogin,
-  handlers.deleteQuestionComment
-);
-app.post('/deleteQuestion', handlers.ensureLogin, handlers.deleteQuestion);
-
 module.exports = app;
