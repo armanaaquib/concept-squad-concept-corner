@@ -7,7 +7,7 @@ mixin answerCard(answer, isAuthor, user)
 				.col-12.description(id=`desc-${answer.answerId}`)
 				.col-9.user
 					.col-12.username
-						a.user-profile-link(href=`/profile/${answer.username}`) #{answer.username}
+						a.user-profile-link(href=`/user/profile/${answer.username}`) #{answer.username}
 					.col-12.date(id=`date-${answer.answerId}`)
 			.col-12.comments(id=`comment-${answer.answerId}`)
 			if user

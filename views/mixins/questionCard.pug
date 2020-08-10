@@ -24,7 +24,7 @@ mixin questionCard(question)
 			.user
 				img(src=question.profilePic||'/images/avatar.png', height=100, width=100, alt="alt")
 				p 
-					a.user-profile-link(href=`/profile/${question.username}`) #{question.username}
+					a.user-profile-link(href=`/user/profile/${question.username}`) #{question.username}
 				script.
 					date = !{JSON.stringify(question.time)};
 					id = !{JSON.stringify(`${question.questionId}date`)};

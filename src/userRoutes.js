@@ -1,6 +1,18 @@
 const express = require('express');
 const userRouter = express.Router();
-const { signUp } = require('./handlers');
+const {
+  ensureLogin,
+  signUp,
+  hasUser,
+  serveProfilePage,
+  logout,
+  confirmUser,
+} = require('./handlers');
+
+userRouter.get('/has/:username', hasUser);
+userRouter.get('/profile/:username', serveProfilePage);
+userRouter.get('/logout', ensureLogin, logout);
+userRouter.get('/confirm', confirmUser);
 
 userRouter.post('/signUp', signUp);
 

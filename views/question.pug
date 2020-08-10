@@ -37,7 +37,7 @@ block container
 					.col-6.views #{question.views} Views
 					.col-6.user
 						.username
-							a.user-profile-link(href=`/profile/${question.username}`) #{question.username}
+							a.user-profile-link(href=`/user/profile/${question.username}`) #{question.username}
 						.date(id=`${question.questionId}date`)
 				.col-12.comments#comments
 				if user

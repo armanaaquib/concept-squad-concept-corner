@@ -43,12 +43,6 @@ app.use('/question', questionRouter);
 app.use('/user', userRouter);
 
 app.get('/', handlers.serveHomePage);
-
-app.get('/confirmUser', handlers.confirmUser);
-app.get('/hasUser/:username', handlers.hasUser);
-app.get('/profile/:username', handlers.serveProfilePage);
-
-app.get('/logout', handlers.ensureLogin, handlers.logout);
 app.get('/comment/:commentId', handlers.getComment);
 
 module.exports = app;

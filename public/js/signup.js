@@ -42,7 +42,7 @@ const checkUserName = function (userNameField) {
     return;
   }
 
-  getReq(`/hasUser/${username}`)
+  getReq(`/user/has/${username}`)
     .then(jsonParser)
     .then((status) => {
       if (status.available) {
