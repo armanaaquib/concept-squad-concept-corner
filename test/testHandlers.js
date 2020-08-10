@@ -3,16 +3,16 @@ const app = require('../src/app');
 const { mock, replace, restore } = require('sinon');
 const authUtils = require('../src/authUtils');
 
-describe('handlers', function() {
-  context('/', function() {
-    it('serve homepage without login', function(done) {
+describe('handlers', function () {
+  context('/', function () {
+    it('serve homepage without login', function (done) {
       request(app)
         .get('/')
         .expect(/Log in/)
         .expect(200, done);
     });
 
-    it('serve homepage with login', function(done) {
+    it('serve homepage with login', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -25,8 +25,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/hasUser', function() {
-    it('should give availability as true when it has not user with the same name', function(done) {
+  context('/hasUser', function () {
+    it('should give availability as true when it has not user with the same name', function (done) {
       request(app)
         .get('/hasUser/AbC')
         .set('Content-Type', 'application/json')
@@ -34,7 +34,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should give availability as false when it has user with the same name', function(done) {
+    it('should give availability as false when it has user with the same name', function (done) {
       request(app)
         .get('/hasUser/michel')
         .set('Content-Type', 'application/json')
@@ -43,16 +43,16 @@ describe('handlers', function() {
     });
   });
 
-  context('/postQuestion', function() {
-    context('GET', function() {
-      it('should redirect to / if user is not logged in', function(done) {
+  context('/postQuestion', function () {
+    context('GET', function () {
+      it('should redirect to / if user is not logged in', function (done) {
         request(app)
           .get('/postQuestion')
           .expect('location', '/')
           .expect(302, done);
       });
 
-      it('should serve postQuestion page if user is logged in', function(done) {
+      it('should serve postQuestion page if user is logged in', function (done) {
         const { sessions } = app.locals;
         const sessionId = sessions.createSession();
         const session = sessions.getSession(sessionId);
@@ -65,8 +65,8 @@ describe('handlers', function() {
       });
     });
 
-    context('POST', function() {
-      it('should add Question and redirect to question page', function(done) {
+    context('POST', function () {
+      it('should add Question and redirect to question page', function (done) {
         const { sessions } = app.locals;
         const sessionId = sessions.createSession();
         const session = sessions.getSession(sessionId);
@@ -82,15 +82,15 @@ describe('handlers', function() {
     });
   });
 
-  context('/question/:questionId', function() {
-    it('should serve question if question is found', function(done) {
+  context('/question/:questionId', function () {
+    it('should serve question if question is found', function (done) {
       request(app)
         .get('/question/1')
         .expect(/Concept Corner | Question Title 1/)
         .expect(200, done);
     });
 
-    it('should serve not found page if question is not found', function(done) {
+    it('should serve not found page if question is not found', function (done) {
       request(app)
         .get('/question/10')
         .expect(/Concept Corner | 404 Not Found/)
@@ -98,24 +98,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/postAnswer', function() {
-    it('should add Answer and redirect to question page again', function(done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel' };
-      request(app)
-        .post('/postAnswer')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({ questionId: 1, answer: 'answer' })
-        .expect({ answerId: 6 })
-        .expect(200, done);
-    });
-  });
-
-  context('/signUp', function() {
-    it('should signUp user and redirect to home page', function(done) {
+  context('/signUp', function () {
+    it('should signUp user and redirect to home page', function (done) {
       request(app)
         .post('/signUp')
         .set('Content-Type', 'multipart/form-data')
@@ -123,7 +107,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should give Bad Request if content is not valid', function(done) {
+    it('should give Bad Request if content is not valid', function (done) {
       request(app)
         .post('/signUp')
         .set('Content-Type', 'multipart/form-data')
@@ -132,7 +116,7 @@ describe('handlers', function() {
     });
   });
 
-  context('/confirmUser', function() {
+  context('/confirmUser', function () {
     afterEach(() => {
       restore();
     });
@@ -141,9 +125,7 @@ describe('handlers', function() {
       replace(
         authUtils,
         'getAccessToken',
-        mock()
-          .withArgs('123')
-          .returns(Promise.resolve('access-token'))
+        mock().withArgs('123').returns(Promise.resolve('access-token'))
       );
 
       replace(
@@ -165,9 +147,7 @@ describe('handlers', function() {
       replace(
         authUtils,
         'getAccessToken',
-        mock()
-          .withArgs('123')
-          .returns(Promise.resolve('access-token'))
+        mock().withArgs('123').returns(Promise.resolve('access-token'))
       );
 
       replace(
@@ -185,7 +165,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should say access denied if code query is not present', function(done) {
+    it('should say access denied if code query is not present', function (done) {
       request(app)
         .get('/confirmUser')
         .set('Content-Type', 'application/json')
@@ -194,8 +174,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/markAccept', function() {
-    it('should accept given answer as correct if user is the author', function(done) {
+  context('/markAccept', function () {
+    it('should accept given answer as correct if user is the author', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -209,8 +189,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/getVote/:answerId', function() {
-    it('should return vote of user for given answer id if user has voted', function(done) {
+  context('/getVote/:answerId', function () {
+    it('should return vote of user for given answer id if user has voted', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -222,7 +202,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should return vote undefine of user for given answer id if user has not voted', function(done) {
+    it('should return vote undefine of user for given answer id if user has not voted', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -235,8 +215,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/updateVote', function() {
-    it('should return total votes for given answer after change of vote status', function(done) {
+  context('/updateVote', function () {
+    it('should return total votes for given answer after change of vote status', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -249,7 +229,7 @@ describe('handlers', function() {
         .expect({ up: 3, down: 0 })
         .expect(200, done);
     });
-    it('should return total votes for given answer after user has removed vote', function(done) {
+    it('should return total votes for given answer after user has removed vote', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -263,7 +243,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should return total votes for given answer after user has voted first time ', function(done) {
+    it('should return total votes for given answer after user has voted first time ', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -278,8 +258,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/getTagSuggestion', function() {
-    it('should give list of matching tags', function(done) {
+  context('/getTagSuggestion', function () {
+    it('should give list of matching tags', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -291,7 +271,7 @@ describe('handlers', function() {
         .expect(200, done);
     });
 
-    it('should give empty array if no matching tags present', function(done) {
+    it('should give empty array if no matching tags present', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -304,8 +284,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/addQuestionComment', function() {
-    it('should add comment to the question', function(done) {
+  context('/addQuestionComment', function () {
+    it('should add comment to the question', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -319,8 +299,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/logout', function() {
-    it('should logout and redirect to /', function(done) {
+  context('/logout', function () {
+    it('should logout and redirect to /', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -333,8 +313,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/profile/:username', function() {
-    it('should serve user profile page', function(done) {
+  context('/profile/:username', function () {
+    it('should serve user profile page', function (done) {
       request(app)
         .get('/profile/michel')
         .expect(/michel/)
@@ -342,15 +322,15 @@ describe('handlers', function() {
     });
   });
 
-  context('/getCommentsOfQuestion', function() {
-    it('should give list of comments of the question id', function(done) {
+  context('/getCommentsOfQuestion', function () {
+    it('should give list of comments of the question id', function (done) {
       request(app)
         .get('/getCommentsOfQuestion/1')
         .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
         .expect(200, done);
     });
 
-    it('should give empty object when the question does not have any comments', function(done) {
+    it('should give empty object when the question does not have any comments', function (done) {
       request(app)
         .get('/getCommentsOfQuestion/89')
         .expect([])
@@ -358,24 +338,21 @@ describe('handlers', function() {
     });
   });
 
-  context('/getCommentsOfAnswer', function() {
-    it('should give list of comments of the answer id', function(done) {
+  context('/getCommentsOfAnswer', function () {
+    it('should give list of comments of the answer id', function (done) {
       request(app)
         .get('/getCommentsOfAnswer/1')
         .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
         .expect(200, done);
     });
 
-    it('should give empty object when the question does not have any comments', function(done) {
-      request(app)
-        .get('/getCommentsOfAnswer/89')
-        .expect([])
-        .expect(200, done);
+    it('should give empty object when the question does not have any comments', function (done) {
+      request(app).get('/getCommentsOfAnswer/89').expect([]).expect(200, done);
     });
   });
 
-  context('/addAnswerComment', function() {
-    it('should add comment to the answer', function(done) {
+  context('/addAnswerComment', function () {
+    it('should add comment to the answer', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -390,24 +367,21 @@ describe('handlers', function() {
     });
   });
 
-  context('/comment', function() {
-    it('should give details of comment ', function(done) {
+  context('/comment', function () {
+    it('should give details of comment ', function (done) {
       request(app)
         .get('/comment/1')
         .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
         .expect(200, done);
     });
 
-    it('should give empty object comment does not exist', function(done) {
-      request(app)
-        .get('/comment/89')
-        .expect([])
-        .expect(200, done);
+    it('should give empty object comment does not exist', function (done) {
+      request(app).get('/comment/89').expect([]).expect(200, done);
     });
   });
 
-  context('/editQuestion', function() {
-    it('should give access dinied if user is not author', function(done) {
+  context('/editQuestion', function () {
+    it('should give access dinied if user is not author', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -418,7 +392,7 @@ describe('handlers', function() {
         .expect(403, done);
     });
 
-    it('should serve edit question page if user is author of question', function(done) {
+    it('should serve edit question page if user is author of question', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -431,8 +405,8 @@ describe('handlers', function() {
     });
   });
 
-  context('/updateQuestion', function() {
-    it('should update Question and redirect to question page', function(done) {
+  context('/updateQuestion', function () {
+    it('should update Question and redirect to question page', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -445,13 +419,13 @@ describe('handlers', function() {
           questionId: 1,
           title: 'updated title',
           description: 'updated desc',
-          tags: ['node', 'javaScript']
+          tags: ['node', 'javaScript'],
         })
         .expect(JSON.stringify(1))
         .expect(200, done);
     });
 
-    it('should give access denied if user is not author', function(done) {
+    it('should give access denied if user is not author', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -464,14 +438,14 @@ describe('handlers', function() {
           questionId: 1,
           title: 'updated title',
           description: 'updated desc',
-          tags: ['node', 'javaScript']
+          tags: ['node', 'javaScript'],
         })
         .expect(403, done);
     });
   });
 
-  context('/deleteQuestionComment', function() {
-    it('should delete question comment', function(done) {
+  context('/deleteQuestionComment', function () {
+    it('should delete question comment', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -482,13 +456,13 @@ describe('handlers', function() {
         .set('Content-Type', 'application/json')
         .send({
           commentId: 1,
-          username: 'michel'
+          username: 'michel',
         })
         .expect(JSON.stringify({ isDeleted: true }))
         .expect(200, done);
     });
 
-    it('should give access denied if user is not author', function(done) {
+    it('should give access denied if user is not author', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -499,14 +473,14 @@ describe('handlers', function() {
         .set('Content-Type', 'application/json')
         .send({
           commentId: 10,
-          username: 'michel'
+          username: 'michel',
         })
         .expect(403, done);
     });
   });
 
-  context('/deleteAnswer', function() {
-    it('should delete answer', function(done) {
+  context('/deleteAnswer', function () {
+    it('should delete answer', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -517,13 +491,13 @@ describe('handlers', function() {
         .set('Content-Type', 'application/json')
         .send({
           answerId: 1,
-          username: 'michel'
+          username: 'michel',
         })
         .expect(JSON.stringify({ isDeleted: true }))
         .expect(200, done);
     });
 
-    it('should give access denied if user is not author', function(done) {
+    it('should give access denied if user is not author', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -534,14 +508,14 @@ describe('handlers', function() {
         .set('Content-Type', 'application/json')
         .send({
           commentId: 2,
-          username: 'michel'
+          username: 'michel',
         })
         .expect(403, done);
     });
   });
 
-  context('/deleteAnswerComment', function() {
-    it('should delete question comment and redirect to question page', function(done) {
+  context('/deleteAnswerComment', function () {
+    it('should delete question comment and redirect to question page', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -552,13 +526,13 @@ describe('handlers', function() {
         .set('Content-Type', 'application/json')
         .send({
           commentId: 1,
-          username: 'michel'
+          username: 'michel',
         })
         .expect(JSON.stringify({ isDeleted: true }))
         .expect(200, done);
     });
 
-    it('should give access denied if user is not author', function(done) {
+    it('should give access denied if user is not author', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -569,14 +543,14 @@ describe('handlers', function() {
         .set('Content-Type', 'application/json')
         .send({
           commentId: 10,
-          username: 'michel'
+          username: 'michel',
         })
         .expect(403, done);
     });
   });
-  
-  context('/deleteQuestion', function() {
-    it('should delete question comment', function(done) {
+
+  context('/deleteQuestion', function () {
+    it('should delete question comment', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -587,13 +561,13 @@ describe('handlers', function() {
         .set('Content-Type', 'application/json')
         .send({
           questionId: 1,
-          username: 'michel'
+          username: 'michel',
         })
         .expect(JSON.stringify({ isDeleted: true }))
         .expect(200, done);
     });
 
-    it('should give access denied if user is not author', function(done) {
+    it('should give access denied if user is not author', function (done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);
@@ -604,7 +578,7 @@ describe('handlers', function() {
         .set('Content-Type', 'application/json')
         .send({
           questionId: 2,
-          username: 'michel'
+          username: 'michel',
         })
         .expect(403, done);
     });

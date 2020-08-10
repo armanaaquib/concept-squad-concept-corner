@@ -3,6 +3,7 @@ const sessions = require('./sessions');
 const cookieParser = require('cookie-parser');
 const sqlite = require('sqlite3').verbose();
 const config = require('../config');
+const answerRouter = require('./answerRoutes');
 
 const handlers = require('./handlers');
 const DataStore = require('../database/dataStore');
@@ -32,6 +33,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/answer', answerRouter);
+
 app.get('/', handlers.serveHomePage);
 app.get('/question/:questionId', handlers.serveQuestionPage);
 
@@ -47,7 +50,6 @@ app.get(
   handlers.getTagSuggestion
 );
 app.post('/postQuestion', handlers.ensureLogin, handlers.postQuestion);
-app.post('/postAnswer', handlers.ensureLogin, handlers.postAnswer);
 app.post('/markAccepted', handlers.ensureLogin, handlers.markAccepted);
 app.post(
   '/addQuestionComment',
@@ -75,8 +77,10 @@ app.post(
 );
 app.post('/deleteAnswer', handlers.ensureLogin, handlers.deleteAnswer);
 app.post('/deleteQuestion', handlers.ensureLogin, handlers.deleteQuestion);
-app.post('/deleteAnswerComment', 
-  handlers.ensureLogin, 
-  handlers.deleteAnswerComment);
+app.post(
+  '/deleteAnswerComment',
+  handlers.ensureLogin,
+  handlers.deleteAnswerComment
+);
 
 module.exports = app;
