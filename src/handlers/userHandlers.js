@@ -3,14 +3,6 @@ const authUtils = require('../authUtils');
 const { serveErrorPage } = require('./handlers');
 const { getAuthLink } = require('../../config');
 
-const hasUser = function (req, res) {
-  const { username } = req.params;
-  const { dataStore } = req.app.locals;
-  dataStore.getUser(username).then((user) => {
-    res.json({ available: user ? false : true });
-  });
-};
-
 const signUp = (req, res) => {
   const { dataStore } = req.app.locals;
   const form = new formidable.IncomingForm();
@@ -55,6 +47,14 @@ const confirmUser = (req, res) => {
     });
 };
 
+const hasUser = function (req, res) {
+  const { username } = req.params;
+  const { dataStore } = req.app.locals;
+  dataStore.getUser(username).then((user) => {
+    res.json({ available: user ? false : true });
+  });
+};
+
 const logout = (req, res) => {
   const { sId } = req.cookies;
   const { sessions } = req.app.locals;
@@ -73,8 +73,8 @@ const serveProfilePage = (req, res) => {
 
 module.exports = {
   signUp,
-  hasUser,
-  serveProfilePage,
-  logout,
   confirmUser,
+  hasUser,
+  logout,
+  serveProfilePage,
 };

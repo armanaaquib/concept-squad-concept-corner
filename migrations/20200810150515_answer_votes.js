@@ -1,5 +1,5 @@
-exports.up = function(knex) {
-  return knex.schema.createTable('answer_votes', function(table) {
+exports.up = function (knex) {
+  return knex.schema.createTable('answer_votes', function (table) {
     table
       .string('username')
       .references('username')
@@ -15,6 +15,7 @@ exports.up = function(knex) {
     table.string('vote').notNull();
   });
 };
-exports.down = function(knex) {
+
+exports.down = function (knex) {
   return knex.schema.dropTableIfExists('answer_votes');
 };

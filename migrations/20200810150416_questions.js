@@ -1,5 +1,5 @@
-exports.up = function(knex) {
-  return knex.schema.createTable('questions', function(table) {
+exports.up = function (knex) {
+  return knex.schema.createTable('questions', function (table) {
     table.increments('question_id').primary();
     table.string('title').notNullable();
     table.string('description');
@@ -12,9 +12,11 @@ exports.up = function(knex) {
     table.integer('view_count').defaultTo(0);
     table.bool('is_answer_accepted').defaultTo(false);
     table.date('time').defaultTo(knex.fn.now());
+    table.date('last_modified');
     table.integer('no_of_answers').defaultTo(0);
   });
 };
-exports.down = function(knex) {
+
+exports.down = function (knex) {
   return knex.schema.dropTableIfExists('questions');
 };

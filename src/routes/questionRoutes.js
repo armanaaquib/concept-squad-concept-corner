@@ -16,9 +16,9 @@ const {
 const { ensureLogin } = require('../handlers/handlers');
 
 questionRouter.get('/post', ensureLogin, servePostQuestionPage);
-questionRouter.get('/comments/:questionId', getCommentsOfQuestion);
 questionRouter.get('/edit/:questionId', ensureLogin, serveEditQuestion);
 questionRouter.get('/tags/:tagName', ensureLogin, getTagSuggestion);
+questionRouter.get('/comments/:questionId', getCommentsOfQuestion);
 questionRouter.get('/:questionId', serveQuestionPage);
 
 questionRouter.post('/post', ensureLogin, postQuestion);

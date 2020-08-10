@@ -10,10 +10,10 @@ const {
 
 const { ensureLogin } = require('../handlers/handlers');
 
+userRouter.get('/confirm', confirmUser);
 userRouter.get('/has/:username', hasUser);
 userRouter.get('/profile/:username', serveProfilePage);
 userRouter.get('/logout', ensureLogin, logout);
-userRouter.get('/confirm', confirmUser);
 
 userRouter.post('/signUp', signUp);
 

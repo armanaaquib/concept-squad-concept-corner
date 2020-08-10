@@ -1,5 +1,5 @@
-exports.up = function(knex) {
-  return knex.schema.createTable('question_tag', function(table) {
+exports.up = function (knex) {
+  return knex.schema.createTable('question_tag', function (table) {
     table
       .integer('question_id')
       .references('question_id')
@@ -14,6 +14,7 @@ exports.up = function(knex) {
       .onDelete('cascade');
   });
 };
-exports.down = function(knex) {
+
+exports.down = function (knex) {
   return knex.schema.dropTableIfExists('question_tag');
 };

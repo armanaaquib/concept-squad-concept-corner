@@ -1,27 +1,6 @@
 const { getAuthLink } = require('../../config');
 const { serveErrorPage } = require('./handlers');
 
-const servePostQuestionPage = (req, res) => {
-  const cancelUrl = req.session.redirectURL || '/';
-  res.render('postQuestion', {
-    cancelUrl,
-    user: req.session.user,
-    authHref: getAuthLink(),
-  });
-  res.end();
-};
-
-const postQuestion = (req, res) => {
-  const { title, description, tags } = req.body;
-  const { username } = req.session.user;
-  const { dataStore } = req.app.locals;
-  dataStore
-    .addQuestion({ username, title, description, tags })
-    .then((questionId) => {
-      res.json(questionId);
-    });
-};
-
 const serveQuestionPage = (req, res) => {
   const { questionId } = req.params;
   const { dataStore } = req.app.locals;
@@ -41,11 +20,65 @@ const serveQuestionPage = (req, res) => {
   });
 };
 
+const servePostQuestionPage = (req, res) => {
+  const cancelUrl = req.session.redirectURL || '/';
+  res.render('postQuestion', {
+    cancelUrl,
+    user: req.session.user,
+    authHref: getAuthLink(),
+  });
+  res.end();
+};
+
 const getTagSuggestion = (req, res) => {
   const { tagName } = req.params;
   const { dataStore } = req.app.locals;
   dataStore.getTagSuggestion(tagName).then((matchingTags) => {
     res.json(matchingTags);
+  });
+};
+
+const postQuestion = (req, res) => {
+  const { title, description, tags } = req.body;
+  const { username } = req.session.user;
+  const { dataStore } = req.app.locals;
+  dataStore
+    .addQuestion({ username, title, description, tags })
+    .then((questionId) => {
+      res.json(questionId);
+    });
+};
+
+const serveEditQuestion = (req, res) => {
+  const { questionId } = req.params;
+  const { username } = req.session.user;
+  const { dataStore } = req.app.locals;
+  dataStore.getQuestion(questionId).then((question) => {
+    if (question.username === username) {
+      res.render('editQuestion', {
+        question,
+        user: req.session.user,
+      });
+    } else {
+      serveErrorPage(res, 403, 'Access Denied');
+    }
+  });
+};
+
+const updateQuestion = (req, res) => {
+  const { questionId, title, description, tags } = req.body;
+  const { username } = req.session.user;
+  const { dataStore } = req.app.locals;
+  dataStore.getQuestion(questionId).then((question) => {
+    if (question.username === username) {
+      dataStore
+        .updateQuestion({ questionId, title, description, tags })
+        .then((questionId) => {
+          res.json(questionId);
+        });
+    } else {
+      serveErrorPage(res, 403, 'Access Denied');
+    }
   });
 };
 
@@ -65,23 +98,6 @@ const getCommentsOfQuestion = (req, res) => {
   const { dataStore } = req.app.locals;
   dataStore.getCommentsOfQuestion(questionId).then((comments) => {
     res.json(comments);
-  });
-};
-
-const updateQuestion = (req, res) => {
-  const { questionId, title, description, tags } = req.body;
-  const { username } = req.session.user;
-  const { dataStore } = req.app.locals;
-  dataStore.getQuestion(questionId).then((question) => {
-    if (question.username === username) {
-      dataStore
-        .updateQuestion({ questionId, title, description, tags })
-        .then((questionId) => {
-          res.json(questionId);
-        });
-    } else {
-      serveErrorPage(res, 403, 'Access Denied');
-    }
   });
 };
 
@@ -111,31 +127,15 @@ const deleteQuestion = (req, res) => {
   });
 };
 
-const serveEditQuestion = (req, res) => {
-  const { questionId } = req.params;
-  const { username } = req.session.user;
-  const { dataStore } = req.app.locals;
-  dataStore.getQuestion(questionId).then((question) => {
-    if (question.username === username) {
-      res.render('editQuestion', {
-        question,
-        user: req.session.user,
-      });
-    } else {
-      serveErrorPage(res, 403, 'Access Denied');
-    }
-  });
-};
-
 module.exports = {
   serveQuestionPage,
   servePostQuestionPage,
+  getTagSuggestion,
   postQuestion,
-  addQuestionComment,
-  updateQuestion,
-  getCommentsOfQuestion,
   serveEditQuestion,
+  updateQuestion,
+  addQuestionComment,
+  getCommentsOfQuestion,
   deleteQuestionComment,
   deleteQuestion,
-  getTagSuggestion,
 };

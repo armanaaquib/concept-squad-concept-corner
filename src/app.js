@@ -1,9 +1,9 @@
 const express = require('express');
-const sessions = require('./sessions');
+const sqlite = require('sqlite3').verbose();
 const cookieParser = require('cookie-parser');
 const knex = require('knex');
 const knexFile = require('../knexfile').development;
-const sqlite = require('sqlite3').verbose();
+const sessions = require('./sessions');
 const config = require('../config');
 
 const answerRouter = require('./routes/answerRoutes');
@@ -26,18 +26,7 @@ app.use(express.static('public'));
 app.use(cookieParser());
 app.use(express.json({ limit: '12mb' }));
 
-app.use((req, res, next) => {
-  const { sId } = req.cookies;
-  const { sessions } = app.locals;
-  let session = sessions.getSession(sId);
-  if (!session) {
-    const newSid = sessions.createSession();
-    session = sessions.getSession(newSid);
-    res.cookie('sId', newSid);
-  }
-  req.session = session;
-  next();
-});
+app.use(handlers.addSession);
 
 app.use('/answer', answerRouter);
 app.use('/question', questionRouter);

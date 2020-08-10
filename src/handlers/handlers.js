@@ -1,6 +1,6 @@
 const { getAuthLink } = require('../../config');
 
-const serveHomePage = function (req, res) {
+const serveHomePage = (req, res) => {
   const { dataStore } = req.app.locals;
   dataStore.getQuestions().then((questions) => {
     res.render('index', {
@@ -10,6 +10,19 @@ const serveHomePage = function (req, res) {
     });
     res.end();
   });
+};
+
+const addSession = (req, res, next) => {
+  const { sId } = req.cookies;
+  const { sessions } = req.app.locals;
+  let session = sessions.getSession(sId);
+  if (!session) {
+    const newSid = sessions.createSession();
+    session = sessions.getSession(newSid);
+    res.cookie('sId', newSid);
+  }
+  req.session = session;
+  next();
 };
 
 const ensureLogin = (req, res, next) => {
@@ -36,6 +49,7 @@ const getComment = (req, res) => {
 
 module.exports = {
   serveHomePage,
+  addSession,
   ensureLogin,
   serveErrorPage,
   getComment,

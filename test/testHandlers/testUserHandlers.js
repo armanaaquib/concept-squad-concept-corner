@@ -1,7 +1,7 @@
 const request = require('supertest');
-const app = require('../src/app');
+const app = require('../../src/app');
 const { mock, replace, restore } = require('sinon');
-const authUtils = require('../src/authUtils');
+const authUtils = require('../../src/authUtils');
 
 describe('/user', function() {
   context('/signUp', function() {

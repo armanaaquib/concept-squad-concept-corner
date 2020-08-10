@@ -1,5 +1,5 @@
-exports.up = function(knex) {
-  return knex.schema.createTable('answers', function(table) {
+exports.up = function (knex) {
+  return knex.schema.createTable('answers', function (table) {
     table.increments('answer_id').primary();
     table
       .integer('question_id')
@@ -16,8 +16,10 @@ exports.up = function(knex) {
     table.string('answer');
     table.bool('accepted').defaultTo(false);
     table.date('time').defaultTo(knex.fn.now());
+    table.date('last_modified');
   });
 };
-exports.down = function(knex) {
+
+exports.down = function (knex) {
   return knex.schema.dropTableIfExists('answers');
 };

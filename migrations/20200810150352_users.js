@@ -1,5 +1,5 @@
-exports.up = function(knex) {
-  return knex.schema.createTable('users', function(table) {
+exports.up = function (knex) {
+  return knex.schema.createTable('users', function (table) {
     table.string('username').primary();
     table.string('name').notNullable();
     table.string('email');
@@ -12,6 +12,7 @@ exports.up = function(knex) {
     table.string('profile_pic').useNullAsDefault;
   });
 };
-exports.down = function(knex) {
+
+exports.down = function (knex) {
   return knex.schema.dropTableIfExists('users');
 };

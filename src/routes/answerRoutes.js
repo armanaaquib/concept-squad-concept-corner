@@ -15,10 +15,10 @@ const { ensureLogin } = require('../handlers/handlers');
 
 answerRouter.post('/post', ensureLogin, postAnswer);
 answerRouter.post('/markAccepted', ensureLogin, markAccepted);
-answerRouter.post('/addComment', ensureLogin, addAnswerComment);
 answerRouter.post('/updateVote', ensureLogin, updateVote);
-answerRouter.post('/delete', ensureLogin, deleteAnswer);
+answerRouter.post('/addComment', ensureLogin, addAnswerComment);
 answerRouter.post('/deleteComment', ensureLogin, deleteAnswerComment);
+answerRouter.post('/delete', ensureLogin, deleteAnswer);
 
 answerRouter.get('/userVote/:answerId', ensureLogin, getVote);
 answerRouter.get('/comments/:answerId', getCommentsOfAnswer);

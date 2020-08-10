@@ -43,20 +43,20 @@ const updateVote = (req, res) => {
   });
 };
 
-const getCommentsOfAnswer = (req, res) => {
-  const { answerId } = req.params;
-  const { dataStore } = req.app.locals;
-  dataStore.getCommentsOfAnswer(answerId).then((comments) => {
-    res.json(comments);
-  });
-};
-
 const addAnswerComment = (req, res) => {
   const { answerId, comment } = req.body;
   const { username } = req.session.user;
   const { dataStore } = req.app.locals;
   dataStore.addAnswerComment(username, answerId, comment).then((commentId) => {
     res.json(commentId);
+  });
+};
+
+const getCommentsOfAnswer = (req, res) => {
+  const { answerId } = req.params;
+  const { dataStore } = req.app.locals;
+  dataStore.getCommentsOfAnswer(answerId).then((comments) => {
+    res.json(comments);
   });
 };
 
@@ -89,10 +89,10 @@ const deleteAnswer = (req, res) => {
 module.exports = {
   postAnswer,
   markAccepted,
-  addAnswerComment,
   updateVote,
   getVote,
+  addAnswerComment,
   getCommentsOfAnswer,
-  deleteAnswer,
   deleteAnswerComment,
+  deleteAnswer,
 };
