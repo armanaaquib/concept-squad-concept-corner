@@ -23,7 +23,7 @@ const signUp = function (event, userDetails) {
   detailsToAdd.append('authSource', userDetails.authSource);
   detailsToAdd.append('profilePic', querySelector('.uploaded-image').src);
 
-  fetch('/signUp', {
+  fetch('/user/signUp', {
     method: 'POST',
     body: detailsToAdd,
   }).then((res) => {

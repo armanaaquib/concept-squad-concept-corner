@@ -43,24 +43,6 @@ describe('handlers', function () {
     });
   });
 
-  context('/signUp', function () {
-    it('should signUp user and redirect to home page', function (done) {
-      request(app)
-        .post('/signUp')
-        .set('Content-Type', 'multipart/form-data')
-        //.send()
-        .expect(200, done);
-    });
-
-    it('should give Bad Request if content is not valid', function (done) {
-      request(app)
-        .post('/signUp')
-        .set('Content-Type', 'multipart/form-data')
-        .send('wrong form data')
-        .expect(400, done);
-    });
-  });
-
   context('/confirmUser', function () {
     afterEach(() => {
       restore();

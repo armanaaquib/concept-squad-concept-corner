@@ -7,6 +7,7 @@ const sqlite = require('sqlite3').verbose();
 const config = require('../config');
 const answerRouter = require('./answerRoutes');
 const questionRouter = require('./questionRoutes');
+const userRouter = require('./userRoutes');
 
 const handlers = require('./handlers');
 const DataStore = require('../database/dataStore');
@@ -39,10 +40,10 @@ app.use((req, res, next) => {
 
 app.use('/answer', answerRouter);
 app.use('/question', questionRouter);
+app.use('/user', userRouter);
 
 app.get('/', handlers.serveHomePage);
 
-app.post('/signUp', handlers.signUp);
 app.get('/confirmUser', handlers.confirmUser);
 app.get('/hasUser/:username', handlers.hasUser);
 app.get('/profile/:username', handlers.serveProfilePage);
