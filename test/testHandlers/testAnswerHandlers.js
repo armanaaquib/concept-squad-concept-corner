@@ -35,18 +35,6 @@ describe('/answer', function () {
     });
   });
 
-  context('/addComment', function () {
-    it('should add comment to the answer', function (done) {
-      request(app)
-        .post('/answer/addComment')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({ answerId: 1, comment: 'comment' })
-        .expect(JSON.stringify(2))
-        .expect(200, done);
-    });
-  });
-
   context('/updateVote', function () {
     it('should return total votes for given answer after change of vote status', function (done) {
       request(app)
@@ -100,6 +88,18 @@ describe('/answer', function () {
     });
   });
 
+  context('/addComment', function () {
+    it('should add comment to the answer', function (done) {
+      request(app)
+        .post('/answer/addComment')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({ answerId: 1, comment: 'comment' })
+        .expect(JSON.stringify(2))
+        .expect(200, done);
+    });
+  });
+
   context('/comments/:answerId', function () {
     it('should give list of comments of the answer id', function (done) {
       request(app)
@@ -110,34 +110,6 @@ describe('/answer', function () {
 
     it('should give empty object when the question does not have any comments', function (done) {
       request(app).get('/answer/comments/89').expect([]).expect(200, done);
-    });
-  });
-
-  context('/delete', function () {
-    it('should delete answer', function (done) {
-      request(app)
-        .post('/answer/delete')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({
-          answerId: 1,
-          username: 'michel',
-        })
-        .expect(JSON.stringify({ isDeleted: true }))
-        .expect(200, done);
-    });
-
-    it('should give access denied if user is not author', function (done) {
-      session.user.username = 'ram';
-      request(app)
-        .post('/answer/delete')
-        .set('Cookie', `sId=${sessionId}`)
-        .set('Content-Type', 'application/json')
-        .send({
-          commentId: 2,
-          username: 'michel',
-        })
-        .expect(403, done);
     });
   });
 
@@ -163,6 +135,34 @@ describe('/answer', function () {
         .set('Content-Type', 'application/json')
         .send({
           commentId: 10,
+          username: 'michel',
+        })
+        .expect(403, done);
+    });
+  });
+
+  context('/delete', function () {
+    it('should delete answer', function (done) {
+      request(app)
+        .post('/answer/delete')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({
+          answerId: 1,
+          username: 'michel',
+        })
+        .expect(JSON.stringify({ isDeleted: true }))
+        .expect(200, done);
+    });
+
+    it('should give access denied if user is not author', function (done) {
+      session.user.username = 'ram';
+      request(app)
+        .post('/answer/delete')
+        .set('Cookie', `sId=${sessionId}`)
+        .set('Content-Type', 'application/json')
+        .send({
+          commentId: 2,
           username: 'michel',
         })
         .expect(403, done);
