@@ -2,12 +2,18 @@ const request = require('supertest');
 const app = require('../../src/app');
 
 describe('/answer', function () {
+  let sessionId;
+  let session;
+
+  beforeEach(() => {
+    const { sessions } = app.locals;
+    sessionId = sessions.createSession();
+    session = sessions.getSession(sessionId);
+    session.user = { username: 'michel', profilePic: null };
+  });
+
   context('/post', function () {
     it('should add Answer and redirect to question page again', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel' };
       request(app)
         .post('/answer/post')
         .set('Cookie', `sId=${sessionId}`)
@@ -20,10 +26,6 @@ describe('/answer', function () {
 
   context('/markAccepted', function () {
     it('should accept given answer as correct if user is the author', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
       request(app)
         .post('/answer/markAccepted')
         .set('Cookie', `sId=${sessionId}`)
@@ -35,10 +37,6 @@ describe('/answer', function () {
 
   context('/addComment', function () {
     it('should add comment to the answer', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel' };
       request(app)
         .post('/answer/addComment')
         .set('Cookie', `sId=${sessionId}`)
@@ -51,10 +49,6 @@ describe('/answer', function () {
 
   context('/updateVote', function () {
     it('should return total votes for given answer after change of vote status', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
       request(app)
         .post('/answer/updateVote')
         .set('Cookie', `sId=${sessionId}`)
@@ -63,11 +57,9 @@ describe('/answer', function () {
         .expect({ up: 3, down: 0 })
         .expect(200, done);
     });
+
     it('should return total votes for given answer after user has removed vote', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'bryce', profilePic: null };
+      session.user.username = 'bryce';
       request(app)
         .post('/answer/updateVote')
         .set('Cookie', `sId=${sessionId}`)
@@ -78,10 +70,7 @@ describe('/answer', function () {
     });
 
     it('should return total votes for given answer after user has voted first time ', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'carlo', profilePic: null };
+      session.user.username = 'carlo';
       request(app)
         .post('/answer/updateVote')
         .set('Cookie', `sId=${sessionId}`)
@@ -94,10 +83,6 @@ describe('/answer', function () {
 
   context('/userVote/:answerId', function () {
     it('should return vote of user for given answer id if user has voted', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
       request(app)
         .get('/answer/userVote/1')
         .set('Cookie', `sId=${sessionId}`)
@@ -106,10 +91,7 @@ describe('/answer', function () {
     });
 
     it('should return vote undefine of user for given answer id if user has not voted', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'carlo', profilePic: null };
+      session.user.username = 'carlo';
       request(app)
         .get('/answer/userVote/1')
         .set('Cookie', `sId=${sessionId}`)
@@ -133,10 +115,6 @@ describe('/answer', function () {
 
   context('/delete', function () {
     it('should delete answer', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
       request(app)
         .post('/answer/delete')
         .set('Cookie', `sId=${sessionId}`)
@@ -150,10 +128,7 @@ describe('/answer', function () {
     });
 
     it('should give access denied if user is not author', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'ram', profilePic: null };
+      session.user.username = 'ram';
       request(app)
         .post('/answer/delete')
         .set('Cookie', `sId=${sessionId}`)
@@ -168,10 +143,6 @@ describe('/answer', function () {
 
   context('/deleteComment', function () {
     it('should delete question comment and redirect to question page', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'michel', profilePic: null };
       request(app)
         .post('/answer/deleteComment')
         .set('Cookie', `sId=${sessionId}`)
@@ -185,10 +156,7 @@ describe('/answer', function () {
     });
 
     it('should give access denied if user is not author', function (done) {
-      const { sessions } = app.locals;
-      const sessionId = sessions.createSession();
-      const session = sessions.getSession(sessionId);
-      session.user = { username: 'ram', profilePic: null };
+      session.user.username = 'ram';
       request(app)
         .post('/answer/deleteComment')
         .set('Cookie', `sId=${sessionId}`)
