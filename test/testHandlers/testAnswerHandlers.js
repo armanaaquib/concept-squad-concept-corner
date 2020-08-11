@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../src/app');
 
-describe('/answer', function () {
+describe('/answer', function() {
   let sessionId;
   let session;
 
@@ -12,8 +12,8 @@ describe('/answer', function () {
     session.user = { username: 'michel', profilePic: null };
   });
 
-  context('/post', function () {
-    it('should add Answer and redirect to question page again', function (done) {
+  context('/post', function() {
+    it('should add Answer and redirect to question page again', function(done) {
       request(app)
         .post('/answer/post')
         .set('Cookie', `sId=${sessionId}`)
@@ -24,8 +24,8 @@ describe('/answer', function () {
     });
   });
 
-  context('/markAccepted', function () {
-    it('should accept given answer as correct if user is the author', function (done) {
+  context('/markAccepted', function() {
+    it('should accept given answer as correct if user is the author', function(done) {
       request(app)
         .post('/answer/markAccepted')
         .set('Cookie', `sId=${sessionId}`)
@@ -35,8 +35,8 @@ describe('/answer', function () {
     });
   });
 
-  context('/updateVote', function () {
-    it('should return total votes for given answer after change of vote status', function (done) {
+  context('/updateVote', function() {
+    it('should return total votes for given answer after change of vote status', function(done) {
       request(app)
         .post('/answer/updateVote')
         .set('Cookie', `sId=${sessionId}`)
@@ -46,7 +46,7 @@ describe('/answer', function () {
         .expect(200, done);
     });
 
-    it('should return total votes for given answer after user has removed vote', function (done) {
+    it('should return total votes for given answer after user has removed vote', function(done) {
       session.user.username = 'bryce';
       request(app)
         .post('/answer/updateVote')
@@ -57,20 +57,20 @@ describe('/answer', function () {
         .expect(200, done);
     });
 
-    it('should return total votes for given answer after user has voted first time ', function (done) {
+    it('should return total votes for given answer after user has voted first time ', function(done) {
       session.user.username = 'carlo';
       request(app)
         .post('/answer/updateVote')
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
-        .send({ answerId: 6, vote: 'up' })
-        .expect({ up: 3, down: 1 })
+        .send({ answerId: 3, vote: 'up' })
+        .expect({ up: 1, down: 0 })
         .expect(200, done);
     });
   });
 
-  context('/userVote/:answerId', function () {
-    it('should return vote of user for given answer id if user has voted', function (done) {
+  context('/userVote/:answerId', function() {
+    it('should return vote of user for given answer id if user has voted', function(done) {
       request(app)
         .get('/answer/userVote/1')
         .set('Cookie', `sId=${sessionId}`)
@@ -78,7 +78,7 @@ describe('/answer', function () {
         .expect(200, done);
     });
 
-    it('should return vote undefine of user for given answer id if user has not voted', function (done) {
+    it('should return vote undefine of user for given answer id if user has not voted', function(done) {
       session.user.username = 'carlo';
       request(app)
         .get('/answer/userVote/1')
@@ -88,8 +88,8 @@ describe('/answer', function () {
     });
   });
 
-  context('/addComment', function () {
-    it('should add comment to the answer', function (done) {
+  context('/addComment', function() {
+    it('should add comment to the answer', function(done) {
       request(app)
         .post('/answer/addComment')
         .set('Cookie', `sId=${sessionId}`)
@@ -100,34 +100,37 @@ describe('/answer', function () {
     });
   });
 
-  context('/comments/:answerId', function () {
-    it('should give list of comments of the answer id', function (done) {
+  context('/comments/:answerId', function() {
+    it('should give list of comments of the answer id', function(done) {
       request(app)
         .get('/answer/comments/1')
         .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
         .expect(200, done);
     });
 
-    it('should give empty object when the question does not have any comments', function (done) {
-      request(app).get('/answer/comments/89').expect([]).expect(200, done);
+    it('should give empty object when the question does not have any comments', function(done) {
+      request(app)
+        .get('/answer/comments/89')
+        .expect([])
+        .expect(200, done);
     });
   });
 
-  context('/deleteComment', function () {
-    it('should delete question comment and redirect to question page', function (done) {
+  context('/deleteComment', function() {
+    it('should delete question comment and redirect to question page', function(done) {
       request(app)
         .post('/answer/deleteComment')
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
         .send({
           commentId: 1,
-          username: 'michel',
+          username: 'michel'
         })
         .expect(JSON.stringify({ isDeleted: true }))
         .expect(200, done);
     });
 
-    it('should give access denied if user is not author', function (done) {
+    it('should give access denied if user is not author', function(done) {
       session.user.username = 'ram';
       request(app)
         .post('/answer/deleteComment')
@@ -135,27 +138,27 @@ describe('/answer', function () {
         .set('Content-Type', 'application/json')
         .send({
           commentId: 10,
-          username: 'michel',
+          username: 'michel'
         })
         .expect(403, done);
     });
   });
 
-  context('/delete', function () {
-    it('should delete answer', function (done) {
+  context('/delete', function() {
+    it('should delete answer', function(done) {
       request(app)
         .post('/answer/delete')
         .set('Cookie', `sId=${sessionId}`)
         .set('Content-Type', 'application/json')
         .send({
           answerId: 1,
-          username: 'michel',
+          username: 'michel'
         })
         .expect(JSON.stringify({ isDeleted: true }))
         .expect(200, done);
     });
 
-    it('should give access denied if user is not author', function (done) {
+    it('should give access denied if user is not author', function(done) {
       session.user.username = 'ram';
       request(app)
         .post('/answer/delete')
@@ -163,7 +166,7 @@ describe('/answer', function () {
         .set('Content-Type', 'application/json')
         .send({
           commentId: 2,
-          username: 'michel',
+          username: 'michel'
         })
         .expect(403, done);
     });

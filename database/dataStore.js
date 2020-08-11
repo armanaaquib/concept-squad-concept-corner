@@ -90,42 +90,45 @@ class DataStore {
 
   updateQuestionTag(questionId, tags) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.deleteQuestionTag, [questionId], (err) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        this.addQuestionTag(questionId, tags).then((isadded) => {
-          isadded && resolve(questionId);
-        });
-      });
+      this.newdb
+        .from('question_tag')
+        .where({ question_id: questionId })
+        .del()
+        .then(() => {
+          this.addQuestionTag(questionId, tags)
+            .then((isadded) => {
+              isadded && resolve(questionId);
+            })
+            .catch(reject);
+        })
+        .catch(reject);
     });
   }
 
   updateQuestion(question) {
+    const { description, title, questionId, tags } = question;
     return new Promise((resolve, reject) => {
-      this.db.run(
-        queries.updateQuestion,
-        [question.title, question.description, question.questionId],
-        (err) => {
-          if (err) {
-            reject(err);
-          }
-          this.updateQuestionTag(question.questionId, question.tags)
+      this.newdb
+        .from('questions')
+        .where({ question_id: questionId })
+        .update({ title, description })
+        .then(() => {
+          this.updateQuestionTag(questionId, tags)
             .then(resolve)
             .catch(reject);
-        }
-      );
+        })
+        .catch(reject);
     });
   }
 
   getTags(questionId) {
     return new Promise((resolve, reject) => {
-      this.newdb('tags').select(['tags.tag_name'])
+      this.newdb('tags')
+        .select(['tags.tag_name'])
         .join('question_tag', 'tags.tag_id', 'question_tag.tag_id')
-        .where({'question_tag.question_id': questionId})
+        .where({ 'question_tag.question_id': questionId })
         .then((tags) => {
-          const tagValues = tags.map(tag => tag.tag_name);
+          const tagValues = tags.map((tag) => tag.tag_name);
           resolve(tagValues);
         })
         .catch(reject);
@@ -134,12 +137,16 @@ class DataStore {
 
   getQuestion(questionId) {
     const fields = [
-      'title', 'description', 'time', 
-      'view_count as views', 'no_of_answers as noOfAnswers', 
-      'question_id as questionId', 'username', 
+      'title',
+      'description',
+      'time',
+      'view_count as views',
+      'no_of_answers as noOfAnswers',
+      'question_id as questionId',
+      'username',
       'is_answer_accepted as isAnswerAccepted'
     ];
-    const filterBy = {'question_id': questionId };
+    const filterBy = { question_id: questionId };
 
     return new Promise((resolve, reject) => {
       this.newdb('questions')
@@ -150,19 +157,23 @@ class DataStore {
           !question && resolve(question);
           question['tags'] = await this.getTags(question.questionId);
           resolve(question);
-        }).catch(reject);
+        })
+        .catch(reject);
     });
   }
 
   getQuestions() {
     return new Promise((resolve, reject) => {
       const fields = [
-        'questions.question_id as questionId', 'questions.username', 
-        'questions.title', 'questions.description',
-        'questions.time', 'users.profile_pic as profilePic',
-        'questions.view_count as views', 
+        'questions.question_id as questionId',
+        'questions.username',
+        'questions.title',
+        'questions.description',
+        'questions.time',
+        'users.profile_pic as profilePic',
+        'questions.view_count as views',
         'questions.no_of_answers as noOfAnswers',
-        'questions.is_answer_accepted as isAnswersAccepted',
+        'questions.is_answer_accepted as isAnswersAccepted'
       ];
       this.newdb('questions')
         .select(fields)
@@ -175,58 +186,71 @@ class DataStore {
             questions.push(question);
           }
           resolve(questions);
-        }).catch(reject);
+        })
+        .catch(reject);
     });
   }
 
   acceptAnswer(questionId, answerId) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.acceptAnswer, [answerId], (err) => {
-        err && reject(err);
-        this.db.run(queries.setAnswerAccepted, [questionId], (err) => {
-          err && reject(err);
-          resolve(true);
-        });
-      });
+      this.newdb('answers')
+        .where({ answer_id: answerId })
+        .update({ accepted: 1 })
+        .then(() => {
+          this.newdb('questions')
+            .update({ is_answer_accepted: 1 })
+            .where({ question_id: questionId })
+            .then(() => resolve(true));
+        })
+        .catch(reject);
     });
   }
 
   addAnswer(username, questionId, answer) {
     return new Promise((resolve, reject) => {
-      this.db.serialize(() => {
-        this.db
-          .run(queries.addAnswer, [username, questionId, answer])
-          .run(queries.updateAnswerCount, [questionId], function(err) {
-            err && reject(err);
-            resolve(this.lastID);
-          });
-      });
+      this.newdb('answers')
+        .insert({ username, answer, question_id: questionId })
+        .then(async ([lastID]) => {
+          await this.newdb('questions')
+            .increment({ no_of_answers: 1 })
+            .where({ question_id: questionId });
+          resolve(lastID);
+        })
+        .catch(reject);
     });
   }
 
   getVotesOfAnswer(answerId) {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getVotesOfAnswer, [answerId], (err, rows) => {
-        err && reject(err);
-        const votes = { up: 0, down: 0 };
-        for (const row of rows) {
-          votes[row.vote] = row.vote_count;
-        }
-        resolve(votes);
-      });
+      const fields = ['vote'];
+      this.newdb('answer_votes')
+        .select(fields)
+        .count('vote as vote_count')
+        .where({ answer_id: answerId })
+        .then((rows) => {
+          const votes = { up: 0, down: 0 };
+          for (const row of rows) {
+            votes[row.vote] = row.vote_count;
+          }
+          resolve(votes);
+        })
+        .catch(reject);
     });
   }
 
   getAnswers(questionId) {
     return new Promise((resolve, reject) => {
       const fields = [
-        'username', 'answer_id as answerId', 
-        'question_id as questionId', 'answer',
-        'accepted', 'time'
+        'username',
+        'answer_id as answerId',
+        'question_id as questionId',
+        'answer',
+        'accepted',
+        'time'
       ];
       this.newdb('answers')
         .select(fields)
-        .where({'question_id': questionId})
+        .where({ question_id: questionId })
         .orderBy('accepted', 'desc')
         .then(async (rows) => {
           const answers = [];
@@ -237,119 +261,133 @@ class DataStore {
             answers.push(answer);
           }
           resolve(answers);
-        }).catch(reject);
+        })
+        .catch(reject);
     });
   }
 
   getVote(username, answerId) {
     return new Promise((resolve, reject) => {
-      this.db.get(queries.getVote, [username, answerId], (err, row) => {
-        err && reject(err);
-        const vote = row || {};
-        resolve(vote.vote);
-      });
+      this.newdb('answer_votes')
+        .select(['vote'])
+        .where({ username, answer_id: answerId })
+        .then(([row]) => {
+          const { vote } = row || {};
+          resolve(vote);
+        })
+        .catch(reject);
     });
   }
 
   addQuestionTag(questionId, tags) {
     return new Promise((resolve, reject) => {
       tags.forEach((tag, index) => {
-        this.getTagId(tag).then((tagId) => {
-          this.db.run(queries.addQuestionTag, [questionId, tagId], (err) => {
-            err && reject(err);
-            if (index == tags.length - 1) {
-              resolve(true);
-            }
-          });
-        });
+        this.getTagId(tag)
+          .then((tagId) => {
+            this.newdb('question_tag')
+              .insert({ question_id: questionId, tag_id: tagId })
+              .then(() => {
+                if (index === tags.length - 1) {
+                  resolve(true);
+                }
+              });
+          })
+          .catch(reject);
       });
     });
   }
 
   getTagId(tag) {
     return new Promise((resolve, reject) => {
-      this.db.get(queries.getTagId, [tag], (err, rows) => {
-        err && reject(err);
-        if (rows) {
-          resolve(rows.tag_id);
-          return;
-        }
-        this.db.run(queries.addTag, [tag], function(err) {
-          err && reject(err);
-          resolve(this.lastID);
-        });
-      });
+      this.newdb('tags')
+        .select('tag_id')
+        .where({ tag_name: tag })
+        .then(([row]) => {
+          if (!row) {
+            this.newdb('tags')
+              .insert({ tag_name: tag })
+              .then(([lastID]) => resolve(lastID));
+            return;
+          }
+          resolve(row.tag_id);
+        })
+        .catch(reject);
     });
   }
 
   getTagSuggestion(tagname) {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getTagSuggestion, [`%${tagname}%`], (err, rows) => {
-        err && reject(err);
-        const matchingTags = rows.map((row) => row.tag_name);
-        resolve(matchingTags);
-      });
+      this.newdb('tags')
+        .select(['tag_name'])
+        .where('tag_name', 'like', `%${tagname}%`)
+        .then((rows) => {
+          const matchingTags = rows.map((row) => row.tag_name);
+          resolve(matchingTags);
+        })
+        .catch(reject);
     });
   }
 
   updateVote(username, answerId, vote) {
     return new Promise((resolve, reject) => {
-      this.db.run(
-        queries.updateVote,
-        [vote, username, answerId],
-        async (err) => {
-          err && reject(err);
+      this.newdb(['answer_votes'])
+        .where({ username, answer_id: answerId })
+        .update({ vote })
+        .then(async () => {
           const votes = await this.getVotesOfAnswer(answerId);
           resolve(votes);
-        }
-      );
+        })
+        .catch(reject);
     });
   }
 
   addVote(username, answerId, vote) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.addVote, [username, answerId, vote], async (err) => {
-        err && reject(err);
-        const votes = await this.getVotesOfAnswer(answerId);
-        resolve(votes);
-      });
+      this.newdb('answer_votes')
+        .insert({ username, answer_id: answerId, vote })
+        .then(async () => {
+          const votes = await this.getVotesOfAnswer(answerId);
+          resolve(votes);
+        })
+        .catch(reject);
     });
   }
 
   deleteVote(username, answerId) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.deleteVote, [username, answerId], async (err) => {
-        err && reject(err);
-        const votes = await this.getVotesOfAnswer(answerId);
-        resolve(votes);
-      });
+      this.newdb('answer_votes')
+        .where({ username, answer_id: answerId })
+        .del()
+        .then(async () => {
+          const votes = await this.getVotesOfAnswer(answerId);
+          resolve(votes);
+        })
+        .catch(reject);
     });
   }
 
   addQuestionComment(username, questionId, comment) {
     return new Promise((resolve, reject) => {
-      this.db.run(
-        queries.addQuestionComment,
-        [username, questionId, comment],
-        function(err) {
-          err && reject(err);
-          resolve(this.lastID);
-        }
-      );
+      this.newdb('question_comments')
+        .insert({ username, question_id: questionId, comment })
+        .then(([lastID]) => {
+          resolve(lastID);
+        })
+        .catch(reject);
     });
   }
 
   getCommentsOfQuestion(questionId) {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getCommentsOfQuestion, [questionId], (err, rows) => {
-        err && reject(err);
-        if (!rows) {
-          resolve([]);
-        }
-        let comments = rows || [];
-        comments = comments.map(wrapComment);
-        resolve(comments);
-      });
+      const fields = ['username', 'comment_id as commentId', 'comment', 'time'];
+      this.newdb('question_comments')
+        .select(fields)
+        .where({ question_id: questionId })
+        .then((rows) => {
+          const comments = rows;
+          resolve(comments);
+        })
+        .catch(reject);
     });
   }
 
@@ -382,59 +420,67 @@ class DataStore {
 
   getComment(commentId) {
     return new Promise((resolve, reject) => {
-      this.db.get(queries.getComment, [commentId], (err, rows) => {
-        err && reject(err);
-        if (!rows) {
-          resolve([]);
-        }
-        let comment = rows || {};
-        comment = wrapComment(comment);
-        resolve(comment);
-      });
+      const fields = ['username', 'comment_id as commentId', 'comment', 'time'];
+      this.newdb('question_comments')
+        .select(fields)
+        .where({ comment_id: commentId })
+        .first()
+        .then((rows) => {
+          if (!rows) {
+            resolve([]);
+          }
+          const comment = rows || {};
+          resolve(comment);
+        })
+        .catch(reject);
     });
   }
 
   deleteQuestionComment(commentId) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.deleteQuestionComment, [commentId], (err) => {
-        err && reject(err);
-        resolve(true);
-      });
+      this.newdb
+        .from('question_comments')
+        .where({ comment_id: commentId })
+        .del()
+        .then(() => {
+          resolve(true);
+        })
+        .catch(reject);
     });
   }
 
   deleteAnswerComment(commentId) {
     return new Promise((resolve, reject) => {
-      this.db.run(queries.deleteAnswerComment, [commentId], (err) => {
-        err && reject(err);
-        resolve(true);
-      });
+      this.newdb
+        .from('answer_comments')
+        .where({ comment_id: commentId })
+        .del()
+        .then(() => {
+          resolve(true);
+        })
+        .catch(reject);
     });
   }
 
   deleteAnswer(answerId) {
     return new Promise((resolve, reject) => {
-      this.db.serialize(() => {
-        this.db
-          .run('PRAGMA foreign_keys = ON;')
-          .run(queries.deleteAnswer, [answerId], function(err) {
-            err && reject(err);
-            resolve(true);
-          });
-      });
+      this.newdb
+        .from('answers')
+        .where({ answer_id: answerId })
+        .del()
+        .then(() => resolve(true))
+        .catch(reject);
     });
   }
 
   deleteQuestion(questionId) {
     return new Promise((resolve, reject) => {
-      this.db.serialize(() => {
-        this.db
-          .run('PRAGMA foreign_keys = ON;')
-          .run(queries.deleteQuestion, [questionId], function(err) {
-            err && reject(err);
-            resolve(true);
-          });
-      });
+      this.newdb
+        .from('questions')
+        .where({ question_id: questionId })
+        .del()
+        .then(() => resolve(true))
+        .catch(reject);
     });
   }
 }
