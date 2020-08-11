@@ -1,18 +1,5 @@
 const queries = require('./queries');
 
-const wrapUser = (row) => {
-  return {
-    username: row.username,
-    name: row.name,
-    email: row.email,
-    location: row.location,
-    title: row.title,
-    aboutMe: row.about_me,
-    company: row.company,
-    profilePic: row.profile_pic
-  };
-};
-
 const wrapQuestion = (row) => {
   return {
     questionId: row.question_id,
@@ -45,7 +32,7 @@ const wrapComment = (row) => {
     username: row.username,
     commentId: row.comment_id,
     comment: row.comment,
-    time: row.time
+    time: new Date(row.time)
   };
 };
 
@@ -80,54 +67,51 @@ class DataStore {
 
   getUser(username) {
     return new Promise((resolve, reject) => {
-      this.db.get(queries.getUser, [username], (err, row) => {
-        err && reject(err);
-
-        if (!row) {
+      this.newdb('users')
+        .select([
+          'username',
+          'name',
+          'email',
+          'location',
+          'title',
+          'about_me as aboutMe',
+          'company',
+          'profile_pic as profilePic'
+        ])
+        .where({ username })
+        .then(([row]) => {
           resolve(row);
-          return;
-        }
-        resolve(wrapUser(row));
-      });
+        })
+        .catch(reject);
     });
   }
 
   getRegisteredUser(authLogin, authSource) {
+    const fields = ['username', 'profile_pic as profilePic'];
+    const filteringBy = { auth_login: authLogin, auth_source: authSource };
     return new Promise((resolve, reject) => {
-      this.db.get(
-        queries.getRegisteredUser,
-        [authLogin, authSource],
-        (err, row) => {
-          err && reject(err);
-          if (!row) {
-            resolve(row);
-            return;
-          }
-          resolve({ username: row.username, profilePic: row.profile_pic });
-        }
-      );
+      this.newdb('users')
+        .select(fields)
+        .where(filteringBy)
+        .first()
+        .then((row) => {
+          resolve(row);
+        })
+        .catch(reject);
     });
   }
 
   addQuestion(question) {
+    const { username, title, description, tags } = question;
     return new Promise((resolve, reject) => {
-      const dataStoreInstance = this;
-      this.db.run(
-        queries.addQuestion,
-        [question.username, question.title, question.description],
-        function(err) {
-          if (err) {
-            reject(err);
-            return;
-          }
-          const questionId = this.lastID;
-          dataStoreInstance
-            .addQuestionTag(questionId, question.tags)
-            .then((isadded) => {
-              isadded && resolve(questionId);
-            });
-        }
-      );
+      this.newdb('questions')
+        .insert({ username, title, description })
+        .then(([questionId]) => {
+          this.addQuestionTag(questionId, tags)
+            .then(() => resolve(questionId))
+            .catch(reject);
+        })
+        .catch(reject);
     });
   }
 

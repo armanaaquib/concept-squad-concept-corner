@@ -3,8 +3,53 @@ const app = require('../../src/app');
 const { mock, replace, restore } = require('sinon');
 const authUtils = require('../../src/authUtils');
 
-describe('/user', function () {
-  context('/confirm', function () {
+describe('/user', function() {
+  after(() => {
+    app.locals.dataStore.newdb.destroy();
+  });
+
+  context('/has', function() {
+    it('should give availability as true when it has not user with the same name', function(done) {
+      request(app)
+        .get('/user/has/AbC')
+        .set('Content-Type', 'application/json')
+        .expect({ available: true })
+        .expect(200, done);
+    });
+
+    it('should give availability as false when it has user with the same name', function(done) {
+      request(app)
+        .get('/user/has/michel')
+        .set('Content-Type', 'application/json')
+        .expect({ available: false })
+        .expect(200, done);
+    });
+  });
+
+  context('/profile/:username', function() {
+    it('should serve user profile page', function(done) {
+      request(app)
+        .get('/user/profile/michel')
+        .expect(/michel/)
+        .expect(200, done);
+    });
+  });
+
+  context('/logout', function() {
+    it('should logout and redirect to /', function(done) {
+      const { sessions } = app.locals;
+      const sessionId = sessions.createSession();
+      const session = sessions.getSession(sessionId);
+      session.user = { username: 'michel' };
+      request(app)
+        .get('/user/logout')
+        .set('Cookie', `sId=${sessionId}`)
+        .expect('location', '/')
+        .expect(302, done);
+    });
+  });
+
+  context('/confirm', function() {
     afterEach(() => {
       restore();
     });
@@ -13,7 +58,9 @@ describe('/user', function () {
       replace(
         authUtils,
         'getAccessToken',
-        mock().withArgs('123').returns(Promise.resolve('access-token'))
+        mock()
+          .withArgs('123')
+          .returns(Promise.resolve('access-token'))
       );
 
       replace(
@@ -35,7 +82,9 @@ describe('/user', function () {
       replace(
         authUtils,
         'getAccessToken',
-        mock().withArgs('123').returns(Promise.resolve('access-token'))
+        mock()
+          .withArgs('123')
+          .returns(Promise.resolve('access-token'))
       );
 
       replace(
@@ -53,7 +102,7 @@ describe('/user', function () {
         .expect(200, done);
     });
 
-    it('should say access denied if code query is not present', function (done) {
+    it('should say access denied if code query is not present', function(done) {
       request(app)
         .get('/user/confirm')
         .set('Content-Type', 'application/json')
@@ -62,8 +111,8 @@ describe('/user', function () {
     });
   });
 
-  context('/has', function () {
-    it('should give availability as true when it has not user with the same name', function (done) {
+  context('/has', function() {
+    it('should give availability as true when it has not user with the same name', function(done) {
       request(app)
         .get('/user/has/AbC')
         .set('Content-Type', 'application/json')
@@ -71,7 +120,7 @@ describe('/user', function () {
         .expect(200, done);
     });
 
-    it('should give availability as false when it has user with the same name', function (done) {
+    it('should give availability as false when it has user with the same name', function(done) {
       request(app)
         .get('/user/has/michel')
         .set('Content-Type', 'application/json')
@@ -80,8 +129,8 @@ describe('/user', function () {
     });
   });
 
-  context('/signUp', function () {
-    it.skip('should signUp user and redirect to home page', function (done) {
+  context('/signUp', function() {
+    it('should signUp user and redirect to home page', function(done) {
       request(app)
         .post('/user/signUp')
         .set('Content-Type', 'multipart/form-data')
@@ -89,7 +138,7 @@ describe('/user', function () {
         .expect(200, done);
     });
 
-    it('should give Bad Request if content is not valid', function (done) {
+    it('should give Bad Request if content is not valid', function(done) {
       request(app)
         .post('/user/signUp')
         .set('Content-Type', 'multipart/form-data')
@@ -98,8 +147,8 @@ describe('/user', function () {
     });
   });
 
-  context('/profile/:username', function () {
-    it('should serve user profile page', function (done) {
+  context('/profile/:username', function() {
+    it('should serve user profile page', function(done) {
       request(app)
         .get('/user/profile/michel')
         .expect(/michel/)
@@ -107,8 +156,8 @@ describe('/user', function () {
     });
   });
 
-  context('/logout', function () {
-    it('should logout and redirect to /', function (done) {
+  context('/logout', function() {
+    it('should logout and redirect to /', function(done) {
       const { sessions } = app.locals;
       const sessionId = sessions.createSession();
       const session = sessions.getSession(sessionId);

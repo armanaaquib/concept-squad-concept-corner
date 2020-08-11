@@ -60,17 +60,38 @@ describe('DataStore', function() {
 
   context('getUser', function() {
     it('should resolve user details if user is available', function(done) {
-      dbClient['get'] = fake.yields(null, {
-        username: 'jake',
-        name: 'jake shawn',
-        email: 'jake@gmail.com',
-        location: 'london',
-        title: 'project manager',
-        about_me: null,
-        company: null,
-        profile_pic: null
+      const newDbClient = stub().returns({
+        select: mock()
+          .withArgs([
+            'username',
+            'name',
+            'email',
+            'location',
+            'title',
+            'about_me as aboutMe',
+            'company',
+            'profile_pic as profilePic'
+          ])
+          .returns({
+            where: mock()
+              .withArgs({ username: 'jake' })
+              .returns(
+                Promise.resolve([
+                  {
+                    username: 'jake',
+                    name: 'jake shawn',
+                    email: 'jake@gmail.com',
+                    location: 'london',
+                    title: 'project manager',
+                    aboutMe: null,
+                    company: null,
+                    profilePic: null
+                  }
+                ])
+              )
+          })
       });
-
+      dataStore = new DataStore(null, newDbClient);
       dataStore.getUser('jake').then((user) => {
         assert.deepStrictEqual(user, {
           username: 'jake',
@@ -82,96 +103,39 @@ describe('DataStore', function() {
           company: null,
           profilePic: null
         });
-        assert.ok(dbClient.get.calledOnce);
-        assert.deepStrictEqual(dbClient.get.args[0][1], ['jake']);
+        assert.ok(newDbClient.calledOnce);
         done();
       });
     });
 
     it('should give undefined if user is not available', function(done) {
-      dbClient['get'] = fake.yields(null, undefined);
+      const newDbClient = stub().returns({
+        select: mock().returns({
+          where: mock()
+            .withArgs({ username: 'Bold' })
+            .returns(Promise.resolve([undefined]))
+        })
+      });
+      dataStore = new DataStore(null, newDbClient);
       dataStore.getUser('Bold').then((user) => {
         assert.isUndefined(user);
-        assert.ok(dbClient.get.calledOnce);
-        assert.deepStrictEqual(dbClient.get.args[0][1], ['Bold']);
+        assert.ok(newDbClient.calledOnce);
         done();
       });
     });
 
-    it('should reject error if query is not valid', function() {
-      dbClient['get'] = fake.yields({ message: 'syntax error' });
+    it('should reject error if query is not valid', function(done) {
+      const newDbClient = stub().returns({
+        select: mock().returns({
+          where: mock()
+            .withArgs({ username: 'Bold' })
+            .returns(Promise.reject({ message: 'syntax error' }))
+        })
+      });
+      dataStore = new DataStore(null, newDbClient);
       dataStore.getUser('Bold').catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
-      });
-    });
-  });
-
-  context('getRegisteredUser', function() {
-    it('should resolve user details if user is available', function(done) {
-      dbClient['get'] = fake.yields(null, {
-        username: 'jake',
-        profilePic: undefined
-      });
-
-      dataStore.getRegisteredUser('jake', 'github').then((user) => {
-        assert.deepStrictEqual(user, {
-          username: 'jake',
-          profilePic: undefined
-        });
-        assert.ok(dbClient.get.calledOnce);
-        assert.deepStrictEqual(dbClient.get.args[0][1], ['jake', 'github']);
         done();
-      });
-    });
-
-    it('should resolve undefined if user is not available', function(done) {
-      dbClient['get'] = fake.yields(null, undefined);
-      dataStore.getRegisteredUser('Bold', 'github').then((user) => {
-        assert.isUndefined(user);
-        assert.ok(dbClient.get.calledOnce);
-        assert.deepStrictEqual(dbClient.get.args[0][1], ['Bold', 'github']);
-        done();
-      });
-    });
-
-    it('should reject error if query is not valid', function() {
-      dbClient['get'] = fake.yields({ message: 'syntax error' });
-      dataStore.getRegisteredUser('Bold', 'github').catch((err) => {
-        assert.deepStrictEqual(err, { message: 'syntax error' });
-      });
-    });
-  });
-
-  context('addQuestion', function() {
-    it('should add a question', async function() {
-      let callCount = 0;
-      dbClient['run'] = function(query, params, callback) {
-        assert.deepStrictEqual(params, [
-          'michel',
-          'question title',
-          'question description'
-        ]);
-        callCount++;
-        callback.call({ lastID: 10 }, null);
-      };
-
-      dataStore['addQuestionTag'] = stub()
-        .withArgs(10, ['node', 'java'])
-        .returns(Promise.resolve(10));
-      const questionId = await dataStore.addQuestion({
-        username: 'michel',
-        title: 'question title',
-        description: 'question description',
-        tags: ['node', 'java']
-      });
-      assert.strictEqual(callCount, 1);
-      assert.strictEqual(questionId, 10);
-    });
-
-    it('should reject error if query is not valid', function() {
-      dbClient['run'] = fake.yields({ message: 'syntax error' });
-      dataStore.addQuestion({}).catch((err) => {
-        assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
   });

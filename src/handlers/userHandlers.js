@@ -6,7 +6,7 @@ const { getAuthLink } = require('../../config');
 const signUp = (req, res) => {
   const { dataStore } = req.app.locals;
   const form = new formidable.IncomingForm();
-  form.parse(req, function (err, userInfo) {
+  form.parse(req, function(err, userInfo) {
     if (err) {
       res.status(400);
       res.end();
@@ -15,7 +15,7 @@ const signUp = (req, res) => {
     dataStore.addUser(userInfo).then(() => {
       req.session.user = {
         username: userInfo.username,
-        profilePic: userInfo.profilePic,
+        profilePic: userInfo.profilePic
       };
       res.end();
     });
@@ -38,7 +38,7 @@ const confirmUser = (req, res) => {
       if (user) {
         req.session.user = {
           username: user.username,
-          profilePic: user.profilePic,
+          profilePic: user.profilePic
         };
         res.redirect('/');
       } else {
@@ -47,7 +47,7 @@ const confirmUser = (req, res) => {
     });
 };
 
-const hasUser = function (req, res) {
+const hasUser = function(req, res) {
   const { username } = req.params;
   const { dataStore } = req.app.locals;
   dataStore.getUser(username).then((user) => {
@@ -76,5 +76,5 @@ module.exports = {
   confirmUser,
   hasUser,
   logout,
-  serveProfilePage,
+  serveProfilePage
 };
