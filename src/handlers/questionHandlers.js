@@ -15,7 +15,7 @@ const serveQuestionPage = (req, res) => {
       user: req.session.user,
       question,
       answers: answerList,
-      authLink: getAuthLink(),
+      authLink: getAuthLink()
     });
   });
 };
@@ -25,7 +25,7 @@ const servePostQuestionPage = (req, res) => {
   res.render('postQuestion', {
     cancelUrl,
     user: req.session.user,
-    authHref: getAuthLink(),
+    authHref: getAuthLink()
   });
   res.end();
 };
@@ -57,7 +57,7 @@ const serveEditQuestion = (req, res) => {
     if (question.username === username) {
       res.render('editQuestion', {
         question,
-        user: req.session.user,
+        user: req.session.user
       });
     } else {
       serveErrorPage(res, 403, 'Access Denied');
@@ -137,5 +137,5 @@ module.exports = {
   addQuestionComment,
   getCommentsOfQuestion,
   deleteQuestionComment,
-  deleteQuestion,
+  deleteQuestion
 };

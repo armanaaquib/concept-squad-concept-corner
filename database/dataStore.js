@@ -45,7 +45,7 @@ const wrapComment = (row) => {
     username: row.username,
     commentId: row.comment_id,
     comment: row.comment,
-    time: new Date(row.time)
+    time: row.time
   };
 };
 
