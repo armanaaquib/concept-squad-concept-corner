@@ -9,7 +9,7 @@
     "create-tables": "rm -f ./store/concept-corner.db; node database/dbInit.js",
     "populate-raw-data": "rm -f store/raw-concept-corner.db; sqlite3 store/raw-concept-corner.db '.read store/scripts/create_schema.sql'; sqlite3 store/raw-concept-corner.db '.read store/scripts/populate_raw_data.sql';",
     "populate-test-data": "rm -f store/test-concept-corner.db; sqlite3 store/test-concept-corner.db '.read store/scripts/create_schema.sql'; sqlite3 store/test-concept-corner.db '.read store/scripts/populate_test_data.sql';",
-    "test": "rm -f store/test-concept-corner.db; npx knex migrate:latest --env test;npm run populate-test-data; nyc mocha --recursive",
+    "test": "export CONCEPT_CORNER_TEST_DB=test-concept-corner.db;rm -f store/test-concept-corner.db; npx knex migrate:latest --env test;npm run populate-test-data; nyc mocha --recursive",
     "lint": "eslint ./"
   },
   "repository": {
