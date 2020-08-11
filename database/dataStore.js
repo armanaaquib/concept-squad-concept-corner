@@ -1,32 +1,5 @@
 const queries = require('./queries');
 
-const wrapQuestion = (row) => {
-  return {
-    questionId: row.question_id,
-    username: row.username,
-    profilePic: row.profile_pic,
-    title: row.title,
-    description: row.description,
-    time: new Date(row.time),
-    lastModified: row.last_modified,
-    views: row.view_count,
-    noOfAnswers: row.no_of_answers,
-    isAnswerAccepted: row.is_answer_accepted === 1 ? true : false
-  };
-};
-
-const wrapAnswer = (row) => {
-  return {
-    username: row.username,
-    questionId: row.question_id,
-    answerId: row.answer_id,
-    answer: row.answer,
-    accepted: row.accepted === 1 ? true : false,
-    time: new Date(row.time),
-    lastModified: row.last_modified
-  };
-};
-
 const wrapComment = (row) => {
   return {
     username: row.username,
@@ -148,41 +121,61 @@ class DataStore {
 
   getTags(questionId) {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getQuestionTags, [questionId], function(err, rows) {
-        err && reject(err);
-        resolve(rows.map((row) => row.tag_name));
-      });
+      this.newdb('tags').select(['tags.tag_name'])
+        .join('question_tag', 'tags.tag_id', 'question_tag.tag_id')
+        .where({'question_tag.question_id': questionId})
+        .then((tags) => {
+          const tagValues = tags.map(tag => tag.tag_name);
+          resolve(tagValues);
+        })
+        .catch(reject);
     });
   }
 
   getQuestion(questionId) {
-    return new Promise((resolve, reject) => {
-      this.db.get(queries.getQuestion, [questionId], async (err, row) => {
-        err && reject(err);
+    const fields = [
+      'title', 'description', 'time', 
+      'view_count as views', 'no_of_answers as noOfAnswers', 
+      'question_id as questionId', 'username', 
+      'is_answer_accepted as isAnswerAccepted'
+    ];
+    const filterBy = {'question_id': questionId };
 
-        if (!row) {
-          resolve(row);
-          return;
-        }
-        const question = wrapQuestion(row);
-        question['tags'] = await this.getTags(question.questionId);
-        resolve(question);
-      });
+    return new Promise((resolve, reject) => {
+      this.newdb('questions')
+        .select(fields)
+        .where(filterBy)
+        .first()
+        .then(async (question) => {
+          !question && resolve(question);
+          question['tags'] = await this.getTags(question.questionId);
+          resolve(question);
+        }).catch(reject);
     });
   }
 
   getQuestions() {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getQuestions, async (err, rows) => {
-        err && reject(err);
-        const questions = [];
-        for (const row of rows) {
-          const question = wrapQuestion(row);
-          question['tags'] = await this.getTags(question.questionId);
-          questions.push(question);
-        }
-        resolve(questions);
-      });
+      const fields = [
+        'questions.question_id as questionId', 'questions.username', 
+        'questions.title', 'questions.description',
+        'questions.time', 'users.profile_pic as profilePic',
+        'questions.view_count as views', 
+        'questions.no_of_answers as noOfAnswers',
+        'questions.is_answer_accepted as isAnswersAccepted',
+      ];
+      this.newdb('questions')
+        .select(fields)
+        .join('users', 'users.username', 'questions.username')
+        .orderBy('time', 'desc')
+        .then(async (rows) => {
+          const questions = [];
+          for (const question of rows) {
+            question['tags'] = await this.getTags(question.questionId);
+            questions.push(question);
+          }
+          resolve(questions);
+        }).catch(reject);
     });
   }
 
@@ -226,19 +219,25 @@ class DataStore {
 
   getAnswers(questionId) {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getAnswers, [questionId], async (err, rows) => {
-        err && reject(err);
-
-        const answers = [];
-        for (const row of rows) {
-          const answer = wrapAnswer(row);
-          const votes = await this.getVotesOfAnswer(answer.answerId);
-          answer.upVote = votes['up'];
-          answer.downVote = votes['down'];
-          answers.push(answer);
-        }
-        resolve(answers);
-      });
+      const fields = [
+        'username', 'answer_id as answerId', 
+        'question_id as questionId', 'answer',
+        'accepted', 'time'
+      ];
+      this.newdb('answers')
+        .select(fields)
+        .where({'question_id': questionId})
+        .orderBy('accepted', 'desc')
+        .then(async (rows) => {
+          const answers = [];
+          for (const answer of rows) {
+            const votes = await this.getVotesOfAnswer(answer.answerId);
+            answer.upVote = votes['up'];
+            answer.downVote = votes['down'];
+            answers.push(answer);
+          }
+          resolve(answers);
+        }).catch(reject);
     });
   }
 

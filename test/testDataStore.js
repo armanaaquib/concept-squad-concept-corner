@@ -181,18 +181,35 @@ describe('DataStore', function() {
       dataStore = new DataStore(dbClient);
     });
     it('should gives question according to the question id', function(done) {
-      dbClient['get'] = fake.yields(null, {
-        question_id: 5,
-        username: 'carlo',
-        title: 'Question 5',
-        description: 'Description 5',
-        time: new Date('2020-07-21 11:24:35'),
-        last_modified: null,
-        view_count: 9,
-        is_answer_accepted: 1,
-        no_of_answers: 3,
-        profile_pic: null
+      const newDbClient = stub().returns({
+        select: mock()
+          .withArgs([
+            'title', 'description', 'time', 
+            'view_count as views', 'no_of_answers as noOfAnswers', 
+            'question_id as questionId', 'username', 
+            'is_answer_accepted as isAnswerAccepted'
+          ])
+          .returns({
+            where: mock().returns({
+              first: mock().returns(
+                Promise.resolve({
+                  questionId: 5,
+                  username: 'carlo',
+                  title: 'Question 5',
+                  description: 'Description 5',
+                  time: new Date('2020-07-21 11:24:35'),
+                  views: 9,
+                  isAnswerAccepted: 1,
+                  noOfAnswers: 3,
+                  profilePic: null,
+                })
+              )
+            })
+             
+          })
       });
+ 
+      dataStore = new DataStore(null, newDbClient);
 
       const expectedQuestion = {
         questionId: 5,
@@ -200,9 +217,8 @@ describe('DataStore', function() {
         title: 'Question 5',
         description: 'Description 5',
         time: new Date('2020-07-21 11:24:35'),
-        lastModified: null,
         views: 9,
-        isAnswerAccepted: true,
+        isAnswerAccepted: 1,
         noOfAnswers: 3,
         profilePic: null,
         tags: ['node', 'java']
@@ -212,15 +228,27 @@ describe('DataStore', function() {
 
       dataStore.getQuestion(5).then((question) => {
         assert.deepStrictEqual(question, expectedQuestion);
-        assert.ok(dbClient.get.calledOnce);
-        assert.deepStrictEqual(dbClient.get.args[0][1], [5]);
+        assert.ok(newDbClient.calledOnce);
         assert.ok(dataStore.getTags.calledOnceWithExactly(5));
         done();
       });
     });
 
     it('should reject error if query is not valid', function() {
-      dbClient['get'] = fake.yields({ message: 'syntax error' });
+      const newDbClient = stub().returns({
+        select: mock()
+          .returns({
+            where: mock().returns({
+              first: mock().returns(
+                Promise.reject({
+                  message: 'syntax error'
+                })
+              )
+            })
+             
+          })
+      });
+      dataStore = new DataStore(null, newDbClient);
       dataStore.getQuestion(1).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
@@ -231,68 +259,51 @@ describe('DataStore', function() {
     it('should gives all questions in reverse order by date', function(done) {
       const questions = [
         {
-          question_id: 5,
+          questionId: 5,
           username: 'carlo',
           title: 'Question 5',
           description: 'Description 5',
           time: new Date('2020-07-21 11:24:35'),
-          last_modified: null,
-          view_count: 9,
-          is_answer_accepted: 1,
-          no_of_answers: 3,
-          profile_pic: null
+          views: 9,
+          isAnswerAccepted: 1,
+          noOfAnswers: 3,
+          profilePic: null
         },
         {
-          question_id: 4,
+          questionId: 4,
           username: 'jake',
           title: 'Question 4',
           description: 'Description 4',
           time: new Date('2020-07-21 11:20:35'),
-          last_modified: null,
-          view_count: 7,
-          is_answer_accepted: 0,
-          no_of_answers: 0,
-          profile_pic: null
-        },
-        {
-          question_id: 3,
-          username: 'jake',
-          title: 'Question 3',
-          description: null,
-          time: new Date('2020-07-21 11:15:35'),
-          last_modified: null,
-          view_count: 5,
-          is_answer_accepted: 0,
-          no_of_answers: 0,
-          profile_pic: null
-        },
-        {
-          question_id: 2,
-          username: 'michel',
-          title: 'Question 2',
-          description: 'Description 2',
-          time: new Date('2020-07-20 11:24:35'),
-          last_modified: null,
-          view_count: 9,
-          is_answer_accepted: 0,
-          no_of_answers: 2,
-          profile_pic: null
-        },
-        {
-          question_id: 1,
-          username: 'michel',
-          title: 'Question Title 1',
-          description: 'Description 1',
-          time: new Date('2020-07-20 11:20:35'),
-          last_modified: null,
-          view_count: 10,
-          is_answer_accepted: 0,
-          no_of_answers: 0,
-          profile_pic: null
+          views: 7,
+          isAnswerAccepted: 0,
+          noOfAnswers: 0,
+          profilePic: null
         }
       ];
 
-      dbClient['all'] = fake.yields(null, questions);
+      const newDbClient = stub().returns({
+        select: mock()
+          .withArgs([
+            'questions.question_id as questionId', 'questions.username', 
+            'questions.title', 'questions.description',
+            'questions.time', 'users.profile_pic as profilePic',
+            'questions.view_count as views', 'questions.no_of_answers as noOfAnswers',
+            'questions.is_answer_accepted as isAnswersAccepted',
+          ])
+          .returns({
+            join: mock().withArgs('users', 'users.username', 'questions.username')
+              .returns({
+                orderBy: mock().withArgs('time', 'desc')
+                  .returns(
+                    Promise.resolve(questions)
+                  )
+              
+              })
+          })
+      });
+      dataStore = new DataStore(null, newDbClient);
+     
       dataStore['getTags'] = stub().returns(Promise.resolve(['node', 'java']));
 
       const expectedQuestions = [
@@ -302,9 +313,8 @@ describe('DataStore', function() {
           title: 'Question 5',
           description: 'Description 5',
           time: new Date('2020-07-21 11:24:35'),
-          lastModified: null,
           views: 9,
-          isAnswerAccepted: true,
+          isAnswerAccepted: 1,
           noOfAnswers: 3,
           profilePic: null,
           tags: ['node', 'java']
@@ -314,63 +324,37 @@ describe('DataStore', function() {
           username: 'jake',
           title: 'Question 4',
           description: 'Description 4',
-          time: new Date('2020-07-21 11:20:35'),
-          lastModified: null,
+          time: new Date('2020-07-21 11:20:35'), 
           views: 7,
-          isAnswerAccepted: false,
+          isAnswerAccepted: 0,
           noOfAnswers: 0,
           profilePic: null,
           tags: ['node', 'java']
         },
-        {
-          questionId: 3,
-          username: 'jake',
-          title: 'Question 3',
-          description: null,
-          time: new Date('2020-07-21 11:15:35'),
-          lastModified: null,
-          views: 5,
-          isAnswerAccepted: false,
-          noOfAnswers: 0,
-          profilePic: null,
-          tags: ['node', 'java']
-        },
-        {
-          questionId: 2,
-          username: 'michel',
-          title: 'Question 2',
-          description: 'Description 2',
-          time: new Date('2020-07-20 11:24:35'),
-          lastModified: null,
-          views: 9,
-          isAnswerAccepted: false,
-          noOfAnswers: 2,
-          profilePic: null,
-          tags: ['node', 'java']
-        },
-        {
-          questionId: 1,
-          username: 'michel',
-          title: 'Question Title 1',
-          description: 'Description 1',
-          time: new Date('2020-07-20 11:20:35'),
-          lastModified: null,
-          views: 10,
-          isAnswerAccepted: false,
-          noOfAnswers: 0,
-          profilePic: null,
-          tags: ['node', 'java']
-        }
+        
       ];
       dataStore.getQuestions().then((questions) => {
         assert.deepStrictEqual(questions, expectedQuestions);
-        assert.ok(dbClient.all.calledOnce);
+        assert.ok(newDbClient.calledOnce);
         done();
       });
     });
 
     it('should reject error if query is not valid', function() {
-      dbClient['all'] = fake.yields({ message: 'syntax error' }, []);
+      const newDbClient = stub().returns({
+        select: mock()
+          .returns({
+            join: mock()
+              .returns({
+                orderBy: mock()
+                  .returns(
+                    Promise.reject({message: 'syntax error'})
+                  )
+          
+              })
+          })
+      });
+      dataStore = new DataStore(null, newDbClient);
       dataStore.getQuestions().catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
@@ -482,45 +466,44 @@ describe('DataStore', function() {
       const answers = [
         {
           username: 'michel',
-          answer_id: 1,
-          question_id: 1,
+          answerId: 1,
+          questionId: 1,
           answer: 'Answer 1',
           accepted: 1,
           time: new Date('2020-07-20 11:20:35'),
-          last_modified: null
         },
         {
           username: 'bryce',
-          answer_id: 2,
-          question_id: 1,
+          answerId: 2,
+          questionId: 1,
           answer: 'Answer 2',
           accepted: 0,
           time: new Date('2020-07-21 11:20:35'),
-          last_modified: null
         },
-        {
-          username: 'jake',
-          answer_id: 3,
-          question_id: 1,
-          answer: 'Answer 3',
-          accepted: 0,
-          time: new Date('2020-07-21 12:20:35'),
-          last_modified: null
-        }
       ];
-
-      dbClient['all'] = fake.yields(null, answers);
-
+      const newDbClient = stub().returns({
+        select: mock()
+          .withArgs([
+            'username', 'answer_id as answerId', 
+            'question_id as questionId', 'answer',
+            'accepted', 'time'
+          ])
+          .returns({
+            where: mock().withArgs({'question_id': 1}).returns({
+              orderBy: mock().withArgs('accepted', 'desc')
+                .returns(
+                  Promise.resolve(answers)
+                )
+            })
+          })
+      });
+      dataStore = new DataStore(null, newDbClient);
       dataStore['getVotesOfAnswer'] = stub();
-
       dataStore['getVotesOfAnswer']
         .withArgs(1)
         .returns(Promise.resolve({ up: 2, down: 1 }));
       dataStore['getVotesOfAnswer']
         .withArgs(2)
-        .returns(Promise.resolve({ up: 0, down: 0 }));
-      dataStore['getVotesOfAnswer']
-        .withArgs(3)
         .returns(Promise.resolve({ up: 0, down: 0 }));
 
       const expectedAnswers = [
@@ -531,9 +514,8 @@ describe('DataStore', function() {
           answer: 'Answer 1',
           upVote: 2,
           downVote: 1,
-          accepted: true,
-          time: new Date('2020-07-20 11:20:35'),
-          lastModified: null
+          accepted: 1,
+          time: new Date('2020-07-20 11:20:35')
         },
         {
           username: 'bryce',
@@ -542,30 +524,30 @@ describe('DataStore', function() {
           answer: 'Answer 2',
           upVote: 0,
           downVote: 0,
-          accepted: false,
-          time: new Date('2020-07-21 11:20:35'),
-          lastModified: null
+          accepted: 0,
+          time: new Date('2020-07-21 11:20:35')
         },
-        {
-          username: 'jake',
-          answerId: 3,
-          questionId: 1,
-          answer: 'Answer 3',
-          upVote: 0,
-          downVote: 0,
-          accepted: false,
-          time: new Date('2020-07-21 12:20:35'),
-          lastModified: null
-        }
+       
       ];
       dataStore.getAnswers(1).then((answers) => {
+
         assert.deepStrictEqual(answers, expectedAnswers);
         done();
       });
     });
 
     it('should reject error if query is not valid', function() {
-      dbClient['all'] = fake.yields({ message: 'syntax error' }, []);
+      const newDbClient = stub().returns({
+        select: mock().returns({
+          where: mock().returns({
+            orderBy: mock().withArgs('accepted', 'desc')
+              .returns(
+                Promise.reject({message: 'syntax error'})
+              )
+          })
+        })
+      });
+      dataStore = new DataStore(null, newDbClient);
       dataStore.getAnswers(5).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
@@ -687,20 +669,46 @@ describe('DataStore', function() {
 
   context('getTags', function() {
     it('should give tags belong to question_id', function(done) {
-      dbClient['all'] = fake.yields(null, [
-        { tag_name: 'node' },
-        { tag_name: 'java' }
-      ]);
-
+      const newDbClient = stub().returns({
+        select: mock()
+          .withArgs([
+            'tags.tag_name'
+          ])
+          .returns({
+            join: mock().withArgs('question_tag', 'tags.tag_id', 'question_tag.tag_id').returns({
+              where: mock()
+                .returns(
+                  Promise.resolve([
+                    {tag_name: 'node'}, {tag_name: 'java'}
+                  ])
+                )
+            })
+          })
+      });
+      dataStore = new DataStore(null, newDbClient);
       dataStore.getTags(5).then((tags) => {
         assert.deepStrictEqual(tags, ['node', 'java']);
-        assert.ok(dbClient.all.calledOnce);
+        assert.ok(newDbClient.calledOnce);
         done();
       });
     });
 
     it('should give err if query is wrong', function(done) {
-      dbClient['all'] = fake.yields({ message: 'syntax error' }, []);
+      const newDbClient = stub().returns({
+        select: mock()
+          .withArgs([
+            'tags.tag_name'
+          ])
+          .returns({
+            join: mock().returns({
+              where: mock()
+                .returns(
+                  Promise.reject({message: 'syntax error'})
+                )
+            })
+          })
+      });
+      dataStore = new DataStore(null, newDbClient);
       dataStore.getTags(5).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
         done();
