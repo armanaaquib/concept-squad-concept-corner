@@ -69,7 +69,7 @@ const deleteAnswerComment = (req, res) => {
     return;
   }
   dataStore.deleteAnswerComment(comment.commentId).then((isDeleted) => {
-    res.json({ isDeleted });
+    res.json({ isDeleted: isDeleted === 1 ? true : false });
   });
 };
 
@@ -82,7 +82,7 @@ const deleteAnswer = (req, res) => {
     return;
   }
   dataStore.deleteAnswer(answer.answerId).then((isDeleted) => {
-    res.json({ isDeleted });
+    res.json({ isDeleted: isDeleted === 1 ? true : false });
   });
 };
 
@@ -94,5 +94,5 @@ module.exports = {
   addAnswerComment,
   getCommentsOfAnswer,
   deleteAnswerComment,
-  deleteAnswer
+  deleteAnswer,
 };
