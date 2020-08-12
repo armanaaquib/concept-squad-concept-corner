@@ -12,7 +12,6 @@ exports.up = function (knex) {
     table.integer('view_count').defaultTo(0);
     table.bool('is_answer_accepted').defaultTo(false);
     table.date('time').defaultTo(knex.fn.now());
-    table.date('last_modified');
     table.integer('no_of_answers').defaultTo(0);
   });
 };

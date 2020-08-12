@@ -13,6 +13,7 @@ exports.up = function (knex) {
       .notNull()
       .onDelete('cascade');
     table.string('vote').notNull();
+    table.primary(['username', 'answer_id', 'vote']);
   });
 };
 

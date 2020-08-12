@@ -15,7 +15,6 @@ exports.up = function (knex) {
       .onDelete('cascade');
     table.string('comment');
     table.date('time').defaultTo(knex.fn.now());
-    table.date('last_modified');
   });
 };
 

@@ -16,7 +16,6 @@ exports.up = function (knex) {
     table.string('answer');
     table.bool('accepted').defaultTo(false);
     table.date('time').defaultTo(knex.fn.now());
-    table.date('last_modified');
   });
 };
 

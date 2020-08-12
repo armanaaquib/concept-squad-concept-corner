@@ -8,18 +8,24 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: getDBFilePath()
+      filename: getDBFilePath(),
     },
     useNullAsDefault: true,
-    pool: { afterCreate }
+    pool: { afterCreate },
+    seeds: {
+      directory: './seeds/dev',
+    },
   },
 
   test: {
     client: 'sqlite3',
     connection: {
-      filename: getTestDBFilePath()
+      filename: getTestDBFilePath(),
     },
     useNullAsDefault: true,
-    pool: { afterCreate }
-  }
+    pool: { afterCreate },
+    seeds: {
+      directory: './seeds/test',
+    },
+  },
 };

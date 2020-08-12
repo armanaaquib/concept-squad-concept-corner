@@ -12,6 +12,7 @@ exports.up = function (knex) {
       .inTable('tags')
       .notNull()
       .onDelete('cascade');
+    table.primary(['username', 'tag_id']);
   });
 };
 

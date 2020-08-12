@@ -5,7 +5,7 @@ const wrapComment = (row) => {
     username: row.username,
     commentId: row.comment_id,
     comment: row.comment,
-    time: new Date(row.time)
+    time: new Date(row.time),
   };
 };
 
@@ -26,7 +26,7 @@ class DataStore {
       company: user.company,
       location: user.location,
       email: user.emailId,
-      profile_pic: user.profilePic
+      profile_pic: user.profilePic,
     };
     return new Promise((resolve, reject) => {
       this.newdb('users')
@@ -49,7 +49,7 @@ class DataStore {
           'title',
           'about_me as aboutMe',
           'company',
-          'profile_pic as profilePic'
+          'profile_pic as profilePic',
         ])
         .where({ username })
         .then(([row]) => {
@@ -113,9 +113,7 @@ class DataStore {
         .where({ question_id: questionId })
         .update({ title, description })
         .then(() => {
-          this.updateQuestionTag(questionId, tags)
-            .then(resolve)
-            .catch(reject);
+          this.updateQuestionTag(questionId, tags).then(resolve).catch(reject);
         })
         .catch(reject);
     });
@@ -144,7 +142,7 @@ class DataStore {
       'no_of_answers as noOfAnswers',
       'question_id as questionId',
       'username',
-      'is_answer_accepted as isAnswerAccepted'
+      'is_answer_accepted as isAnswerAccepted',
     ];
     const filterBy = { question_id: questionId };
 
@@ -173,7 +171,7 @@ class DataStore {
         'users.profile_pic as profilePic',
         'questions.view_count as views',
         'questions.no_of_answers as noOfAnswers',
-        'questions.is_answer_accepted as isAnswersAccepted'
+        'questions.is_answer_accepted as isAnswersAccepted',
       ];
       this.newdb('questions')
         .select(fields)
@@ -227,6 +225,7 @@ class DataStore {
         .select(fields)
         .count('vote as vote_count')
         .where({ answer_id: answerId })
+        .groupBy('vote')
         .then((rows) => {
           const votes = { up: 0, down: 0 };
           for (const row of rows) {
@@ -246,7 +245,7 @@ class DataStore {
         'question_id as questionId',
         'answer',
         'accepted',
-        'time'
+        'time',
       ];
       this.newdb('answers')
         .select(fields)
@@ -410,7 +409,7 @@ class DataStore {
       this.db.run(
         queries.addAnswerComment,
         [username, answerId, comment],
-        function(err) {
+        function (err) {
           err && reject(err);
           resolve(this.lastID);
         }
