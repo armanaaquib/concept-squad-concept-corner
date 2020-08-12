@@ -16,7 +16,7 @@
   width: 85%;
 }
 
-.logo > img {
+.logo>img {
   height: 100%;
 }
 
@@ -28,6 +28,7 @@
   width: 18%;
   justify-content: space-evenly;
 }
+
 .list div a {
   text-decoration: none;
   font-size: 1.2rem;
@@ -36,14 +37,16 @@
 }
 
 .logout {
-  color: #f04b4c !important;
-  font-size: 1rem !important;
+  color: var(--red-color) !important;
+  font-size: 1.2rem !important;
 }
+
 
 div:hover:after {
   width: 100%;
   background: rgb(0, 195, 255);
 }
+
 .navInfo {
   display: flex;
   flex-flow: row;
@@ -61,6 +64,7 @@ div:hover:after {
   background: transparent;
   transition: width 0.5s ease, background-color 0.5s ease;
 }
+
 .navLink:hover:after {
   width: 100%;
   background: rgb(0, 195, 255);
