@@ -2,20 +2,20 @@ const showDescription = (description, id) => {
   const quill = new Quill(`#${id}`, {
     modules: {
       syntax: true,
-      toolbar: false,
+      toolbar: false
     },
     readOnly: true,
-    theme: 'snow',
+    theme: 'snow'
   });
 
   quill.setContents(JSON.parse(description));
 };
 
-const postAnswer = function (editor) {
+const postAnswer = function(editor) {
   const questionId = querySelector('#h_qId').value;
   postJSONReq('/answer/post', {
     questionId,
-    answer: JSON.stringify(JSON.stringify(editor.getContents())),
+    answer: JSON.stringify(JSON.stringify(editor.getContents()))
   })
     .then(jsonParser)
     .then(({ answerId }) => {
@@ -23,18 +23,18 @@ const postAnswer = function (editor) {
     });
 };
 
-const showPostAnswerEditor = function () {
+const showPostAnswerEditor = function() {
   const postAnswerEditor = new Quill('#editor-postAnswer', {
     modules: {
       syntax: true,
       toolbar: [
         [{ size: ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
-        ['code-block'],
-      ],
+        ['code-block']
+      ]
     },
     placeholder: 'description...',
-    theme: 'snow',
+    theme: 'snow'
   });
   const postAnswerBtn = querySelector('#postAnswer-btn');
   postAnswerBtn.onclick = postAnswer.bind(null, postAnswerEditor);
@@ -43,7 +43,7 @@ const showPostAnswerEditor = function () {
 const markAccepted = (answer) => {
   postJSONReq('/answer/markAccepted', {
     questionId: answer.questionId,
-    answerId: answer.answerId,
+    answerId: answer.answerId
   }).then((res) => {
     if (res.status === 200) {
       querySelectorAll('.reactions .unchecked-answer').forEach((element) =>
@@ -116,7 +116,7 @@ const hideAnswerCommentContainer = (answerId) => {
     'block';
 };
 
-const createComment = function (comment, username, commentBoxId, details) {
+const createComment = function(comment, username, commentBoxId, details) {
   const commentSection = querySelector(commentBoxId || '#comments');
   const newComment = createElement('div', ['col-9', 'comment']);
   newComment.id = `${details.idPrefix}-${comment.commentId}`;
@@ -146,7 +146,7 @@ const addQuestionComment = ({ questionId, user }) => {
   const comment = querySelector('#comment-text').value.trim();
   postJSONReq('/question/addComment', {
     questionId,
-    comment,
+    comment
   })
     .then(jsonParser)
     .then((commentId) => {
@@ -159,8 +159,8 @@ const addQuestionComment = ({ questionId, user }) => {
             elementName: 'question comment',
             functionToCall: deleteComment.bind(null, {
               commentId: comment.commentId,
-              username,
-            }),
+              username
+            })
           };
           createComment(comment, username, '#comments', details);
         });
@@ -174,7 +174,7 @@ const addAnswerComment = ({ answerId, user }) => {
 
   postJSONReq('/answer/addComment', {
     answerId,
-    comment,
+    comment
   })
     .then(jsonParser)
     .then((commentId) => {
@@ -195,8 +195,8 @@ const getAllQuestionComment = (questionId, user) => {
           elementName: 'question comment',
           functionToCall: deleteComment.bind(null, {
             commentId: comment.commentId,
-            username,
-          }),
+            username
+          })
         };
         createComment(comment, username, '#comments', details);
       });
@@ -214,8 +214,8 @@ const showAnswerComments = (answerId, user) => {
           elementName: 'answer comment',
           functionToCall: deleteAnswerComment.bind(null, {
             commentId: comment.commentId,
-            username,
-          }),
+            username
+          })
         };
 
         createComment(comment, username, `#comment-${answerId}`, details);
@@ -223,7 +223,7 @@ const showAnswerComments = (answerId, user) => {
     });
 };
 
-const deleteComment = function (comment, event) {
+const deleteComment = function(comment, event) {
   postJSONReq('/question/deleteComment', comment)
     .then(jsonParser)
     .then((status) => {
@@ -234,7 +234,7 @@ const deleteComment = function (comment, event) {
     });
 };
 
-const deleteAnswerComment = function (comment, event) {
+const deleteAnswerComment = function(comment, event) {
   postJSONReq('/answer/deleteComment', comment)
     .then(jsonParser)
     .then((status) => {
@@ -245,7 +245,7 @@ const deleteAnswerComment = function (comment, event) {
     });
 };
 
-const deleteAnswer = function (answer) {
+const deleteAnswer = function(answer) {
   postJSONReq('/answer/delete', answer)
     .then(jsonParser)
     .then((status) => {
@@ -259,15 +259,15 @@ const deleteAnswer = function (answer) {
     });
 };
 
-const confirmDeleteAnswer = function (answer) {
+const confirmDeleteAnswer = function(answer) {
   const details = {
     elementName: 'answer',
-    functionToCall: deleteAnswer.bind(null, answer),
+    functionToCall: deleteAnswer.bind(null, answer)
   };
   showPopUp(details);
 };
 
-const deleteQuestion = function (question) {
+const deleteQuestion = function(question) {
   postJSONReq('/question/delete', question)
     .then(jsonParser)
     .then((status) => {
@@ -277,10 +277,10 @@ const deleteQuestion = function (question) {
     });
 };
 
-const confirmDeleteQuestion = function (question) {
+const confirmDeleteQuestion = function(question) {
   const details = {
     elementName: 'question',
-    functionToCall: deleteQuestion.bind(null, question),
+    functionToCall: deleteQuestion.bind(null, question)
   };
   showPopUp(details);
 };

@@ -17,7 +17,7 @@ class DataStore {
       company: user.company,
       location: user.location,
       email: user.emailId,
-      profile_pic: user.profilePic,
+      profile_pic: user.profilePic
     };
     return new Promise((resolve, reject) => {
       this.newdb('users')
@@ -38,17 +38,25 @@ class DataStore {
       'title',
       'about_me as aboutMe',
       'company',
-      'profile_pic as profilePic',
+      'profile_pic as profilePic'
     ];
 
-    return this.newdb.select(fields).from('users').where({ username }).first();
+    return this.newdb
+      .select(fields)
+      .from('users')
+      .where({ username })
+      .first();
   }
 
   getRegisteredUser(authLogin, authSource) {
     const fields = ['username', 'profile_pic as profilePic'];
     const filteringBy = { auth_login: authLogin, auth_source: authSource };
 
-    return this.newdb.select(fields).from('users').where(filteringBy).first();
+    return this.newdb
+      .select(fields)
+      .from('users')
+      .where(filteringBy)
+      .first();
   }
 
   addQuestion(question) {
@@ -90,7 +98,9 @@ class DataStore {
         .where({ question_id: questionId })
         .update({ title, description })
         .then(() => {
-          this.updateQuestionTag(questionId, tags).then(resolve).catch(reject);
+          this.updateQuestionTag(questionId, tags)
+            .then(resolve)
+            .catch(reject);
         })
         .catch(reject);
     });
@@ -119,7 +129,7 @@ class DataStore {
       'no_of_answers as noOfAnswers',
       'question_id as questionId',
       'username',
-      'is_answer_accepted as isAnswerAccepted',
+      'is_answer_accepted as isAnswerAccepted'
     ];
     const filterBy = { question_id: questionId };
 
@@ -147,7 +157,7 @@ class DataStore {
         'users.profile_pic as profilePic',
         'questions.view_count as views',
         'questions.no_of_answers as noOfAnswers',
-        'questions.is_answer_accepted as isAnswerAccepted',
+        'questions.is_answer_accepted as isAnswerAccepted'
       ];
       this.newdb('questions')
         .select(fields)
@@ -218,7 +228,7 @@ class DataStore {
       'question_id as questionId',
       'answer',
       'accepted',
-      'time',
+      'time'
     ];
 
     return this.newdb
@@ -341,7 +351,13 @@ class DataStore {
   }
 
   getCommentsOfQuestion(questionId) {
-    const fields = ['username', 'comment_id as commentId', 'comment', 'time'];
+    const fields = [
+      'username',
+      'comment_id as commentId',
+      'question_id as questionId',
+      'comment',
+      'time'
+    ];
 
     return this.newdb
       .select(fields)
@@ -350,7 +366,13 @@ class DataStore {
   }
 
   getCommentsOfAnswer(answerId) {
-    const fields = ['username', 'answer_id as answerId', 'comment', 'time'];
+    const fields = [
+      'username',
+      'comment_id as commentId',
+      'answer_id as answerId',
+      'comment',
+      'time'
+    ];
 
     return this.newdb
       .select(fields)
@@ -363,7 +385,7 @@ class DataStore {
       this.db.run(
         queries.addAnswerComment,
         [username, answerId, comment],
-        function (err) {
+        function(err) {
           err && reject(err);
           resolve(this.lastID);
         }

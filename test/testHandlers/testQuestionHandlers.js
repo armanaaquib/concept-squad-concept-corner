@@ -132,7 +132,17 @@ describe('/question', function() {
     it('should give list of comments of the question id', function(done) {
       request(app)
         .get('/question/comments/1')
-        .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
+        .expect(
+          JSON.stringify([
+            {
+              username: 'michel',
+              commentId: 1,
+              questionId: 1,
+              comment: 'comment1',
+              time: '2020-07-22 11:30:35'
+            }
+          ])
+        )
         .expect(200, done);
     });
 

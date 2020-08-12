@@ -94,5 +94,5 @@ module.exports = {
   addAnswerComment,
   getCommentsOfAnswer,
   deleteAnswerComment,
-  deleteAnswer,
+  deleteAnswer
 };
