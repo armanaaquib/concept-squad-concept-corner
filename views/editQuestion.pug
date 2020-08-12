@@ -26,7 +26,7 @@ block container
           span.selected-tags
             each tag in question.tags
               span.selected-tag
-                span.tag-text tag
+                span.tag-text=tag
                 a.removetag(onclick="removeTag(this)")
                   i.material-icons.close-btn close
           input#tags(type="text", name="tags",value="",onkeyup="createTag(this)", placeholder="tags")
