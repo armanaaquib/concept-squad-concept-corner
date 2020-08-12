@@ -344,7 +344,7 @@ body a {
 }
 
 .modal {
-  display: flex;
+  display: none;
   top: 0;
   z-index: 99;
   position: absolute;

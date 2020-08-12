@@ -1,0 +1,7 @@
+mixin modalPopup(details)
+  .modal.col
+    .col-4.popup-box
+      .col-11.popup-heading
+      .col-10.btn.popup-btn
+        button.danger-btn(onclick=details.functionToCall) Delete
+        button.cancel-btn(onclick='destroyPopup()') Cancel

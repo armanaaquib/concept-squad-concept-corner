@@ -1,10 +1,9 @@
-
-const addContentActive = function(inputField) {
+const addContentActive = function (inputField) {
   const box = inputField.parentElement;
   box.classList.add('content_active');
 };
 
-const checkContent = function(inputField) {
+const checkContent = function (inputField) {
   const box = inputField.parentElement;
   const input = inputField.value;
   if (!input || input === '') {
@@ -13,31 +12,24 @@ const checkContent = function(inputField) {
     box.classList.add('content_active');
   }
 };
-const showPopUp = function(details){
+const showPopUp = function (details) {
+  querySelector('.modal').style.display = 'flex';
   createPopUp(details);
 };
-const destroyPopup = function(){
-  querySelector('.modal').remove();
+const destroyPopup = function () {
+  querySelector('.modal').style.display = 'none';
 };
 
-const createPopUp = function(details){
-  const modal = createElement('div', ['modal']);
-  const {elementName, functionToCall} = details;
+const createPopUp = function (details) {
+  const { elementName, functionToCall } = details;
   const text = `Do you really want to delete this ${elementName} ?`;
-  const popupBox = createElement('div', ['col-4', 'popup-box']);
-  const heading = createElementWithText('h3', ['col-11', 'popup-heading'], text);
-  const buttons = createElement('div', ['col-10', 'btn', 'popup-btn']);
-  const deleteButton = createElementWithText('button', ['danger-btn'], 'Delete');
-  deleteButton.addEventListener('click', functionToCall);
-  const cancelButton = createElementWithText('button', ['cancel-btn'], 'Cancel');
-  cancelButton.addEventListener('click', destroyPopup);
-  appendChildren(buttons, [deleteButton, cancelButton]);
-  appendChildren(popupBox, [heading, buttons]);
-  modal.append(popupBox);
-  querySelector('body').append(modal);
+  const popupHeading = querySelector('.modal .popup-heading');
+  popupHeading.innerText = text;
+  const deleteBtn = querySelector('.modal .danger-btn');
+  deleteBtn.addEventListener('click', functionToCall);
 };
 
-const addContentActiveToAll = function() {
+const addContentActiveToAll = function () {
   querySelectorAll('.inputBox input').forEach((inputField) =>
     inputField.focus()
   );
@@ -49,24 +41,24 @@ const addContentActiveToAll = function() {
 const getDataURI = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = function(progressEvent) {
+    reader.onload = function (progressEvent) {
       resolve(progressEvent.target.result);
     };
     reader.readAsDataURL(file);
   });
 };
 
-const readImage = function(fileUpload) {
+const readImage = function (fileUpload) {
   getDataURI(fileUpload.files[0]).then((URI) => {
     querySelector('.uploaded-image').setAttribute('src', URI);
   });
 };
 
-const selectImage = function() {
+const selectImage = function () {
   querySelector('.upload-image').click();
 };
 
-const getDate = function(dateString) {
+const getDate = function (dateString) {
   const date = new Date(dateString).toUTCString();
   const [, newDate] = date.split(',');
   const [day, month, year, time] = newDate.trim(' ').split(' ');
