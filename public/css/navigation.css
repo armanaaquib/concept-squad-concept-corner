@@ -8,8 +8,7 @@
   flex: 0 0 auto;
   position: relative;
   z-index: 1;
-  box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16),
-    0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+  box-shadow: var(--box-shadow) rgba(0, 0, 0, 0.09);
 }
 
 .logo {
@@ -44,7 +43,7 @@
 
 div:hover:after {
   width: 100%;
-  background: rgb(0, 195, 255);
+  background: var(--clickable-link-color);
 }
 
 .navInfo {
@@ -67,7 +66,7 @@ div:hover:after {
 
 .navLink:hover:after {
   width: 100%;
-  background: rgb(0, 195, 255);
+  background: var(--clickable-link-color);
 }
 
 .userImage img {

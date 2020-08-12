@@ -7,6 +7,7 @@
   --success-color: #23c323;
   --clickable-link-color: #33b9e2;
   --tag-color: #c9f1fd;
+  --border-color: #e7e7e7;
   --box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px;
 }
 
@@ -188,7 +189,7 @@ body a {
 }
 
 .inputBox input {
-  border: 1px solid #e7e7e7;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
   position: relative;
   padding: 0.5rem;
@@ -264,6 +265,7 @@ body a {
   color: white;
 }
 
+
 .cancel-btn {
   background-color: white;
   color: var(--red-color);
@@ -332,8 +334,9 @@ body a {
   margin-top: 3rem;
   border-radius: 5px;
   background: white;
-  border: 1px solid #e7e7e7;
+  border: 1px solid var(--border-color);
 }
+
 
 .desc * {
   border: none !important;
