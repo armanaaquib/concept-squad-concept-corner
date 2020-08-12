@@ -171,7 +171,7 @@ class DataStore {
         'users.profile_pic as profilePic',
         'questions.view_count as views',
         'questions.no_of_answers as noOfAnswers',
-        'questions.is_answer_accepted as isAnswersAccepted',
+        'questions.is_answer_accepted as isAnswerAccepted',
       ];
       this.newdb('questions')
         .select(fields)

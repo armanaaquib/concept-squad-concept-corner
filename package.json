@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "knex": "knex",
-    "create-tables": "rm -f ./store/concept-corner.db; node database/dbInit.js",
-    "populate-raw-data": "rm -f store/raw-concept-corner.db; sqlite3 store/raw-concept-corner.db '.read store/scripts/create_schema.sql'; sqlite3 store/raw-concept-corner.db '.read store/scripts/populate_raw_data.sql';",
+    "reset-db": "export CONCEPT_CORNER_DB=concept-corner.db; export NODE_ENV=development; npx knex migrate:rollback; npx knex migrate:latest; npx knex seed:run",
     "test": "export CONCEPT_CORNER_TEST_DB=test-concept-corner.db; export NODE_ENV=test; npx knex migrate:rollback; npx knex migrate:latest; npx knex seed:run; nyc mocha --recursive",
     "lint": "eslint ./"
   },

@@ -3,7 +3,7 @@ const { fake, stub, mock } = require('sinon');
 
 const DataStore = require('../database/dataStore.js');
 
-describe('DataStore', function() {
+describe('DataStore', function () {
   let dataStore;
   let dbClient;
   beforeEach(() => {
@@ -11,8 +11,8 @@ describe('DataStore', function() {
     dataStore = new DataStore(dbClient);
   });
 
-  context('addUser', function() {
-    it('should add a user', async function() {
+  context('addUser', function () {
+    it('should add a user', async function () {
       const newDbClient = stub().returns({
         insert: mock()
           .withArgs({
@@ -25,9 +25,9 @@ describe('DataStore', function() {
             title: 'Developer',
             about_me: 'Good person',
             company: null,
-            profile_pic: null
+            profile_pic: null,
           })
-          .returns(Promise.resolve())
+          .returns(Promise.resolve()),
       });
       dataStore = new DataStore(null, newDbClient);
       dbClient['run'] = fake.yields(null);
@@ -41,15 +41,15 @@ describe('DataStore', function() {
         title: 'Developer',
         aboutMe: 'Good person',
         company: null,
-        profilePic: null
+        profilePic: null,
       });
       assert.ok(newDbClient.calledOnce);
       assert.ok(status);
     });
 
-    it('should reject error if query is not valid', function() {
+    it('should reject error if query is not valid', function () {
       const newDbClient = stub().returns({
-        insert: mock().returns(Promise.reject({ message: 'syntax error' }))
+        insert: mock().returns(Promise.reject({ message: 'syntax error' })),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore.addUser({}).catch((err) => {
@@ -58,8 +58,8 @@ describe('DataStore', function() {
     });
   });
 
-  context('getUser', function() {
-    it('should resolve user details if user is available', function(done) {
+  context('getUser', function () {
+    it('should resolve user details if user is available', function (done) {
       const newDbClient = stub().returns({
         select: mock()
           .withArgs([
@@ -70,7 +70,7 @@ describe('DataStore', function() {
             'title',
             'about_me as aboutMe',
             'company',
-            'profile_pic as profilePic'
+            'profile_pic as profilePic',
           ])
           .returns({
             where: mock()
@@ -85,11 +85,11 @@ describe('DataStore', function() {
                     title: 'project manager',
                     aboutMe: null,
                     company: null,
-                    profilePic: null
-                  }
+                    profilePic: null,
+                  },
                 ])
-              )
-          })
+              ),
+          }),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore.getUser('jake').then((user) => {
@@ -101,20 +101,20 @@ describe('DataStore', function() {
           title: 'project manager',
           aboutMe: null,
           company: null,
-          profilePic: null
+          profilePic: null,
         });
         assert.ok(newDbClient.calledOnce);
         done();
       });
     });
 
-    it('should give undefined if user is not available', function(done) {
+    it('should give undefined if user is not available', function (done) {
       const newDbClient = stub().returns({
         select: mock().returns({
           where: mock()
             .withArgs({ username: 'Bold' })
-            .returns(Promise.resolve([undefined]))
-        })
+            .returns(Promise.resolve([undefined])),
+        }),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore.getUser('Bold').then((user) => {
@@ -124,13 +124,13 @@ describe('DataStore', function() {
       });
     });
 
-    it('should reject error if query is not valid', function(done) {
+    it('should reject error if query is not valid', function (done) {
       const newDbClient = stub().returns({
         select: mock().returns({
           where: mock()
             .withArgs({ username: 'Bold' })
-            .returns(Promise.reject({ message: 'syntax error' }))
-        })
+            .returns(Promise.reject({ message: 'syntax error' })),
+        }),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore.getUser('Bold').catch((err) => {
@@ -140,14 +140,14 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('updateQuestion', function() {
-    it('should Update a question', async function() {
+  context.skip('updateQuestion', function () {
+    it('should Update a question', async function () {
       let callCount = 0;
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         assert.deepStrictEqual(params, [
           'question title',
           'question description',
-          1
+          1,
         ]);
         callCount++;
         callback.call({ lastID: 1 }, null);
@@ -161,13 +161,13 @@ describe('DataStore', function() {
         title: 'question title',
         description: 'question description',
         tags: ['node', 'java'],
-        questionId: 1
+        questionId: 1,
       });
       assert.strictEqual(callCount, 1);
       assert.strictEqual(questionId, 1);
     });
 
-    it('should reject error if query is not valid', function() {
+    it('should reject error if query is not valid', function () {
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.updateQuestion({}).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -175,12 +175,12 @@ describe('DataStore', function() {
     });
   });
 
-  context('getQuestion', function() {
+  context('getQuestion', function () {
     beforeEach(() => {
       dbClient = {};
       dataStore = new DataStore(dbClient);
     });
-    it('should gives question according to the question id', function(done) {
+    it('should gives question according to the question id', function (done) {
       const newDbClient = stub().returns({
         select: mock()
           .withArgs([
@@ -191,7 +191,7 @@ describe('DataStore', function() {
             'no_of_answers as noOfAnswers',
             'question_id as questionId',
             'username',
-            'is_answer_accepted as isAnswerAccepted'
+            'is_answer_accepted as isAnswerAccepted',
           ])
           .returns({
             where: mock().returns({
@@ -205,11 +205,11 @@ describe('DataStore', function() {
                   views: 9,
                   isAnswerAccepted: 1,
                   noOfAnswers: 3,
-                  profilePic: null
+                  profilePic: null,
                 })
-              )
-            })
-          })
+              ),
+            }),
+          }),
       });
 
       dataStore = new DataStore(null, newDbClient);
@@ -224,7 +224,7 @@ describe('DataStore', function() {
         isAnswerAccepted: 1,
         noOfAnswers: 3,
         profilePic: null,
-        tags: ['node', 'java']
+        tags: ['node', 'java'],
       };
 
       dataStore['getTags'] = stub().returns(Promise.resolve(['node', 'java']));
@@ -237,17 +237,17 @@ describe('DataStore', function() {
       });
     });
 
-    it('should reject error if query is not valid', function() {
+    it('should reject error if query is not valid', function () {
       const newDbClient = stub().returns({
         select: mock().returns({
           where: mock().returns({
             first: mock().returns(
               Promise.reject({
-                message: 'syntax error'
+                message: 'syntax error',
               })
-            )
-          })
-        })
+            ),
+          }),
+        }),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore.getQuestion(1).catch((err) => {
@@ -256,8 +256,8 @@ describe('DataStore', function() {
     });
   });
 
-  context('getQuestions', function() {
-    it('should gives all questions in reverse order by date', function(done) {
+  context('getQuestions', function () {
+    it('should gives all questions in reverse order by date', function (done) {
       const questions = [
         {
           questionId: 5,
@@ -268,7 +268,7 @@ describe('DataStore', function() {
           views: 9,
           isAnswerAccepted: 1,
           noOfAnswers: 3,
-          profilePic: null
+          profilePic: null,
         },
         {
           questionId: 4,
@@ -279,8 +279,8 @@ describe('DataStore', function() {
           views: 7,
           isAnswerAccepted: 0,
           noOfAnswers: 0,
-          profilePic: null
-        }
+          profilePic: null,
+        },
       ];
 
       const newDbClient = stub().returns({
@@ -294,7 +294,7 @@ describe('DataStore', function() {
             'users.profile_pic as profilePic',
             'questions.view_count as views',
             'questions.no_of_answers as noOfAnswers',
-            'questions.is_answer_accepted as isAnswersAccepted'
+            'questions.is_answer_accepted as isAnswerAccepted',
           ])
           .returns({
             join: mock()
@@ -302,9 +302,9 @@ describe('DataStore', function() {
               .returns({
                 orderBy: mock()
                   .withArgs('time', 'desc')
-                  .returns(Promise.resolve(questions))
-              })
-          })
+                  .returns(Promise.resolve(questions)),
+              }),
+          }),
       });
       dataStore = new DataStore(null, newDbClient);
 
@@ -321,7 +321,7 @@ describe('DataStore', function() {
           isAnswerAccepted: 1,
           noOfAnswers: 3,
           profilePic: null,
-          tags: ['node', 'java']
+          tags: ['node', 'java'],
         },
         {
           questionId: 4,
@@ -333,8 +333,8 @@ describe('DataStore', function() {
           isAnswerAccepted: 0,
           noOfAnswers: 0,
           profilePic: null,
-          tags: ['node', 'java']
-        }
+          tags: ['node', 'java'],
+        },
       ];
       dataStore.getQuestions().then((questions) => {
         assert.deepStrictEqual(questions, expectedQuestions);
@@ -343,13 +343,15 @@ describe('DataStore', function() {
       });
     });
 
-    it('should reject error if query is not valid', function() {
+    it('should reject error if query is not valid', function () {
       const newDbClient = stub().returns({
         select: mock().returns({
           join: mock().returns({
-            orderBy: mock().returns(Promise.reject({ message: 'syntax error' }))
-          })
-        })
+            orderBy: mock().returns(
+              Promise.reject({ message: 'syntax error' })
+            ),
+          }),
+        }),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore.getQuestions().catch((err) => {
@@ -358,8 +360,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('acceptAnswer', function() {
-    it('should set an answer as accepted', async function() {
+  context.skip('acceptAnswer', function () {
+    it('should set an answer as accepted', async function () {
       dbClient['run'] = fake.yields(null);
       dataStore.acceptAnswer(1, 2).then((status) => {
         assert.ok(status);
@@ -369,7 +371,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should reject error if query is not valid', function() {
+    it('should reject error if query is not valid', function () {
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.acceptAnswer(1, 2).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -377,10 +379,10 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('addAnswer', function() {
-    it('should add a answer', async function() {
+  context.skip('addAnswer', function () {
+    it('should add a answer', async function () {
       let callCount = 0;
-      dbClient['serialize'] = function(callback) {
+      dbClient['serialize'] = function (callback) {
         callback();
       };
       const isValidAnswerParams = (params) => {
@@ -388,7 +390,7 @@ describe('DataStore', function() {
           params[0] === 'michel' && params[1] === 1 && params[2] === 'answer'
         );
       };
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         const isUpdateQuestionParams = params[0] === 1;
         assert.ok(isUpdateQuestionParams || isValidAnswerParams(params));
         callCount++;
@@ -400,11 +402,11 @@ describe('DataStore', function() {
       assert.strictEqual(callCount, 2);
     });
 
-    it('should reject error if query is not valid', function() {
-      dbClient['serialize'] = function(callback) {
+    it('should reject error if query is not valid', function () {
+      dbClient['serialize'] = function (callback) {
         callback();
       };
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };
@@ -415,11 +417,11 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('getVotesOfAnswer', function() {
-    it('should give both up and down votes of an answer if it has both', function() {
+  context.skip('getVotesOfAnswer', function () {
+    it('should give both up and down votes of an answer if it has both', function () {
       dbClient['all'] = fake.yields(null, [
         { vote: 'up', vote_count: 2 },
-        { vote: 'down', vote_count: 1 }
+        { vote: 'down', vote_count: 1 },
       ]);
 
       dataStore.getVotesOfAnswer(1).then((votes) => {
@@ -429,7 +431,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give both up and down votes of an answer if it has only one', function() {
+    it('should give both up and down votes of an answer if it has only one', function () {
       dbClient['all'] = fake.yields(null, [{ vote: 'up', vote_count: 2 }]);
 
       dataStore.getVotesOfAnswer(1).then((votes) => {
@@ -439,7 +441,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give both up and down votes as 0 of an answer if it does not have any vote', function() {
+    it('should give both up and down votes as 0 of an answer if it does not have any vote', function () {
       dbClient['all'] = fake.yields(null, []);
 
       dataStore.getVotesOfAnswer(1).then((votes) => {
@@ -449,7 +451,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
+    it('should give err if query is wrong', function (done) {
       dbClient['all'] = fake.yields({ message: 'syntax error' }, []);
       dataStore.getVotesOfAnswer(5).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -458,8 +460,8 @@ describe('DataStore', function() {
     });
   });
 
-  context('getAnswers', function() {
-    it('should gives all answers of given question in order by date', function(done) {
+  context('getAnswers', function () {
+    it('should gives all answers of given question in order by date', function (done) {
       const answers = [
         {
           username: 'michel',
@@ -467,7 +469,7 @@ describe('DataStore', function() {
           questionId: 1,
           answer: 'Answer 1',
           accepted: 1,
-          time: new Date('2020-07-20 11:20:35')
+          time: new Date('2020-07-20 11:20:35'),
         },
         {
           username: 'bryce',
@@ -475,8 +477,8 @@ describe('DataStore', function() {
           questionId: 1,
           answer: 'Answer 2',
           accepted: 0,
-          time: new Date('2020-07-21 11:20:35')
-        }
+          time: new Date('2020-07-21 11:20:35'),
+        },
       ];
       const newDbClient = stub().returns({
         select: mock()
@@ -486,7 +488,7 @@ describe('DataStore', function() {
             'question_id as questionId',
             'answer',
             'accepted',
-            'time'
+            'time',
           ])
           .returns({
             where: mock()
@@ -494,9 +496,9 @@ describe('DataStore', function() {
               .returns({
                 orderBy: mock()
                   .withArgs('accepted', 'desc')
-                  .returns(Promise.resolve(answers))
-              })
-          })
+                  .returns(Promise.resolve(answers)),
+              }),
+          }),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore['getVotesOfAnswer'] = stub();
@@ -516,7 +518,7 @@ describe('DataStore', function() {
           upVote: 2,
           downVote: 1,
           accepted: 1,
-          time: new Date('2020-07-20 11:20:35')
+          time: new Date('2020-07-20 11:20:35'),
         },
         {
           username: 'bryce',
@@ -526,8 +528,8 @@ describe('DataStore', function() {
           upVote: 0,
           downVote: 0,
           accepted: 0,
-          time: new Date('2020-07-21 11:20:35')
-        }
+          time: new Date('2020-07-21 11:20:35'),
+        },
       ];
       dataStore.getAnswers(1).then((answers) => {
         assert.deepStrictEqual(answers, expectedAnswers);
@@ -535,15 +537,15 @@ describe('DataStore', function() {
       });
     });
 
-    it('should reject error if query is not valid', function() {
+    it('should reject error if query is not valid', function () {
       const newDbClient = stub().returns({
         select: mock().returns({
           where: mock().returns({
             orderBy: mock()
               .withArgs('accepted', 'desc')
-              .returns(Promise.reject({ message: 'syntax error' }))
-          })
-        })
+              .returns(Promise.reject({ message: 'syntax error' })),
+          }),
+        }),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore.getAnswers(5).catch((err) => {
@@ -552,8 +554,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('getVote', function() {
-    it('should give vote of user for given answer if user has voted', function() {
+  context.skip('getVote', function () {
+    it('should give vote of user for given answer if user has voted', function () {
       dbClient['get'] = fake.yields(null, { vote: 'up' });
       dataStore.getVote('michel', 1).then((vote) => {
         assert.strictEqual(vote, 'up');
@@ -562,7 +564,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give vote undefined of user for given answer if user has not voted', function() {
+    it('should give vote undefined of user for given answer if user has not voted', function () {
       dbClient['get'] = fake.yields(null, undefined);
       dataStore.getVote('michel', 2).then((vote) => {
         assert.isUndefined(vote);
@@ -571,7 +573,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should reject error if get throws error', function(done) {
+    it('should reject error if get throws error', function (done) {
       dbClient['get'] = fake.yields({ message: 'syntax error' });
       dataStore.getVote('michel', 1).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -580,8 +582,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('getTagId', function() {
-    it('should give tagId if tag is already present', function(done) {
+  context.skip('getTagId', function () {
+    it('should give tagId if tag is already present', function (done) {
       dbClient['get'] = fake.yields(null, { tag_id: 1 });
       dataStore.getTagId('node').then((tagId) => {
         assert.strictEqual(tagId, 1);
@@ -591,10 +593,10 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give tagId if tag is not present', function(done) {
+    it('should give tagId if tag is not present', function (done) {
       dbClient['get'] = fake.yields(null, undefined);
       let callCount = 0;
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         assert.deepStrictEqual(params, ['node']);
         callCount++;
         callback.call({ lastID: 1 }, null);
@@ -607,14 +609,14 @@ describe('DataStore', function() {
       });
     });
 
-    it('should reject error if get throws error', function() {
+    it('should reject error if get throws error', function () {
       dbClient['get'] = fake.yields({ message: 'syntax error' });
       dataStore.getTagId({}).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
       });
     });
 
-    it('should reject error if run throws error', function() {
+    it('should reject error if run throws error', function () {
       dbClient['get'] = fake.yields(null, { tag_id: 1 });
 
       dbClient['run'] = fake.yields({ message: 'syntax error' });
@@ -624,8 +626,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('addQuestionTag', function() {
-    it('should add question tags and give confirmation', function(done) {
+  context.skip('addQuestionTag', function () {
+    it('should add question tags and give confirmation', function (done) {
       dbClient['get'] = fake.yields(null, { tag_id: 1 });
       dbClient['run'] = fake.yields(null);
       dataStore.addQuestionTag(10, ['node', 'java']).then((isAdded) => {
@@ -634,7 +636,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should reject error if get throws error', function(done) {
+    it('should reject error if get throws error', function (done) {
       dbClient['get'] = fake.yields(null, { tag_id: 1 });
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.addQuestionTag(10, ['node', 'java']).catch((err) => {
@@ -644,8 +646,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('updateQuestionTag', function() {
-    it('should add question tags and give confirmation', function(done) {
+  context.skip('updateQuestionTag', function () {
+    it('should add question tags and give confirmation', function (done) {
       dbClient['run'] = fake.yields(null);
       dataStore['addQuestionTag'] = stub()
         .withArgs(1, ['node', 'java'])
@@ -656,7 +658,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should reject error if get throws error', function(done) {
+    it('should reject error if get throws error', function (done) {
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.updateQuestionTag(1, ['node', 'java']).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -665,8 +667,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('getTags', function() {
-    it('should give tags belong to question_id', function(done) {
+  context.skip('getTags', function () {
+    it('should give tags belong to question_id', function (done) {
       const newDbClient = stub().returns({
         select: mock()
           .withArgs(['tags.tag_name'])
@@ -676,9 +678,9 @@ describe('DataStore', function() {
               .returns({
                 where: mock().returns(
                   Promise.resolve([{ tag_name: 'node' }, { tag_name: 'java' }])
-                )
-              })
-          })
+                ),
+              }),
+          }),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore.getTags(5).then((tags) => {
@@ -688,15 +690,17 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
+    it('should give err if query is wrong', function (done) {
       const newDbClient = stub().returns({
         select: mock()
           .withArgs(['tags.tag_name'])
           .returns({
             join: mock().returns({
-              where: mock().returns(Promise.reject({ message: 'syntax error' }))
-            })
-          })
+              where: mock().returns(
+                Promise.reject({ message: 'syntax error' })
+              ),
+            }),
+          }),
       });
       dataStore = new DataStore(null, newDbClient);
       dataStore.getTags(5).catch((err) => {
@@ -706,11 +710,11 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('getTagSuggestion', function() {
-    it('should give tags belong to question_id', function(done) {
+  context.skip('getTagSuggestion', function () {
+    it('should give tags belong to question_id', function (done) {
       dbClient['all'] = fake.yields(null, [
         { tag_name: 'nav' },
-        { tag_name: 'java' }
+        { tag_name: 'java' },
       ]);
 
       dataStore.getTagSuggestion('a').then((tags) => {
@@ -720,7 +724,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
+    it('should give err if query is wrong', function (done) {
       dbClient['all'] = fake.yields({ message: 'syntax error' }, []);
       dataStore.getTagSuggestion(5).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -729,8 +733,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('updateVote', function() {
-    it('should update vote', function(done) {
+  context.skip('updateVote', function () {
+    it('should update vote', function (done) {
       dbClient['run'] = fake.yields(null);
       dataStore.getVotesOfAnswer = stub().returns(
         Promise.resolve({ up: 2, down: 1 })
@@ -744,7 +748,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
+    it('should give err if query is wrong', function (done) {
       dataStore['getVotesOfAnswer'] = stub();
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.updateVote('michel', 1, 'up').catch((err) => {
@@ -754,8 +758,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('addVote', function() {
-    it('should add vote', function(done) {
+  context.skip('addVote', function () {
+    it('should add vote', function (done) {
       dbClient['run'] = fake.yields(null);
       dataStore.getVotesOfAnswer = stub().returns(
         Promise.resolve({ up: 2, down: 1 })
@@ -769,7 +773,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
+    it('should give err if query is wrong', function (done) {
       dataStore.getVotesOfAnswer = stub();
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.addVote('michel', 1, 'up').catch((err) => {
@@ -779,10 +783,10 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('addQuestionComment', function() {
-    it('should add comment of the question', async function() {
+  context.skip('addQuestionComment', function () {
+    it('should add comment of the question', async function () {
       let callCount = 0;
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         callback && callback.call({ lastID: 1 }, null);
         callCount++;
         return dbClient;
@@ -796,8 +800,8 @@ describe('DataStore', function() {
       assert.strictEqual(callCount, 1);
     });
 
-    it('should reject error if query is not valid', function() {
-      dbClient['run'] = function(query, params, callback) {
+    it('should reject error if query is not valid', function () {
+      dbClient['run'] = function (query, params, callback) {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };
@@ -808,8 +812,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('deleteVote', function() {
-    it('should delete vote', function(done) {
+  context.skip('deleteVote', function () {
+    it('should delete vote', function (done) {
       dbClient['run'] = fake.yields(null);
       dataStore.getVotesOfAnswer = stub().returns(
         Promise.resolve({ up: 2, down: 1 })
@@ -824,7 +828,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
+    it('should give err if query is wrong', function (done) {
       dataStore.getVotesOfAnswer = stub();
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.deleteVote('michel', 1).catch((err) => {
@@ -834,15 +838,15 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('getCommentsOfQuestion', function() {
-    it('should get all comments of the question', async function() {
+  context.skip('getCommentsOfQuestion', function () {
+    it('should get all comments of the question', async function () {
       const comments = [
         {
           username: 'michel',
           comment_id: 1,
           comment: 'comment1',
-          time: new Date('2020-07-21 11:24:35')
-        }
+          time: new Date('2020-07-21 11:24:35'),
+        },
       ];
       dbClient['all'] = fake.yields(null, comments);
       const actualComments = await dataStore.getCommentsOfQuestion(10);
@@ -851,15 +855,15 @@ describe('DataStore', function() {
           username: 'michel',
           commentId: 1,
           comment: 'comment1',
-          time: new Date('2020-07-21 11:24:35')
-        }
+          time: new Date('2020-07-21 11:24:35'),
+        },
       ];
       assert.deepStrictEqual(actualComments, expectedComments);
       assert.deepStrictEqual(dbClient['all'].args[0][1], [10]);
     });
 
-    it('should reject error if query is not valid', function() {
-      dbClient['all'] = function(query, params, callback) {
+    it('should reject error if query is not valid', function () {
+      dbClient['all'] = function (query, params, callback) {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };
@@ -870,15 +874,15 @@ describe('DataStore', function() {
     });
   });
 
-  context('getCommentsOfAnswer', function() {
-    it('should get all comments of the answer', async function() {
+  context('getCommentsOfAnswer', function () {
+    it('should get all comments of the answer', async function () {
       const comments = [
         {
           username: 'michel',
           comment_id: 1,
           comment: 'comment1',
-          time: new Date('2020-07-21 11:24:35')
-        }
+          time: new Date('2020-07-21 11:24:35'),
+        },
       ];
       dbClient['all'] = fake.yields(null, comments);
       const actualComments = await dataStore.getCommentsOfAnswer(10);
@@ -887,15 +891,15 @@ describe('DataStore', function() {
           username: 'michel',
           commentId: 1,
           comment: 'comment1',
-          time: new Date('2020-07-21 11:24:35')
-        }
+          time: new Date('2020-07-21 11:24:35'),
+        },
       ];
       assert.deepStrictEqual(actualComments, expectedComments);
       assert.deepStrictEqual(dbClient['all'].args[0][1], [10]);
     });
 
-    it('should reject error if query is not valid', function() {
-      dbClient['all'] = function(query, params, callback) {
+    it('should reject error if query is not valid', function () {
+      dbClient['all'] = function (query, params, callback) {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };
@@ -906,10 +910,10 @@ describe('DataStore', function() {
     });
   });
 
-  context('addAnswerComment', function() {
-    it('should add comment of the answer', async function() {
+  context('addAnswerComment', function () {
+    it('should add comment of the answer', async function () {
       let callCount = 0;
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         callback && callback.call({ lastID: 1 }, null);
         callCount++;
         return dbClient;
@@ -923,8 +927,8 @@ describe('DataStore', function() {
       assert.strictEqual(callCount, 1);
     });
 
-    it('should reject error if query is not valid', function() {
-      dbClient['run'] = function(query, params, callback) {
+    it('should reject error if query is not valid', function () {
+      dbClient['run'] = function (query, params, callback) {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };
@@ -935,13 +939,13 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('getComment', function() {
-    it('should get comments of the question', async function() {
+  context.skip('getComment', function () {
+    it('should get comments of the question', async function () {
       const comment = {
         username: 'michel',
         comment_id: 1,
         comment: 'comment1',
-        time: new Date('2020-07-21 11:24:35')
+        time: new Date('2020-07-21 11:24:35'),
       };
       dbClient['get'] = fake.yields(null, comment);
       const actualComment = await dataStore.getComment(1);
@@ -949,13 +953,13 @@ describe('DataStore', function() {
         username: 'michel',
         commentId: 1,
         comment: 'comment1',
-        time: new Date('2020-07-21 11:24:35')
+        time: new Date('2020-07-21 11:24:35'),
       };
       assert.deepStrictEqual(actualComment, expectedComment);
     });
 
-    it('should reject error if query is not valid', function() {
-      dbClient['get'] = function(query, params, callback) {
+    it('should reject error if query is not valid', function () {
+      dbClient['get'] = function (query, params, callback) {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };
@@ -966,8 +970,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('deleteQuestionComment', function() {
-    it('should delete comment of given comment id', function(done) {
+  context.skip('deleteQuestionComment', function () {
+    it('should delete comment of given comment id', function (done) {
       dbClient['run'] = fake.yields(null);
       dataStore.deleteQuestionComment(1).then((isDeleted) => {
         assert.ok(isDeleted);
@@ -977,7 +981,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
+    it('should give err if query is wrong', function (done) {
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.deleteQuestionComment(1).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -986,8 +990,8 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('deleteAnswerComment', function() {
-    it('should delete comment of given comment id', function(done) {
+  context.skip('deleteAnswerComment', function () {
+    it('should delete comment of given comment id', function (done) {
       dbClient['run'] = fake.yields(null);
       dataStore.deleteAnswerComment(1).then((isDeleted) => {
         assert.ok(isDeleted);
@@ -997,7 +1001,7 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
+    it('should give err if query is wrong', function (done) {
       dbClient['run'] = fake.yields({ message: 'syntax error' });
       dataStore.deleteAnswerComment(1).catch((err) => {
         assert.deepStrictEqual(err, { message: 'syntax error' });
@@ -1006,13 +1010,13 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('deleteAnswer', function() {
-    it('should delete answer of given answer id', function(done) {
+  context.skip('deleteAnswer', function () {
+    it('should delete answer of given answer id', function (done) {
       let callCount = 0;
-      dbClient['serialize'] = function(callback) {
+      dbClient['serialize'] = function (callback) {
         callback();
       };
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         if (params) {
           assert.strictEqual(params[0], 1);
         }
@@ -1027,11 +1031,11 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
-      dbClient['serialize'] = function(callback) {
+    it('should give err if query is wrong', function (done) {
+      dbClient['serialize'] = function (callback) {
         callback();
       };
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };
@@ -1042,13 +1046,13 @@ describe('DataStore', function() {
     });
   });
 
-  context.skip('deleteQuestion', function() {
-    it('should delete Question of given question id', function(done) {
+  context.skip('deleteQuestion', function () {
+    it('should delete Question of given question id', function (done) {
       let callCount = 0;
-      dbClient['serialize'] = function(callback) {
+      dbClient['serialize'] = function (callback) {
         callback();
       };
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         if (params) {
           assert.strictEqual(params[0], 1);
         }
@@ -1063,11 +1067,11 @@ describe('DataStore', function() {
       });
     });
 
-    it('should give err if query is wrong', function(done) {
-      dbClient['serialize'] = function(callback) {
+    it('should give err if query is wrong', function (done) {
+      dbClient['serialize'] = function (callback) {
         callback();
       };
-      dbClient['run'] = function(query, params, callback) {
+      dbClient['run'] = function (query, params, callback) {
         callback && callback({ message: 'syntax error' });
         return dbClient;
       };

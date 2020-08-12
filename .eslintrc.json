@@ -34,7 +34,7 @@
     "handle-callback-err": "error",
     "id-length": "error",
     "key-spacing": "error",
-    "max-len": "error",
+    "max-len": "warn",
     "max-params": [
       "error",
       {
@@ -91,7 +91,7 @@
       "rules": {
         "no-undef": "off",
         "no-unused-vars": "off",
-        "max-statements":"off",
+        "max-statements": "off",
         "max-len": "warn"
       }
     }
