@@ -8,7 +8,8 @@
   --clickable-link-color: #33b9e2;
   --tag-color: #c9f1fd;
   --border-color: #e7e7e7;
-  --box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px;
+  --box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16),
+    0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px;
 }
 
 body {
@@ -24,7 +25,6 @@ body {
 body a {
   text-decoration: none;
 }
-
 
 .h2 {
   margin: 0.2rem auto;
@@ -50,13 +50,13 @@ body a {
   border: 1px solid var(--red-color) !important;
 }
 
-.inputBox>label {
+.inputBox > label {
   position: absolute;
   font-size: 12px;
   color: gray;
 }
 
-.inputBox>input {
+.inputBox > input {
   position: relative;
   padding-top: 1rem;
 }
@@ -168,7 +168,7 @@ body a {
 
 .inputBox {
   position: relative;
-  background: white;
+  background: var(--white-color);
 }
 
 .inputBox.content_active label {
@@ -207,7 +207,7 @@ body a {
   margin-bottom: 5rem;
 }
 
-.page>* {
+.page > * {
   margin: 0 auto;
   flex-flow: column;
 }
@@ -243,7 +243,7 @@ body a {
   font-size: 1.7rem;
   justify-content: center;
   line-height: 3rem;
-  border-bottom: 2px solid lightgray;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .upload-image {
@@ -262,12 +262,11 @@ body a {
   background-color: var(--primary-blue-disabled-color);
   border: none;
   cursor: not-allowed;
-  color: white;
+  color: var(--white-color);
 }
 
-
 .cancel-btn {
-  background-color: white;
+  background-color: var(--white-color);
   color: var(--red-color);
   border: 1px solid var(--red-color);
   height: 3rem;
@@ -278,13 +277,12 @@ body a {
 
 .cancel-btn:hover {
   background-color: var(--red-color);
-  color: white;
+  color: var(--white-color);
 }
 
 .tags {
   margin-top: 1rem;
   display: flex;
-
 }
 
 .tag {
@@ -333,10 +331,9 @@ body a {
 .desc {
   margin-top: 3rem;
   border-radius: 5px;
-  background: white;
+  background: var(--white-color);
   border: 1px solid var(--border-color);
 }
-
 
 .desc * {
   border: none !important;
@@ -344,7 +341,6 @@ body a {
 
 .user-profile-link {
   color: #33b9e2;
-
 }
 
 .modal {
@@ -389,12 +385,12 @@ body a {
 
 .danger-btn {
   background-color: var(--red-color);
-  color: white;
+  color: var(--white-color);
   border: 1px solid var(--red-color);
   height: 3rem;
   width: 8rem;
   cursor: pointer;
-  font-weight: 900
+  font-weight: 900;
 }
 
 .user-profile-link:hover {
