@@ -35,12 +35,19 @@ describe('handlers', function () {
     it('should give details of comment ', function (done) {
       request(app)
         .get('/comment/1')
-        .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
+        .expect(
+          JSON.stringify({
+            username: 'michel',
+            commentId: 1,
+            comment: 'comment1',
+            time: '2020-07-22 11:30:35',
+          })
+        )
         .expect(200, done);
     });
 
     it('should give empty object comment does not exist', function (done) {
-      request(app).get('/comment/89').expect([]).expect(200, done);
+      request(app).get('/comment/89').expect('').expect(200, done);
     });
   });
 });

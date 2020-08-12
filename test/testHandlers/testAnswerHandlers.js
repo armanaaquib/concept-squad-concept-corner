@@ -88,6 +88,28 @@ describe('/answer', function () {
     });
   });
 
+  context('/comments/:answerId', function () {
+    it('should give list of comments of the answer id', function (done) {
+      request(app)
+        .get('/answer/comments/1')
+        .expect(
+          JSON.stringify([
+            {
+              username: 'michel',
+              answerId: 1,
+              comment: 'comment1',
+              time: '2020-07-22 11:30:35',
+            },
+          ])
+        )
+        .expect(200, done);
+    });
+
+    it('should give empty object when the question does not have any comments', function (done) {
+      request(app).get('/answer/comments/89').expect([]).expect(200, done);
+    });
+  });
+
   context('/addComment', function () {
     it('should add comment to the answer', function (done) {
       request(app)
@@ -97,19 +119,6 @@ describe('/answer', function () {
         .send({ answerId: 1, comment: 'comment' })
         .expect(JSON.stringify(2))
         .expect(200, done);
-    });
-  });
-
-  context('/comments/:answerId', function () {
-    it('should give list of comments of the answer id', function (done) {
-      request(app)
-        .get('/answer/comments/1')
-        .expect(/"username":"michel","commentId":1,"comment":"comment1"/)
-        .expect(200, done);
-    });
-
-    it('should give empty object when the question does not have any comments', function (done) {
-      request(app).get('/answer/comments/89').expect([]).expect(200, done);
     });
   });
 

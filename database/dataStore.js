@@ -1,14 +1,5 @@
 const queries = require('./queries');
 
-const wrapComment = (row) => {
-  return {
-    username: row.username,
-    commentId: row.comment_id,
-    comment: row.comment,
-    time: new Date(row.time),
-  };
-};
-
 class DataStore {
   constructor(db, newdb) {
     this.db = db;
@@ -39,39 +30,25 @@ class DataStore {
   }
 
   getUser(username) {
-    return new Promise((resolve, reject) => {
-      this.newdb('users')
-        .select([
-          'username',
-          'name',
-          'email',
-          'location',
-          'title',
-          'about_me as aboutMe',
-          'company',
-          'profile_pic as profilePic',
-        ])
-        .where({ username })
-        .then(([row]) => {
-          resolve(row);
-        })
-        .catch(reject);
-    });
+    const fields = [
+      'username',
+      'name',
+      'email',
+      'location',
+      'title',
+      'about_me as aboutMe',
+      'company',
+      'profile_pic as profilePic',
+    ];
+
+    return this.newdb.select(fields).from('users').where({ username }).first();
   }
 
   getRegisteredUser(authLogin, authSource) {
     const fields = ['username', 'profile_pic as profilePic'];
     const filteringBy = { auth_login: authLogin, auth_source: authSource };
-    return new Promise((resolve, reject) => {
-      this.newdb('users')
-        .select(fields)
-        .where(filteringBy)
-        .first()
-        .then((row) => {
-          resolve(row);
-        })
-        .catch(reject);
-    });
+
+    return this.newdb.select(fields).from('users').where(filteringBy).first();
   }
 
   addQuestion(question) {
@@ -146,18 +123,17 @@ class DataStore {
     ];
     const filterBy = { question_id: questionId };
 
-    return new Promise((resolve, reject) => {
-      this.newdb('questions')
-        .select(fields)
-        .where(filterBy)
-        .first()
-        .then(async (question) => {
-          !question && resolve(question);
+    return this.newdb
+      .select(fields)
+      .from('questions')
+      .where(filterBy)
+      .first()
+      .then(async (question) => {
+        if (question) {
           question['tags'] = await this.getTags(question.questionId);
-          resolve(question);
-        })
-        .catch(reject);
-    });
+        }
+        return question;
+      });
   }
 
   getQuestions() {
@@ -219,63 +195,58 @@ class DataStore {
   }
 
   getVotesOfAnswer(answerId) {
-    return new Promise((resolve, reject) => {
-      const fields = ['vote'];
-      this.newdb('answer_votes')
-        .select(fields)
-        .count('vote as vote_count')
-        .where({ answer_id: answerId })
-        .groupBy('vote')
-        .then((rows) => {
-          const votes = { up: 0, down: 0 };
-          for (const row of rows) {
-            votes[row.vote] = row.vote_count;
-          }
-          resolve(votes);
-        })
-        .catch(reject);
-    });
+    const fields = ['vote'];
+    return this.newdb
+      .select(fields)
+      .count('vote as vote_count')
+      .from('answer_votes')
+      .where({ answer_id: answerId })
+      .groupBy('vote')
+      .then((rows) => {
+        const votes = { up: 0, down: 0 };
+        for (const row of rows) {
+          votes[row.vote] = row.vote_count;
+        }
+        return votes;
+      });
   }
 
   getAnswers(questionId) {
-    return new Promise((resolve, reject) => {
-      const fields = [
-        'username',
-        'answer_id as answerId',
-        'question_id as questionId',
-        'answer',
-        'accepted',
-        'time',
-      ];
-      this.newdb('answers')
-        .select(fields)
-        .where({ question_id: questionId })
-        .orderBy('accepted', 'desc')
-        .then(async (rows) => {
-          const answers = [];
-          for (const answer of rows) {
-            const votes = await this.getVotesOfAnswer(answer.answerId);
-            answer.upVote = votes['up'];
-            answer.downVote = votes['down'];
-            answers.push(answer);
-          }
-          resolve(answers);
-        })
-        .catch(reject);
-    });
+    const fields = [
+      'username',
+      'answer_id as answerId',
+      'question_id as questionId',
+      'answer',
+      'accepted',
+      'time',
+    ];
+
+    return this.newdb
+      .select(fields)
+      .from('answers')
+      .where({ question_id: questionId })
+      .orderBy('accepted', 'desc')
+      .then(async (rows) => {
+        const answers = [];
+        for (const answer of rows) {
+          const votes = await this.getVotesOfAnswer(answer.answerId);
+          answer.upVote = votes['up'];
+          answer.downVote = votes['down'];
+          answers.push(answer);
+        }
+        return answers;
+      });
   }
 
   getVote(username, answerId) {
-    return new Promise((resolve, reject) => {
-      this.newdb('answer_votes')
-        .select(['vote'])
-        .where({ username, answer_id: answerId })
-        .then(([row]) => {
-          const { vote } = row || {};
-          resolve(vote);
-        })
-        .catch(reject);
-    });
+    return this.newdb
+      .select(['vote'])
+      .from('answer_votes')
+      .where({ username, answer_id: answerId })
+      .then(([row]) => {
+        const { vote } = row || {};
+        return vote;
+      });
   }
 
   addQuestionTag(questionId, tags) {
@@ -297,34 +268,27 @@ class DataStore {
   }
 
   getTagId(tag) {
-    return new Promise((resolve, reject) => {
-      this.newdb('tags')
-        .select('tag_id')
-        .where({ tag_name: tag })
-        .then(([row]) => {
-          if (!row) {
-            this.newdb('tags')
-              .insert({ tag_name: tag })
-              .then(([lastID]) => resolve(lastID));
-            return;
-          }
-          resolve(row.tag_id);
-        })
-        .catch(reject);
-    });
+    return this.newdb
+      .select('tag_id')
+      .from('tags')
+      .where({ tag_name: tag })
+      .then(async ([row]) => {
+        if (!row) {
+          const [lastId] = await this.newdb('tags').insert({ tag_name: tag });
+          return lastId;
+        }
+        return row.tag_id;
+      });
   }
 
   getTagSuggestion(tagname) {
-    return new Promise((resolve, reject) => {
-      this.newdb('tags')
-        .select(['tag_name'])
-        .where('tag_name', 'like', `%${tagname}%`)
-        .then((rows) => {
-          const matchingTags = rows.map((row) => row.tag_name);
-          resolve(matchingTags);
-        })
-        .catch(reject);
-    });
+    return this.newdb
+      .select(['tag_name'])
+      .from('tags')
+      .where('tag_name', 'like', `%${tagname}%`)
+      .then((rows) => {
+        return rows.map((row) => row.tag_name);
+      });
   }
 
   updateVote(username, answerId, vote) {
@@ -377,31 +341,21 @@ class DataStore {
   }
 
   getCommentsOfQuestion(questionId) {
-    return new Promise((resolve, reject) => {
-      const fields = ['username', 'comment_id as commentId', 'comment', 'time'];
-      this.newdb('question_comments')
-        .select(fields)
-        .where({ question_id: questionId })
-        .then((rows) => {
-          const comments = rows;
-          resolve(comments);
-        })
-        .catch(reject);
-    });
+    const fields = ['username', 'comment_id as commentId', 'comment', 'time'];
+
+    return this.newdb
+      .select(fields)
+      .from('question_comments')
+      .where({ question_id: questionId });
   }
 
   getCommentsOfAnswer(answerId) {
-    return new Promise((resolve, reject) => {
-      this.db.all(queries.getCommentsOfAnswer, [answerId], (err, rows) => {
-        err && reject(err);
-        if (!rows) {
-          resolve([]);
-        }
-        let comments = rows || [];
-        comments = comments.map(wrapComment);
-        resolve(comments);
-      });
-    });
+    const fields = ['username', 'answer_id as answerId', 'comment', 'time'];
+
+    return this.newdb
+      .select(fields)
+      .from('answer_comments')
+      .where({ answer_id: answerId });
   }
 
   addAnswerComment(username, answerId, comment) {
@@ -418,21 +372,13 @@ class DataStore {
   }
 
   getComment(commentId) {
-    return new Promise((resolve, reject) => {
-      const fields = ['username', 'comment_id as commentId', 'comment', 'time'];
-      this.newdb('question_comments')
-        .select(fields)
-        .where({ comment_id: commentId })
-        .first()
-        .then((rows) => {
-          if (!rows) {
-            resolve([]);
-          }
-          const comment = rows || {};
-          resolve(comment);
-        })
-        .catch(reject);
-    });
+    const fields = ['username', 'comment_id as commentId', 'comment', 'time'];
+
+    return this.newdb
+      .select(fields)
+      .from('question_comments')
+      .where({ comment_id: commentId })
+      .first();
   }
 
   deleteQuestionComment(commentId) {
